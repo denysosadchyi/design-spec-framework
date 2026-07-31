@@ -4,6 +4,20 @@ Spec-Driven Development for product design. Clone the template, open it in Claud
 
 No Figma required. The repo is the design file.
 
+## What it looks like
+
+The project home page (`index.html`) leads the designer through the pipeline — phases on the left, step-by-step guide with copy-paste prompts in the middle, success criteria on the right:
+
+![Phase guide with prompts and success criteria](docs/screens/phase-guide.png)
+
+"How this works" onboards a designer who has never touched a terminal:
+
+![How this works onboarding](docs/screens/how-it-works.png)
+
+Every phase has a Result view: a placeholder until the phase runs, then the live artifact, decisions and progress — with the phase's artifacts tracked on the right:
+
+![Result view with artifacts rail](docs/screens/phase-result.png)
+
 ## Why this exists
 
 Most product design work has three chronic problems, and none of them is about talent:
