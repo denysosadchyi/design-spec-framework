@@ -2,11 +2,11 @@
 
 What this project has, and what to use when it does not.
 
-`/design:init` walks this table, offers to install each recommended tool, and records the
+`/dsf:init` walks this table, offers to install each recommended tool, and records the
 answer in **Status**. Nothing here is mandatory — every row has a fallback that keeps the
 pipeline moving.
 
-**Every `/design:*` command must read this file before it touches a tool.** If a row is not
+**Every `/dsf:*` command must read this file before it touches a tool.** If a row is not
 `installed`, use its fallback silently and note the substitution in the phase artifact.
 Never block a phase, never ask the human to install something mid-phase, and never assume
 availability from a previous session.
@@ -25,24 +25,24 @@ availability from a previous session.
 | Icons | Solar set, one style throughout (linear / bold / bold-duotone) | Any single-style open set, recorded by name and style in `DESIGN.md` | `[?]` |
 | Hosting | GitHub repo + GitHub Pages | Any git host + a local static server for review | `[?]` |
 
-Status values: `installed` · `declined` (use fallback) · `unavailable` (use fallback) · `[?]` (not yet checked by `/design:init`).
+Status values: `installed` · `declined` (use fallback) · `unavailable` (use fallback) · `[?]` (not yet checked by `/dsf:init`).
 
 ---
 
 ## Rules
 
-- A declined tool is not re-offered every phase. `/design:init` is the place to change a row.
+- A declined tool is not re-offered every phase. `/dsf:init` is the place to change a row.
 - When a fallback is used for an artifact, say so in that artifact — a reader must be able
   to tell a Refero-sourced reference from a web-searched one.
 - Icon set and image generator are locked once chosen. Mixing sets or colorways is a defect,
   not a variation.
-- Adding a tool later: re-run `/design:init`, update this table, and re-run the affected
-  phase's `/design:check` — earlier artifacts are not retroactively regenerated unless the
+- Adding a tool later: re-run `/dsf:init`, update this table, and re-run the affected
+  phase's `/dsf:check` — earlier artifacts are not retroactively regenerated unless the
   human asks.
 
 ## Notes
 
-Recorded by `/design:init`. Keys, endpoints, model names, MCP server names, and anything
+Recorded by `/dsf:init`. Keys, endpoints, model names, MCP server names, and anything
 else a later phase needs to reproduce a result.
 
 - `[?]`

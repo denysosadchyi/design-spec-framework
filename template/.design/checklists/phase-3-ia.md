@@ -1,7 +1,7 @@
 # Phase 3 — Structure · done criteria
 
-Gate for `/design:ia`. Every item is verifiable by opening a file in this repo.
-`/design:check` runs this list before sign-off.
+Gate for `/dsf:ia`. Every item is verifiable by opening a file in this repo.
+`/dsf:check` runs this list before sign-off.
 
 ## Entities and sitemap
 

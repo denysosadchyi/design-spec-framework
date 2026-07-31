@@ -1,6 +1,6 @@
 # `[Product name]`
 
-`[One sentence: what this product is and who it is for. Filled in by /design:brief.]`
+`[One sentence: what this product is and who it is for. Filled in by /dsf:brief.]`
 
 This repo **is** the design file. Research, structure, screens, copy, visual language, the
 design system and the handoff all live here as files. No Figma required.
@@ -9,7 +9,7 @@ design system and the handoff all live here as files. No Figma required.
 viewable page.
 
 Built with [design-spec-framework](https://github.com/) — spec-driven development for
-product design. Work is driven by `/design:*` commands in Claude Code; the rules live in
+product design. Work is driven by `/dsf:*` commands in Claude Code; the rules live in
 `.design/memory/constitution.md`.
 
 ---
@@ -76,7 +76,7 @@ product design. Work is driven by `/design:*` commands in Claude Code; the rules
 | Path | What lives there |
 |---|---|
 | `.design/` | Constitution, toolbox, templates, phase checklists |
-| `.claude/commands/design/` | The `/design:*` commands |
+| `.claude/commands/dsf/` | The `/dsf:*` commands |
 | `CLAUDE.md` | Agent context — brief plus a block per phase |
 | `pipeline.html` | Status dashboard |
 | `research/` · `people/` | Phase 2 |

@@ -2,10 +2,10 @@
 description: Verify the current (or named) phase against its .design/checklists/ file — pass/fail per item with file evidence, no fixes; on a full pass, suggest the phase tag.
 ---
 
-# /design:check — gate the phase
+# /dsf:check — gate the phase
 
-Usage: `/design:check [phase]` — e.g. `/design:check 8a`, `/design:check wireframes`. With no
-argument, check the current phase as `/design:status` derives it.
+Usage: `/dsf:check [phase]` — e.g. `/dsf:check 8a`, `/dsf:check wireframes`. With no
+argument, check the current phase as `/dsf:status` derives it.
 
 This is the gate before sign-off. It **verifies and reports only**. It fixes nothing, writes
 no artifact, ticks no box on the human's behalf.
@@ -87,6 +87,6 @@ If every item is pass (with `human` items confirmed by the human):
 
 ### 5 — On failures
 
-Report and stop. Suggest `/design:critique <scope>` for defect-shaped failures, or the
+Report and stop. Suggest `/dsf:critique <scope>` for defect-shaped failures, or the
 phase's own command for missing artifacts. Do not re-run the phase automatically — the human
 decides whether to fix, defer to `design-system/backlog.md`, or accept and move on.

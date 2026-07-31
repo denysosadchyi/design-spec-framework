@@ -2,9 +2,9 @@
 description: Run the standard critique cycle on any scope — collect defects into one table, human prioritizes, then fix at the source and propagate.
 ---
 
-# /design:critique — defect table on any scope
+# /dsf:critique — defect table on any scope
 
-Usage: `/design:critique <scope>` — a screen, a folder, a component, a flow, a phase, or the
+Usage: `/dsf:critique <scope>` — a screen, a folder, a component, a flow, a phase, or the
 whole product. If no scope is given, ask for one; never critique "everything" by default.
 
 The cycle is fixed by the constitution (rule 4): **find, table, human, fix.** Critique never
@@ -122,4 +122,4 @@ does not rediscover it.
 - Update `CLAUDE.md` / `README.md` only if a rule changed. Regenerate `pipeline.html`.
 - Commit; push if the toolbox records a remote.
 
-No tag. If this critique closed a phase, run `/design:check` and tag there.
+No tag. If this critique closed a phase, run `/dsf:check` and tag there.

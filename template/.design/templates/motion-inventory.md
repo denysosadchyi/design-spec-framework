@@ -1,4 +1,4 @@
-<!-- filled by /design:motion -->
+<!-- filled by /dsf:motion -->
 
 # Motion inventory
 

@@ -1,7 +1,7 @@
 # Phase 4 — Wireframes · done criteria
 
-Gate for `/design:wireframes`. Every item is verifiable by opening a file in this repo.
-`/design:check` runs this list before sign-off.
+Gate for `/dsf:wireframes`. Every item is verifiable by opening a file in this repo.
+`/dsf:check` runs this list before sign-off.
 
 These files are not sketches. They are the first layer of the product's code: the same
 files get copy in phase 5, visual language in phase 5–6, tokens in phase 6, responsive

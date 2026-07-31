@@ -2,7 +2,7 @@
 description: Phase 4 — build the product as grey semantic HTML screens with every real state as its own page, linked along the flows.
 ---
 
-# /design:wireframes
+# /dsf:wireframes
 
 Turn the map into the product's first layer of code. Grey, semantic HTML, real domain copy,
 every real state as a separate page, a tree navigator on every page, screens linked along
@@ -14,9 +14,9 @@ Required artifacts. If one is missing, stop and name the command that produces i
 
 | Artifact | Missing → run |
 |---|---|
-| `ia/sitemap.md`, `ia/flows.md` | `/design:ia` |
-| `people/jtbd.md` | `/design:users` |
-| `CLAUDE.md` with the brief | `/design:brief` |
+| `ia/sitemap.md`, `ia/flows.md` | `/dsf:ia` |
+| `people/jtbd.md` | `/dsf:users` |
+| `CLAUDE.md` with the brief | `/dsf:brief` |
 
 Read `.design/memory/constitution.md` and `.design/memory/toolbox.md` before you start.
 Use the recommended tool where its status is installed, the recorded fallback otherwise.

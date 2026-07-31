@@ -1,7 +1,7 @@
 # Phase 1 — Brief · done criteria
 
-Gate for `/design:brief`. Every item is verifiable by opening a file in this repo.
-`/design:check` runs this list before sign-off.
+Gate for `/dsf:brief`. Every item is verifiable by opening a file in this repo.
+`/dsf:check` runs this list before sign-off.
 
 ## Brief
 
@@ -21,7 +21,7 @@ Gate for `/design:brief`. Every item is verifiable by opening a file in this rep
 - [ ] `README.md` → **Brief** section is filled in and matches `CLAUDE.md`
 - [ ] `pipeline.html` renders, shows phase 1 as done and later phases as locked, and opens
       standalone in a browser
-- [ ] `.design/memory/toolbox.md` has no `[?]` in the Status column — `/design:init` has run
+- [ ] `.design/memory/toolbox.md` has no `[?]` in the Status column — `/dsf:init` has run
 - [ ] Repo is under git with a first commit; the phase is tagged `phase-1-brief`
 - [ ] Remote (or the recorded hosting fallback from `toolbox.md`) is set up and pushed
 

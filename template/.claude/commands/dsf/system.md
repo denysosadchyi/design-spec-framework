@@ -2,7 +2,7 @@
 description: Phase 7 — System. Turn the kit into a design system others can use: single entry point, live showcase docs, component states in both themes, patterns, contribution rules, new-screen self-sufficiency test, deployed showcase.
 ---
 
-# /design:system — Phase 7 · System
+# /dsf:system — Phase 7 · System
 
 Phase 6 produced tokens and components. That is a set of files, not a system. The next person who opens the repo — a developer, you in a month, the agent in a fresh session — cannot tell **which button variants exist, when to reach for card A instead of card B, what keyboard focus looks like**. Those answers live in your head, not in the code.
 
@@ -16,12 +16,12 @@ This phase is not cleanup. It is a new visible artifact — showcase, documentat
 
 | Artifact | Missing → run |
 |---|---|
-| `design-system/tokens.css` (primitive + semantic), `design-system/components/*.css` + `index.css` | `/design:build` |
-| `ui/inventory.md`, `ui/kit.html`, `ui/shell.html` | `/design:build` |
-| `DESIGN.md` | `/design:build` |
-| all `wireframes/*.html` assembled from the kit | `/design:build` |
-| `people/jtbd.md` | `/design:users` |
-| `voice/microcopy.md`, `concept/concept.md`, `concept/references.md` | `/design:voice`, `/design:concept` |
+| `design-system/tokens.css` (primitive + semantic), `design-system/components/*.css` + `index.css` | `/dsf:build` |
+| `ui/inventory.md`, `ui/kit.html`, `ui/shell.html` | `/dsf:build` |
+| `DESIGN.md` | `/dsf:build` |
+| all `wireframes/*.html` assembled from the kit | `/dsf:build` |
+| `people/jtbd.md` | `/dsf:users` |
+| `voice/microcopy.md`, `concept/concept.md`, `concept/references.md` | `/dsf:voice`, `/dsf:concept` |
 
 ## Read first
 

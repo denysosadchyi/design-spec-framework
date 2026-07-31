@@ -8,8 +8,8 @@ You collect the market evidence this product will be argued from. **You** gather
 
 ## Prerequisites
 
-- `CLAUDE.md` contains the brief. If missing → tell the user to run `/design:brief` first and stop.
-- `.design/memory/toolbox.md` exists. If missing → `/design:init`.
+- `CLAUDE.md` contains the brief. If missing → tell the user to run `/dsf:brief` first and stop.
+- `.design/memory/toolbox.md` exists. If missing → `/dsf:init`.
 
 ## Load context
 
@@ -104,7 +104,7 @@ Run `.design/checklists/phase-2-discover.md`. Report pass/fail per item. Hard it
 
 ### 9. Sign-off
 
-Report the chosen pattern, the benchmark verdict, and the open questions phase 2b should carry. Next command: `/design:users`.
+Report the chosen pattern, the benchmark verdict, and the open questions phase 2b should carry. Next command: `/dsf:users`.
 
 Then suggest, and run on approval:
 

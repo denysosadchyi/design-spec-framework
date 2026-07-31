@@ -1,6 +1,6 @@
 # Phase 0 — Init · done criteria
 
-Verified by `/design:init` (and re-checkable with `/design:check`).
+Verified by `/dsf:init` (and re-checkable with `/dsf:check`).
 
 - [ ] `.design/memory/toolbox.md` filled in: every row has a status (`active` / `fallback`), none left `pending`
 - [ ] Git repository initialized; remote configured **or** the local-only fallback explicitly recorded in `toolbox.md`

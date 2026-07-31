@@ -2,7 +2,7 @@
 description: "Phase 8a — expand the mobile-first product to tablet and desktop: width audit, two behavior-based breakpoints as tokens, adaptive shell, adaptive components, split-view pattern."
 ---
 
-# /design:responsive — Adapt · width
+# /dsf:responsive — Adapt · width
 
 Mobile-first **expansion**, never desktop compression. The question is never "how do I
 squeeze the desktop onto a phone", it is "what does the wider screen get to add". A
@@ -17,11 +17,11 @@ design system.
 
 | Required | Produced by | If missing |
 |---|---|---|
-| `design-system/tokens.css` (primitive + semantic), `components/` | `/design:build` | run `/design:build` first |
-| `design-system/docs/`, `patterns/`, `index.css` | `/design:system` | run `/design:system` first |
-| `ui/shell.html` (header + tab bar, inserted by every screen) | `/design:build` | run `/design:build` first |
-| `ia/flows.md`, `people/jtbd.md`, all `wireframes/*.html` with states | `/design:ia`, `/design:users`, `/design:wireframes` | run those first |
-| `DESIGN.md` | `/design:build` | run `/design:build` first |
+| `design-system/tokens.css` (primitive + semantic), `components/` | `/dsf:build` | run `/dsf:build` first |
+| `design-system/docs/`, `patterns/`, `index.css` | `/dsf:system` | run `/dsf:system` first |
+| `ui/shell.html` (header + tab bar, inserted by every screen) | `/dsf:build` | run `/dsf:build` first |
+| `ia/flows.md`, `people/jtbd.md`, all `wireframes/*.html` with states | `/dsf:ia`, `/dsf:users`, `/dsf:wireframes` | run those first |
+| `DESIGN.md` | `/dsf:build` | run `/dsf:build` first |
 
 Stop and name the missing command. Do not improvise the missing artifact.
 
@@ -147,7 +147,7 @@ a wireframe is the signal that adaptation crawled the wrong way.
 
 ## Phase checklist
 
-Verify against `.design/checklists/phase-8-adapt.md` (or run `/design:check`):
+Verify against `.design/checklists/phase-8-adapt.md` (or run `/dsf:check`):
 
 - [ ] `responsive/width-audit.md` — every screen has one of three verdicts; new behavior named concretely
 - [ ] `--bp-tablet` / `--bp-desktop` in `tokens.css`, in `rem`, placed on behavior change, exactly two

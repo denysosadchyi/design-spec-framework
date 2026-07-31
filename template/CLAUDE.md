@@ -10,7 +10,7 @@ Read this file first, then the artifacts it points to. Never re-ask what is alre
 ## Rules of engagement
 
 - **Constitution:** `.design/memory/constitution.md` — the binding rules for every
-  `/design:*` command. Read it before acting.
+  `/dsf:*` command. Read it before acting.
 - **Toolbox:** `.design/memory/toolbox.md` — which tools this project has and which
   fallback to use when one is missing. Read it before using any tool.
 - **Checklists:** `.design/checklists/phase-N-*.md` — the done-criteria that gate each phase.
@@ -20,25 +20,25 @@ Read this file first, then the artifacts it points to. Never re-ask what is alre
 
 ## Pipeline
 
-Nine phases, driven by `/design:*` commands. Each phase reads the previous phases'
+Nine phases, driven by `/dsf:*` commands. Each phase reads the previous phases'
 artifacts, produces a Markdown artifact for the agent plus an HTML page for humans, ends
 with a critique cycle and a human gate, updates the living docs, and commits.
 
 | Phase | Command | Output lives in |
 |---|---|---|
-| 0 · Init | `/design:init` | `.design/memory/toolbox.md`, `pipeline.html` |
-| 1 · Brief | `/design:brief` | this file, `README.md`, folder scaffolding |
-| 2 · Discover | `/design:research` + `/design:users` | `research/`, `people/` |
-| 3 · Structure | `/design:ia` | `ia/` |
-| 4 · Wireframes | `/design:wireframes` | `wireframes/` |
-| 5 · Language | `/design:voice` + `/design:concept` | `voice/`, `concept/` |
-| 6 · Build | `/design:build` | `DESIGN.md`, `design-system/`, `ui/`, `visuals/` |
-| 7 · System | `/design:system` | `design-system/docs/`, `patterns/`, `examples/` |
-| 8 · Adapt | `/design:responsive` + `/design:motion` | `responsive/`, `animations/`, the system |
-| 9 · Handoff | `/design:handoff` | `handoff/`, release |
+| 0 · Init | `/dsf:init` | `.design/memory/toolbox.md`, `pipeline.html` |
+| 1 · Brief | `/dsf:brief` | this file, `README.md`, folder scaffolding |
+| 2 · Discover | `/dsf:research` + `/dsf:users` | `research/`, `people/` |
+| 3 · Structure | `/dsf:ia` | `ia/` |
+| 4 · Wireframes | `/dsf:wireframes` | `wireframes/` |
+| 5 · Language | `/dsf:voice` + `/dsf:concept` | `voice/`, `concept/` |
+| 6 · Build | `/dsf:build` | `DESIGN.md`, `design-system/`, `ui/`, `visuals/` |
+| 7 · System | `/dsf:system` | `design-system/docs/`, `patterns/`, `examples/` |
+| 8 · Adapt | `/dsf:responsive` + `/dsf:motion` | `responsive/`, `animations/`, the system |
+| 9 · Handoff | `/dsf:handoff` | `handoff/`, release |
 
-Cross-cutting, usable at any point: `/design:status` (where am I, what's next),
-`/design:critique` (defect table on any scope), `/design:check` (verify the current phase
+Cross-cutting, usable at any point: `/dsf:status` (where am I, what's next),
+`/dsf:critique` (defect table on any scope), `/dsf:check` (verify the current phase
 against its checklist).
 
 ---

@@ -1,7 +1,7 @@
 # Phase 6 — Build · done criteria
 
-Gate for `/design:build`. Every item is verifiable by opening a file in this repo.
-`/design:check` runs this list before sign-off.
+Gate for `/dsf:build`. Every item is verifiable by opening a file in this repo.
+`/dsf:check` runs this list before sign-off.
 
 The rule of this phase: **a screen is a composition of the kit, not a drawing**. The visual
 language is documented from working code, the component inventory is read out of the

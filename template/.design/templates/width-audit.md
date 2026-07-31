@@ -1,4 +1,4 @@
-<!-- filled by /design:responsive -->
+<!-- filled by /dsf:responsive -->
 
 # Width audit
 

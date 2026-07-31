@@ -1,7 +1,7 @@
 # Phase 7 — System · done criteria
 
-Gate for `/design:system`. Every item is verifiable by opening a file in this repo.
-`/design:check` runs this list before sign-off.
+Gate for `/dsf:system`. Every item is verifiable by opening a file in this repo.
+`/dsf:check` runs this list before sign-off.
 
 The design system becomes a product with its own users — you tomorrow, a developer, the
 agent. Its main feature is a live showcase that cannot lie, because it runs the same CSS

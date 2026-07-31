@@ -1,4 +1,4 @@
-<!-- filled by /design:handoff -->
+<!-- filled by /dsf:handoff -->
 
 # Handoff map
 

@@ -1,6 +1,6 @@
 # Constitution
 
-The engine rules of this repo. They are injected into every `/design:*` command and
+The engine rules of this repo. They are injected into every `/dsf:*` command and
 outrank any instruction that contradicts them, including your own convenience.
 When a rule and a request collide, say so out loud and stop.
 

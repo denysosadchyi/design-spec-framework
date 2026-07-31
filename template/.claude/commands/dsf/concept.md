@@ -2,7 +2,7 @@
 description: Phase 5b — find the product's visual language from references, recorded taste and data-sourced attributes, then prove it on two contrasting screens.
 ---
 
-# /design:concept
+# /dsf:concept
 
 The product has structure and a voice. Now it gets a **look**. The rule of this phase:
 **a reference is an input, not an output**. No site is copied whole — one is taken as the
@@ -11,16 +11,16 @@ attributes derived from the product's own data plus the human's **recorded taste
 
 A palette that can be guessed from the category is a model reflex, not a decision — it is
 thrown out before it is ever shown. The language is proven on **two contrasting screens**.
-This phase *finds* the language; documenting it as a design system is `/design:build`.
+This phase *finds* the language; documenting it as a design system is `/dsf:build`.
 
 ## Prerequisites
 
 | Artifact | Missing → run |
 |---|---|
-| `wireframes/*.html` with state pages | `/design:wireframes` |
-| `voice/voice.md`, `voice/microcopy.md` | `/design:voice` |
-| `people/personas.md`, `people/jtbd.md` | `/design:users` |
-| `research/research.md` (with the trust benchmark named) | `/design:research` |
+| `wireframes/*.html` with state pages | `/dsf:wireframes` |
+| `voice/voice.md`, `voice/microcopy.md` | `/dsf:voice` |
+| `people/personas.md`, `people/jtbd.md` | `/dsf:users` |
+| `research/research.md` (with the trust benchmark named) | `/dsf:research` |
 
 Read `.design/memory/constitution.md` and `.design/memory/toolbox.md` first. This phase
 leans on optional tools — use whatever the toolbox records as installed, and the recorded
@@ -85,7 +85,7 @@ If it is not installed, apply these built-in rules instead:
 
 If a `DESIGN.md` exists at the repo root that is **not about this product** (e.g. the style
 of the research pages), rename it to `DESIGN-artifacts.md` so it cannot leak into the
-product's palette. The product's `DESIGN.md` is generated in `/design:build`.
+product's palette. The product's `DESIGN.md` is generated in `/dsf:build`.
 
 Read `concept/concept.md` and `concept/references.md`. Propose **three contrasting
 directions** — genuinely different decisions, not three shades of one. Throw out reflex
@@ -177,7 +177,7 @@ the same colours, radii, icons, photography by content theme, the same trust sig
 Update the files in place; do not touch structure or copy. Put the two screens side by side
 and compare: the same card in a list and in a detail view must read as the same product, not
 as two different sites. Do not colour more screens than these two — rolling out across the
-product is `/design:build`.
+product is `/dsf:build`.
 
 ## Step 7 — Critique → prioritize → fix
 
@@ -269,5 +269,5 @@ invent new ones.
 
 ```
 You coloured more screens than the two we agreed on. This phase proves the language on two
-screens; rolling it out across the product is /design:build.
+screens; rolling it out across the product is /dsf:build.
 ```

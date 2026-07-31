@@ -2,7 +2,7 @@
 description: Read the repo, derive the current phase from artifact presence and checklist results, report where you are / what's done / what's next, and regenerate pipeline.html. Never modifies artifacts.
 ---
 
-# /design:status — where am I
+# /dsf:status — where am I
 
 Reports the state of the project and refreshes the dashboard. **Read-only against every
 artifact**: this command never edits, fixes, generates or "helpfully completes" anything.
@@ -15,8 +15,8 @@ presence plus checklist results are the truth, git history is the timeline.
 
 ## Prerequisites
 
-None. Runs at any point, including a repo where only `/design:init` has happened. If even
-`.design/memory/` is missing, say the repo is not initialized and name `/design:init`.
+None. Runs at any point, including a repo where only `/dsf:init` has happened. If even
+`.design/memory/` is missing, say the repo is not initialized and name `/dsf:init`.
 
 **Read first:** `.design/memory/constitution.md` (rule 8 — living docs) and
 `.design/memory/toolbox.md` (a `[?]` toolbox row is itself a phase-0 finding worth
@@ -33,17 +33,17 @@ as **missing**, not present.
 
 | Phase | Command | Key artifacts |
 |---|---|---|
-| 0 · Init | `/design:init` | `.design/memory/toolbox.md` with no `[?]` status rows, `pipeline.html` |
-| 1 · Brief | `/design:brief` | brief block in `CLAUDE.md`, `README.md`, folder scaffolding |
-| 2 · Discover | `/design:research` + `/design:users` | `research/research.md` + `.html` + `screens/`, `people/personas.md`, `people/jtbd.md`, `people/personas.html` |
-| 3 · Structure | `/design:ia` | `ia/sitemap.md`, `ia/flows.md`, `ia/ia.html` |
-| 4 · Wireframes | `/design:wireframes` | `wireframes/_screens.md`, `_conventions.md`, `*.html` incl. state pages, `_critique.md` |
-| 5 · Language | `/design:voice` + `/design:concept` | `voice/voice.md`, `voice/microcopy.md`, `concept/references.md`, `concept.md`, `directions.html`, `concept.html` |
-| 6 · Build | `/design:build` | `DESIGN.md`, `design-system/tokens.css`, `components/`, `ui/shell.html`, `ui/kit.html`, `visuals/` |
-| 7 · System | `/design:system` | `design-system/index.css`, `docs/`, `patterns/`, `examples/`, `backlog.md` |
-| 8a · Responsive | `/design:responsive` | `responsive/width-audit.md` + `.html`, `--bp-*` tokens, adaptive `ui/shell.html`, `patterns/split-view` |
-| 8b · Motion | `/design:motion` | `animations/motion-inventory.md` + `.html`, `--dur-*` / `--ease-*` tokens, `DESIGN.md` motion sections |
-| 9 · Handoff | `/design:handoff` | `handoff/onboarding-gaps.md`, `spec/`, `map.md`, `a11y.md`, `handoff/README.md`, `handoff.html`, `examples/one-shot/` |
+| 0 · Init | `/dsf:init` | `.design/memory/toolbox.md` with no `[?]` status rows, `pipeline.html` |
+| 1 · Brief | `/dsf:brief` | brief block in `CLAUDE.md`, `README.md`, folder scaffolding |
+| 2 · Discover | `/dsf:research` + `/dsf:users` | `research/research.md` + `.html` + `screens/`, `people/personas.md`, `people/jtbd.md`, `people/personas.html` |
+| 3 · Structure | `/dsf:ia` | `ia/sitemap.md`, `ia/flows.md`, `ia/ia.html` |
+| 4 · Wireframes | `/dsf:wireframes` | `wireframes/_screens.md`, `_conventions.md`, `*.html` incl. state pages, `_critique.md` |
+| 5 · Language | `/dsf:voice` + `/dsf:concept` | `voice/voice.md`, `voice/microcopy.md`, `concept/references.md`, `concept.md`, `directions.html`, `concept.html` |
+| 6 · Build | `/dsf:build` | `DESIGN.md`, `design-system/tokens.css`, `components/`, `ui/shell.html`, `ui/kit.html`, `visuals/` |
+| 7 · System | `/dsf:system` | `design-system/index.css`, `docs/`, `patterns/`, `examples/`, `backlog.md` |
+| 8a · Responsive | `/dsf:responsive` | `responsive/width-audit.md` + `.html`, `--bp-*` tokens, adaptive `ui/shell.html`, `patterns/split-view` |
+| 8b · Motion | `/dsf:motion` | `animations/motion-inventory.md` + `.html`, `--dur-*` / `--ease-*` tokens, `DESIGN.md` motion sections |
+| 9 · Handoff | `/dsf:handoff` | `handoff/onboarding-gaps.md`, `spec/`, `map.md`, `a11y.md`, `handoff/README.md`, `handoff.html`, `examples/one-shot/` |
 
 ### 2 — Read the checklists
 
@@ -109,6 +109,6 @@ gate, and this command signs nothing off.
 
 - Never create, edit or complete a phase artifact, even a trivially missing one. Report it
   and name the command that produces it.
-- Never tick a checklist item. `/design:check` verifies; the human ticks.
+- Never tick a checklist item. `/dsf:check` verifies; the human ticks.
 - Never infer a phase is done from a plausible-looking folder. Presence means real content.
-- Never run critique or fixes. That is `/design:critique`.
+- Never run critique or fixes. That is `/dsf:critique`.

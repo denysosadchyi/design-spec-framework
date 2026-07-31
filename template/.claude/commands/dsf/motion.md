@@ -2,7 +2,7 @@
 description: "Phase 8b — add motion as a system layer: motion tokens, an inventory where every movement does one of three jobs, micro-interactions in components, tone-matched state transitions, transform/opacity budget and reduced-motion."
 ---
 
-# /design:motion — Adapt · motion
+# /dsf:motion — Adapt · motion
 
 Motion is a **layer of the system**, not cosmetics on top. The easy way to "bring a product
 to life" is to scatter effects: cards bounce in sequence, icons spin, pages slide
@@ -27,14 +27,14 @@ semantic tokens with no use and patterns with fewer than three screens.
 
 | Required | Produced by | If missing |
 |---|---|---|
-| `design-system/tokens.css`, `components/` with states (hover, active, focus-visible, disabled) | `/design:build` + `/design:system` | run those first |
-| Adaptive layer: breakpoint tokens, `split-view` pattern | `/design:responsive` | run `/design:responsive` first |
-| `voice/voice.md`, `voice/microcopy.md` | `/design:voice` | run `/design:voice` first |
-| `ia/flows.md`, `wireframes/*.html` with state pages | `/design:ia`, `/design:wireframes` | run those first |
-| `DESIGN.md`, `design-system/docs/` | `/design:build`, `/design:system` | run those first |
+| `design-system/tokens.css`, `components/` with states (hover, active, focus-visible, disabled) | `/dsf:build` + `/dsf:system` | run those first |
+| Adaptive layer: breakpoint tokens, `split-view` pattern | `/dsf:responsive` | run `/dsf:responsive` first |
+| `voice/voice.md`, `voice/microcopy.md` | `/dsf:voice` | run `/dsf:voice` first |
+| `ia/flows.md`, `wireframes/*.html` with state pages | `/dsf:ia`, `/dsf:wireframes` | run those first |
+| `DESIGN.md`, `design-system/docs/` | `/dsf:build`, `/dsf:system` | run those first |
 
 Motion animates transitions **between states**, so states must exist first. If components
-have no states, stop: `/design:system` comes before this command.
+have no states, stop: `/dsf:system` comes before this command.
 
 **Read before acting:** `.design/memory/constitution.md` (rule 5 — the fix lives at the
 source; rule 6 — new enters the system first) and `.design/memory/toolbox.md`. Live motion
@@ -80,7 +80,7 @@ Animate nothing in this step. Render `animations/motion-inventory.html` from the
 ### 3 — Component micro-interactions
 
 Read the inventory and `design-system/components/`. Add micro-interactions to the states
-built in `/design:system`: hover, press (`:active`), focus, appearance. Every one through
+built in `/dsf:system`: hover, press (`:active`), focus, appearance. Every one through
 motion tokens — never a hand-written number.
 
 - Motion lives in the component, not in the screen. Animate the button once, it works
@@ -161,7 +161,7 @@ move differently in different places.
 
 ## Phase checklist
 
-Verify against `.design/checklists/phase-8-adapt.md` (or run `/design:check`):
+Verify against `.design/checklists/phase-8-adapt.md` (or run `/dsf:check`):
 
 - [ ] `tokens.css` — three durations, `--ease-*` curves, `--move-*` distances; moderate values
 - [ ] `DESIGN.md` has a "Motion" section with the three jobs and the "no job, no motion" rule

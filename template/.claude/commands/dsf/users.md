@@ -8,8 +8,8 @@ Personas are a **synthesis of research, not an act of authorship**. At every ste
 
 ## Prerequisites
 
-- `research/research.md` exists. If missing → tell the user to run `/design:research` first and stop.
-- `CLAUDE.md` contains the brief. If missing → `/design:brief`.
+- `research/research.md` exists. If missing → tell the user to run `/dsf:research` first and stop.
+- `CLAUDE.md` contains the brief. If missing → `/dsf:brief`.
 
 ## Load context
 
@@ -99,7 +99,7 @@ Run `.design/checklists/phase-2-discover.md`. Hard items: personas differ by beh
 
 ### 10. Sign-off
 
-Report the primary persona, the main job, the three MVP jobs, and any `[?]` still standing under a design-critical claim. Next command: `/design:ia`.
+Report the primary persona, the main job, the three MVP jobs, and any `[?]` still standing under a design-critical claim. Next command: `/dsf:ia`.
 
 Then suggest, and run on approval:
 

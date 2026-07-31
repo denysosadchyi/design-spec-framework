@@ -8,7 +8,7 @@ The brief is the only artifact the whole pipeline reads on every later prompt. I
 
 ## Prerequisites
 
-- `.design/memory/toolbox.md` exists. If missing → tell the user to run `/design:init` first and stop.
+- `.design/memory/toolbox.md` exists. If missing → tell the user to run `/dsf:init` first and stop.
 - If `CLAUDE.md` already contains a brief, this is a revision: read it, ask what changed, and interrogate only the changed parts.
 
 ## Load context
@@ -85,7 +85,7 @@ Re-derive status from artifact presence plus checklist results. Phase 1 becomes 
 
 ### 9. Sign-off
 
-Report the brief in three lines, list the open `[?]` items that phase 2 should try to close, and name the next command — `/design:research`.
+Report the brief in three lines, list the open `[?]` items that phase 2 should try to close, and name the next command — `/dsf:research`.
 
 Then suggest, and run on approval:
 

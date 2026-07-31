@@ -27,7 +27,7 @@ Without asking the user anything yet, check the environment for each toolbox ent
 | Browser & screenshots | Playwright MCP | Playwright MCP tools present in this session | WebFetch-only research + screenshots the user supplies manually |
 | Visual references | Refero MCP | Refero MCP tools present | Web search + competitor screenshots |
 | Design quality laws | `impeccable` skill (`critique` / `audit` / `document` / `extract`) | skill listed as available | Built-in critique & documentation prompts in `.design/templates/` |
-| Structured brief | `obra/superpowers` **brainstorming** skill | skill listed as available | Built-in question-first interrogation in `/design:brief` |
+| Structured brief | `obra/superpowers` **brainstorming** skill | skill listed as available | Built-in question-first interrogation in `/dsf:brief` |
 | Imagery | Gemini API image generation | image-gen script or `GEMINI_API_KEY` / `GOOGLE_API_KEY` reachable | Unsplash, picked by content theme |
 | Icons | Solar icon set (one style, whole project) | — (a choice, not a detection) | Any single-style set, recorded in `DESIGN.md` |
 | Hosting | GitHub + GitHub Pages | `gh auth status` succeeds | Any git host + local static server |
@@ -87,7 +87,7 @@ Run `.design/checklists/phase-0-init.md` and report pass/fail per item. Fix what
 
 ### 9. Sign-off
 
-Report: active tools, fallbacks in force, hosting URL or the local-server fallback, and the single next action — `/design:brief`.
+Report: active tools, fallbacks in force, hosting URL or the local-server fallback, and the single next action — `/dsf:brief`.
 
 Then suggest, and run on approval:
 

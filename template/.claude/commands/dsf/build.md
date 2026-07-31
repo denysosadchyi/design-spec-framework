@@ -2,7 +2,7 @@
 description: Phase 6 — Build. Tokens-first assembly: DESIGN.md from the approved screens, component inventory, two-level tokens + component kit, own visuals, all screens assembled in place, dark-theme stress test.
 ---
 
-# /design:build — Phase 6 · Build
+# /dsf:build — Phase 6 · Build
 
 Turn the approved visual language into the whole product. A screen is a composition, not a drawing: between the language and the screens sits a **kit** — `design-system/tokens.css` (primitive + semantic) and `design-system/components/*.css` — plus the showcase `ui/kit.html`. Screens are never redrawn as copies: the same `wireframes/*.html` files link the kit and are rebuilt from its classes.
 
@@ -18,11 +18,11 @@ Required artifacts. If one is missing, stop and name the command that produces i
 
 | Artifact | Missing → run |
 |---|---|
-| `wireframes/*.html` (all screens + state pages), `wireframes/_conventions.md` | `/design:wireframes` |
-| `voice/microcopy.md` | `/design:voice` |
-| `concept/concept.md`, `concept/references.md` | `/design:concept` |
-| Two approved styled screens (from `/design:concept`) | `/design:concept` |
-| `ia/sitemap.md` | `/design:ia` |
+| `wireframes/*.html` (all screens + state pages), `wireframes/_conventions.md` | `/dsf:wireframes` |
+| `voice/microcopy.md` | `/dsf:voice` |
+| `concept/concept.md`, `concept/references.md` | `/dsf:concept` |
+| Two approved styled screens (from `/dsf:concept`) | `/dsf:concept` |
+| `ia/sitemap.md` | `/dsf:ia` |
 
 Do not proceed on partial input. A kit extracted from one styled screen loses states, skeletons and fonts.
 
@@ -73,7 +73,7 @@ Three rules:
 - **Geometry reads primitives directly.** Radius, spacing, size get no semantic level — they do not change with theme or rebrand the way color does.
 - Names come from the inventory and `DESIGN.md`, never a ready-made set borrowed from someone else's design system (`--color-primary`, `--surface-2`). A color that stands in exactly one file and one class is not a semantic token yet — flag it in step 7's table instead.
 
-State tokens (hover, focus, disabled) are **not** added here — they belong to `/design:system`, where every state lands in both themes at once alongside its documentation.
+State tokens (hover, focus, disabled) are **not** added here — they belong to `/dsf:system`, where every state lands in both themes at once alongside its documentation.
 
 **`design-system/components/`** — one file per component (`card.css`, `button.css`, `badge.css` …) plus `index.css` importing the rest. No hex, pixel value or font name written in a class; everything through `var()`. The wireframe scaffolding (`.wf-*`, the `.device` frame) is not carried over.
 

@@ -1,6 +1,6 @@
 # design-spec-framework — Spec-Driven Development for Product Design
 
-**One-line pitch:** clone a template repo, run `/design:*` commands in Claude Code, and walk a product from a blank folder to a handoff-ready design system — the way spec-kit does it for code, but for design.
+**One-line pitch:** clone a template repo, run `/dsf:*` commands in Claude Code, and walk a product from a blank folder to a handoff-ready design system — the way spec-kit does it for code, but for design.
 
 A designer never touches a terminal command: every action is a prompt, the agent does the work. The repo itself is the design file. Figma is never required.
 
@@ -41,7 +41,7 @@ These rules live in `.design/memory/constitution.md` and are injected into every
 ```
 my-product/                      ← created from the design-spec-framework template
 ├── .claude/
-│   ├── commands/design/         ← all /design:* slash commands
+│   ├── commands/dsf/         ← all /dsf:* slash commands
 │   └── settings.json            ← recommended permissions & MCP hints
 ├── .design/
 │   ├── memory/constitution.md   ← the engine rules (above)
@@ -70,32 +70,32 @@ my-product/                      ← created from the design-spec-framework temp
 
 The 12-lesson canon is compressed into a working pipeline. The main compression: **tokens-first build** — the kit is built directly on two-level tokens (primitive + semantic) instead of the teaching path "flat kit first, refactor to tokens later".
 
-### Phase 0 — `/design:init`
+### Phase 0 — `/dsf:init`
 Verifies the toolbox (see §6), offers to install what's missing, records choices in `.design/memory/toolbox.md`. Sets up GitHub repo + Pages (or the chosen fallback). Renders the empty `pipeline.html`.
 
-### Phase 1 — Brief · `/design:brief`
+### Phase 1 — Brief · `/dsf:brief`
 Runs a structured brainstorm (obra/superpowers **brainstorming** skill; built-in fallback) — the agent interrogates the idea before anything is written: audience, problem, platform, constraints, success criteria.
 **Out:** brief in `CLAUDE.md` (+ `README.md`), folder scaffolding, first commit.
 
-### Phase 2 — Discover · `/design:research` + `/design:users`
+### Phase 2 — Discover · `/dsf:research` + `/dsf:users`
 - **research** — competitors in three groups (hard / soft / aspirational), self-collected data (web fetch + browser screenshots), comparison matrix, one benchmark dimension studied cross-category, 5 genuinely different UX patterns with a reasoned pick.
 - **users** — personas (2–4, behavior-based, every block sourced) and JTBD ("when / I want / so that", 1 main + related + emotional/social) with a jobs × personas × features matrix → MVP core. Includes the self-critique pass: confirmed / hypothesis / invented, plus targeted re-research to close the riskiest gaps.
 **Out:** `research/research.md` + `.html` + `screens/`, `people/personas.md`, `people/jtbd.md`, `people/personas.html`.
 
-### Phase 3 — Structure · `/design:ia`
+### Phase 3 — Structure · `/dsf:ia`
 Entity inventory → sitemap derived from jobs (every screen annotated with the job it serves; orphans flagged) → navigation model with tap-depth budget (main job ≤ 3 taps) → user flows in Mermaid with decision diamonds and empty/error/loading states and both endings → jobs × screens coverage matrix → IA critique (dead ends, missing states, excess depth, orphans).
 **Out:** `ia/sitemap.md`, `ia/flows.md`, `ia/ia.html`.
 
-### Phase 4 — Wireframes · `/design:wireframes`
+### Phase 4 — Wireframes · `/dsf:wireframes`
 Grey, semantic HTML, real domain copy, **every screen in its real states as separate pages** (`-empty` / `-error` / `-loading`), a tree navigator panel on every page, screens linked along the flows (real `<a href>`, forks both ways, no dead ends). Main flow is built as the sample; the rest of the sitemap is rolled out by parallel subagents against `_conventions.md`.
 **Out:** `wireframes/_screens.md`, `_conventions.md`, all `wireframes/*.html`, `_critique.md`.
 
-### Phase 5 — Language · `/design:voice` + `/design:concept`
+### Phase 5 — Language · `/dsf:voice` + `/dsf:concept`
 - **voice** — full copy inventory of the wireframes → 3–5 voice principles (rule + example + counter-example + data source, some derived from competitors' language) → dictionary (one concept = one word) + banned list (AI clichés, exclamation marks, "successfully") → microcopy rules per element type and state tone → rewrite all screens (sample first, then fan-out) → `microcopy.md` as the single source of copy truth.
 - **concept** — visual references via Refero MCP (fallback: web search + screenshots), one base + borrowed details, never a clone; **your recorded taste** (named likes + anti-references) in `concept.md`; 3–5 attribute pairs sourced from data; a **choice page** `directions.html` with three contrasting live directions (palette, type, real photo card, icons) — *you* pick in the browser; the chosen direction becomes the `concept.html` test stand and is proven on **two contrasting screens**. Reflex palettes (guessable from the category) are rejected before showing.
 **Out:** `voice/voice.md`, `voice/microcopy.md`, `concept/*`, two styled screens.
 
-### Phase 6 — Build · `/design:build`
+### Phase 6 — Build · `/dsf:build`
 Tokens-first assembly:
 1. `DESIGN.md` documented **from the two approved screens** (via `/impeccable document`; built-in fallback prompt).
 2. Component inventory read out of the wireframes (≥2 occurrences = component).
@@ -105,30 +105,30 @@ Tokens-first assembly:
 6. Dark theme as an architecture stress test (`[data-theme="dark"]` overrides semantic tokens only); keeping it in the product is a separate decision.
 **Out:** `DESIGN.md`, `design-system/` (tokens + components), `ui/`, `visuals/`, all screens styled.
 
-### Phase 7 — System · `/design:system`
+### Phase 7 — System · `/dsf:system`
 The system becomes a product for other people: `design-system/index.css` single entry point; a **live showcase** in `docs/` (anatomy, variants, when-to-use, rule/anti-rule per component — same CSS as the product, cannot lie); component states (hover, active, focus-visible, disabled) via new semantic tokens **in both themes at once**; patterns (compositions proven on ≥3 screens); contribution rules ("new enters the system first") written into `DESIGN.md`/`CLAUDE.md`; **new-screen test** — an unbuilt job assembled purely from the system, gaps go to `backlog.md`; showcase deployed.
 **Out:** `design-system/docs/`, `patterns/`, `examples/`, `backlog.md`, live showcase URL.
 
-### Phase 8 — Adapt · `/design:responsive` + `/design:motion`
+### Phase 8 — Adapt · `/dsf:responsive` + `/dsf:motion`
 - **responsive** — mobile-first expansion, not desktop compression: width audit per screen (same / wider layout / new behavior), **two behavior-based breakpoints in `rem`** as tokens, shell adapts once for all screens (tab bar → sidebar), adaptive behavior lives in components (no media queries in screens), split-view pattern for list+detail pairs, states preserved on all widths.
 - **motion** — motion tokens (3 durations, easings, distances); a movement is added only if it does one of three jobs: **connect states / show status / answer an action** — otherwise it's confetti; micro-interactions live in components; state transitions follow the voice tone; only `transform`/`opacity`; `prefers-reduced-motion` is mandatory.
 **Out:** `responsive/width-audit.md`, adaptive system, `animations/motion-inventory.md`, motion layer.
 
-### Phase 9 — Handoff · `/design:handoff`
+### Phase 9 — Handoff · `/dsf:handoff`
 Onboarding, not an archive: fresh-eyes audit ("walk the repo as a new developer") produces the gap list that drives everything; behavior spec per flow (**references code and `microcopy.md` keys, never duplicates values**); `map.md` (screen → component → token → copy key: "if I change this token, what moves"); a11y checklist with code locations; final `README.md` as a route, not a museum; release tag + deployed product & showcase; **fresh-subagent test** — a context-free agent builds a new feature from `handoff/` + README alone; gaps are closed with docs, not features.
 **Graduation one-shot:** one prompt drives a brand-new job through every layer — voice → components/patterns → tokens → finished screen with states, adaptivity, motion → `examples/one-shot/`.
 **Out:** `handoff/`, release, verified onboarding.
 
 ### Cross-cutting commands
-- `/design:status` — reads the repo, determines the current phase from artifact presence + gate checks, prints "where you are / what's next", regenerates `pipeline.html`.
-- `/design:critique` — runs the standard critique cycle on any scope (defect table → human prioritizes → fixes at the source). Uses `/impeccable critique|audit` when installed, built-in checklist otherwise.
-- `/design:check` — verifies the current phase against its `.design/checklists/` done-criteria before sign-off (spec-kit's `checklist` analogue).
+- `/dsf:status` — reads the repo, determines the current phase from artifact presence + gate checks, prints "where you are / what's next", regenerates `pipeline.html`.
+- `/dsf:critique` — runs the standard critique cycle on any scope (defect table → human prioritizes → fixes at the source). Uses `/impeccable critique|audit` when installed, built-in checklist otherwise.
+- `/dsf:check` — verifies the current phase against its `.design/checklists/` done-criteria before sign-off (spec-kit's `checklist` analogue).
 
 ---
 
 ## 5. Progress tracking — `pipeline.html`
 
-A single dashboard page at the repo root, regenerated by every phase command and by `/design:status`:
+A single dashboard page at the repo root, regenerated by every phase command and by `/dsf:status`:
 
 - 9 phases as a horizontal rail: done / in-progress / locked, with gate criteria per phase;
 - under each phase — the artifact checklist (exists ✓ / missing —) where **every HTML artifact is a link**: research.html, personas.html, ia.html, wireframe navigator, directions.html, concept.html, kit.html, showcase, handoff;
@@ -140,7 +140,7 @@ Status is derived from **artifact presence + checklist results** — no separate
 
 ## 6. Toolbox — recommended tools, always with a fallback
 
-`/design:init` proposes each tool; refusal is recorded in `toolbox.md` and every later prompt automatically uses the fallback.
+`/dsf:init` proposes each tool; refusal is recorded in `toolbox.md` and every later prompt automatically uses the fallback.
 
 | Purpose | Recommended | Fallback |
 |---|---|---|

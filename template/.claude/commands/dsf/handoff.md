@@ -2,7 +2,7 @@
 description: "Phase 9 — hand the product over as onboarding, not an archive: fresh-eyes gap audit, behavior spec that references code, layer map, a11y checklist, README as a route, release, fresh-subagent test, and the graduation one-shot."
 ---
 
-# /design:handoff — Handoff
+# /dsf:handoff — Handoff
 
 Handoff is **onboarding a new developer into the repo**, not an archive for memory. The
 common failure is "it's all done, here's the repository": the new developer opens it and
@@ -30,12 +30,12 @@ Two iron rules for this phase:
 
 | Required | Produced by | If missing |
 |---|---|---|
-| Full design system: `tokens.css`, `components/`, `patterns/`, `docs/`, `index.css` | `/design:build`, `/design:system` | run those first |
-| Adaptive + motion layers | `/design:responsive`, `/design:motion` | run those first |
-| `ia/flows.md`, `wireframes/*.html` with state pages | `/design:ia`, `/design:wireframes` | run those first |
-| `voice/voice.md`, `voice/microcopy.md` | `/design:voice` | run `/design:voice` first |
-| `people/jtbd.md` (for the graduation one-shot) | `/design:users` | run `/design:users` first |
-| `DESIGN.md`, `design-system/backlog.md` | `/design:build`, `/design:system` | run those first |
+| Full design system: `tokens.css`, `components/`, `patterns/`, `docs/`, `index.css` | `/dsf:build`, `/dsf:system` | run those first |
+| Adaptive + motion layers | `/dsf:responsive`, `/dsf:motion` | run those first |
+| `ia/flows.md`, `wireframes/*.html` with state pages | `/dsf:ia`, `/dsf:wireframes` | run those first |
+| `voice/voice.md`, `voice/microcopy.md` | `/dsf:voice` | run `/dsf:voice` first |
+| `people/jtbd.md` (for the graduation one-shot) | `/dsf:users` | run `/dsf:users` first |
+| `DESIGN.md`, `design-system/backlog.md` | `/dsf:build`, `/dsf:system` | run those first |
 
 **Read before acting:** `.design/memory/constitution.md` (rule 3 — data or `[?]`; rule 6 —
 new enters the system first; rule 8 — living docs) and `.design/memory/toolbox.md`. Hosting
@@ -143,7 +143,7 @@ Write those holes down and **close them with documentation, not with a new produ
 feature**. Then re-run the test with a fresh subagent.
 
 When a context-free subagent walks the feature through without stumbling, the handoff is
-done. This mirrors the system test of `/design:system`, where a new screen was assembled
+done. This mirrors the system test of `/dsf:system`, where a new screen was assembled
 from the system alone.
 
 > **HUMAN GATE — handoff sign-off.** Present the subagent's stumble list and what you closed
@@ -175,7 +175,7 @@ consciously, and at the end you do all of them in one move.
 
 ## Phase checklist
 
-Verify against `.design/checklists/phase-9-handoff.md` (or run `/design:check`):
+Verify against `.design/checklists/phase-9-handoff.md` (or run `/dsf:check`):
 
 - [ ] `handoff/onboarding-gaps.md` — a newcomer's list of confusions; product questions, not syntax
 - [ ] `handoff/spec/` — flows, states, edge cases, validation; **references components and `microcopy` keys, duplicates no code**

@@ -1,7 +1,7 @@
 # Phase 9 — Handoff · done criteria
 
-Gate for `/design:handoff`. Every item is verifiable by opening a file in this repo.
-`/design:check` runs this list before sign-off.
+Gate for `/dsf:handoff`. Every item is verifiable by opening a file in this repo.
+`/dsf:check` runs this list before sign-off.
 
 Handoff is **onboarding a new developer into the repo**, not archiving. Success has one
 test: someone who was not here clones the repo, gets it running, and adds a feature with

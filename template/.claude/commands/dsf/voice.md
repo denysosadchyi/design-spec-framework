@@ -2,7 +2,7 @@
 description: Phase 5a — give the product one voice: copy inventory, voice principles, dictionary, microcopy rules, then rewrite every screen.
 ---
 
-# /design:voice
+# /dsf:voice
 
 The screens already say real words, but those words were written alongside the structure, in
 whatever wording came first. This phase gives the product **one voice**: `voice/voice.md` is
@@ -18,9 +18,9 @@ action, a success does not celebrate.
 
 | Artifact | Missing → run |
 |---|---|
-| `wireframes/*.html`, `wireframes/_screens.md` | `/design:wireframes` |
-| `people/personas.md`, `people/jtbd.md` | `/design:users` |
-| `research/research.md` | `/design:research` |
+| `wireframes/*.html`, `wireframes/_screens.md` | `/dsf:wireframes` |
+| `people/personas.md`, `people/jtbd.md` | `/dsf:users` |
+| `research/research.md` | `/dsf:research` |
 
 Read `.design/memory/constitution.md` and `.design/memory/toolbox.md` first. Honor the
 recorded fallbacks — if a browser/fetch tool is not installed, use the fallback noted there

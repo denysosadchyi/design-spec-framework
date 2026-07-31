@@ -1,7 +1,7 @@
 # Phase 5 — Language · done criteria
 
-Gate for `/design:voice` + `/design:concept`. Every item is verifiable by opening a file in
-this repo. `/design:check` runs this list before sign-off.
+Gate for `/dsf:voice` + `/dsf:concept`. Every item is verifiable by opening a file in
+this repo. `/dsf:check` runs this list before sign-off.
 
 Voice is rules, not mood. Concept is derived from data **and** from the human's recorded
 taste — never from the model's default and never cloned from one reference.

@@ -1,7 +1,7 @@
 # Phase 8 — Adapt · done criteria
 
-Gate for `/design:responsive` + `/design:motion`. Every item is verifiable by opening a
-file in this repo. `/design:check` runs this list before sign-off.
+Gate for `/dsf:responsive` + `/dsf:motion`. Every item is verifiable by opening a
+file in this repo. `/dsf:check` runs this list before sign-off.
 
 Responsive is **expansion of a mobile-first product**, not compression of a desktop one:
 at every wider width something is added, not left empty. Motion is a **system layer**:

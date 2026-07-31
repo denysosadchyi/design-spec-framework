@@ -8,8 +8,8 @@ Every screen must serve a job. The **map** is derived from jobs; the **flows** w
 
 ## Prerequisites
 
-- `people/personas.md` and `people/jtbd.md` exist. If missing → tell the user to run `/design:users` first and stop.
-- `research/research.md` exists. If missing → `/design:research`.
+- `people/personas.md` and `people/jtbd.md` exist. If missing → tell the user to run `/dsf:users` first and stop.
+- `research/research.md` exists. If missing → `/dsf:research`.
 
 ## Load context
 
@@ -145,7 +145,7 @@ Run `.design/checklists/phase-3-ia.md`. Hard items: every screen annotated with 
 
 ### 10. Sign-off
 
-Report the top-level structure, the tap depth to the main job, the number of flows, and any orphan left deliberately open. Next command: `/design:wireframes`.
+Report the top-level structure, the tap depth to the main job, the number of flows, and any orphan left deliberately open. Next command: `/dsf:wireframes`.
 
 Then suggest, and run on approval:
 

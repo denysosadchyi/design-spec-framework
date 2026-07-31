@@ -1,7 +1,7 @@
 # Phase 2 — Discover · done criteria
 
-Gate for `/design:research` + `/design:users`. Every item is verifiable by opening a file
-in this repo. `/design:check` runs this list before sign-off.
+Gate for `/dsf:research` + `/dsf:users`. Every item is verifiable by opening a file
+in this repo. `/dsf:check` runs this list before sign-off.
 
 ## Research
 
