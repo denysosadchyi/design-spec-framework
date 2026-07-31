@@ -1,0 +1,567 @@
+<!--
+  UPDATE CONTRACT FOR AGENTS
+  ==========================
+  This page is generated entirely from the PIPELINE object inside the
+  <script> block below. Do not hand-edit the markup (the phase rail, the
+  artifact lists, the status badges) — it is rebuilt from PIPELINE on load.
+
+  To reflect reality after a phase runs:
+    1. Edit only the PIPELINE object.
+    2. Set each finished artifact's `exists` to true.
+    3. Set the phase's `status` to "done" (all its gate criteria passed),
+       "in-progress" (currently being worked), or "locked" (not started —
+       usually because an earlier phase is not done yet).
+    4. Set `tagged` to true once the phase's git tag has been created.
+  Everything else (rail, badges, links, checklist glyphs) is derived.
+
+  Do not add fields the renderer does not read, and do not rename existing
+  fields — `/design:status` and every phase command parse this object by
+  key when they regenerate this file.
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{PRODUCT_NAME}} — pipeline</title>
+<style>
+  :root {
+    color-scheme: dark;
+    --bg: #0b0c0e;
+    --bg-raised: #131518;
+    --bg-card: #17191d;
+    --border: #26292f;
+    --border-soft: #1e2025;
+    --text: #e8e9ec;
+    --text-dim: #9a9ea6;
+    --text-faint: #5c6067;
+    --accent: #7c9cff;
+    --accent-dim: #3a4468;
+    --done: #5fd693;
+    --done-dim: #1c3b2a;
+    --progress: #f2c14e;
+    --progress-dim: #4a3c14;
+    --locked: #5c6067;
+    --locked-dim: #202226;
+    --radius: 10px;
+    --mono: ui-monospace, "SF Mono", "Cascadia Code", Consolas, monospace;
+    --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 32px 20px 80px;
+  }
+
+  a { color: var(--accent); }
+  a:hover { text-decoration: none; }
+
+  header {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding-bottom: 28px;
+    margin-bottom: 28px;
+    border-bottom: 1px solid var(--border-soft);
+  }
+
+  header .product-name {
+    font-size: 24px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  header .subtitle {
+    font-size: 13px;
+    color: var(--text-dim);
+    font-family: var(--mono);
+  }
+
+  header .meta {
+    margin-top: 10px;
+    font-size: 12px;
+    color: var(--text-faint);
+    font-family: var(--mono);
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  /* ---- Rail ---- */
+
+  #rail {
+    display: grid;
+    grid-template-columns: repeat(9, 1fr);
+    gap: 6px;
+    margin-bottom: 36px;
+  }
+
+  .rail-pill {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 10px 8px;
+    border-radius: 8px;
+    border: 1px solid var(--border-soft);
+    background: var(--bg-raised);
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+    transition: border-color 0.15s ease, background 0.15s ease;
+  }
+
+  .rail-pill:hover {
+    border-color: var(--border);
+    background: var(--bg-card);
+  }
+
+  .rail-pill .n {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-faint);
+  }
+
+  .rail-pill .name {
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.2;
+  }
+
+  .rail-pill .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    margin-top: 2px;
+  }
+
+  .rail-pill.status-done { border-color: var(--done-dim); }
+  .rail-pill.status-in-progress { border-color: var(--progress-dim); }
+  .rail-pill .dot.status-done { background: var(--done); }
+  .rail-pill .dot.status-in-progress { background: var(--progress); }
+  .rail-pill .dot.status-locked { background: var(--locked); }
+
+  @media (max-width: 900px) {
+    #rail {
+      grid-template-columns: repeat(9, minmax(84px, 1fr));
+      overflow-x: auto;
+      padding-bottom: 4px;
+    }
+  }
+
+  /* ---- Phase cards ---- */
+
+  #phases {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .phase-card {
+    border: 1px solid var(--border-soft);
+    background: var(--bg-raised);
+    border-radius: var(--radius);
+    padding: 20px 22px;
+    scroll-margin-top: 16px;
+  }
+
+  .phase-card.status-done { border-left: 3px solid var(--done); }
+  .phase-card.status-in-progress { border-left: 3px solid var(--progress); }
+  .phase-card.status-locked { border-left: 3px solid var(--locked); opacity: 0.72; }
+
+  .phase-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+  }
+
+  .phase-head .title {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+  }
+
+  .phase-head .num {
+    font-family: var(--mono);
+    color: var(--text-faint);
+    font-size: 13px;
+  }
+
+  .phase-head h2 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+  }
+
+  .badge {
+    font-family: var(--mono);
+    font-size: 11px;
+    padding: 3px 8px;
+    border-radius: 20px;
+    white-space: nowrap;
+    border: 1px solid transparent;
+  }
+
+  .badge.status-done { color: var(--done); background: var(--done-dim); }
+  .badge.status-in-progress { color: var(--progress); background: var(--progress-dim); }
+  .badge.status-locked { color: var(--locked); background: var(--locked-dim); }
+
+  .phase-meta {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+    font-family: var(--mono);
+    font-size: 11.5px;
+    color: var(--text-dim);
+    margin-bottom: 14px;
+  }
+
+  .phase-meta .cmd { color: var(--accent); }
+  .phase-meta .tag {
+    color: var(--text-faint);
+  }
+  .phase-meta .tag.tagged { color: var(--done); }
+
+  .artifact-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .artifact-list li {
+    display: flex;
+    align-items: baseline;
+    gap: 9px;
+    font-size: 13px;
+    font-family: var(--mono);
+  }
+
+  .artifact-list .glyph {
+    width: 14px;
+    flex-shrink: 0;
+    text-align: center;
+  }
+
+  .artifact-list .glyph.yes { color: var(--done); }
+  .artifact-list .glyph.no { color: var(--text-faint); }
+
+  .artifact-list .path {
+    color: var(--text-dim);
+  }
+
+  .artifact-list a.path {
+    color: var(--accent);
+  }
+
+  .artifact-list .label {
+    color: var(--text-faint);
+    font-family: var(--sans);
+    font-size: 12px;
+  }
+
+  footer {
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border-soft);
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-faint);
+  }
+
+  @media (max-width: 640px) {
+    body { padding: 20px 14px 60px; }
+    .phase-card { padding: 16px; }
+    .phase-head { flex-direction: column; align-items: flex-start; }
+  }
+</style>
+</head>
+<body>
+
+  <header>
+    <div class="product-name">{{PRODUCT_NAME}}</div>
+    <div class="subtitle">design-spec-framework pipeline</div>
+    <div class="meta" id="header-meta"></div>
+  </header>
+
+  <nav id="rail" aria-label="Phase rail"></nav>
+
+  <main id="phases"></main>
+
+  <footer>
+    design-spec-framework · status derived from artifact presence + checklist results ·
+    regenerated by every <span style="color:var(--accent)">/design:*</span> command and by
+    <span style="color:var(--accent)">/design:status</span>
+  </footer>
+
+<script>
+/* ========================================================================
+ * PIPELINE — the only thing an agent should edit in this file.
+ * Structure: { product, templateVersion, phases: [ { ... } ] }
+ * Each phase: { id, number, name, status, commands, tag, tagged, artifacts }
+ * Each artifact: { path, label, exists, link }
+ *   - path   : repo-relative path shown in the list
+ *   - label  : short human description of what the file is
+ *   - exists : true once the agent has created/updated the file
+ *   - link   : true if this is an HTML artifact a human should open —
+ *              only artifacts with link:true ever render as <a href>,
+ *              and only when exists is also true.
+ * status per phase: "done" | "in-progress" | "locked"
+ * ==================================================================== */
+const PIPELINE = {
+  product: "{{PRODUCT_NAME}}",
+  templateVersion: "0.1.0",
+  phases: [
+    {
+      id: "brief",
+      number: 1,
+      name: "Brief",
+      status: "in-progress",
+      commands: ["/design:brief"],
+      tag: "phase-1-brief",
+      tagged: false,
+      artifacts: [
+        { path: "CLAUDE.md", label: "Brief + accumulated context", exists: false, link: false },
+        { path: "README.md", label: "Human index of the repo", exists: false, link: false }
+      ]
+    },
+    {
+      id: "discover",
+      number: 2,
+      name: "Discover",
+      status: "locked",
+      commands: ["/design:research", "/design:users"],
+      tag: "phase-2-discover",
+      tagged: false,
+      artifacts: [
+        { path: "research/research.md", label: "Competitor matrix, benchmark, patterns", exists: false, link: false },
+        { path: "research/research.html", label: "Research — viewable", exists: false, link: true },
+        { path: "research/screens/", label: "Sourced screenshots", exists: false, link: false },
+        { path: "people/personas.md", label: "Personas, behavior-based", exists: false, link: false },
+        { path: "people/jtbd.md", label: "Jobs to be done + coverage matrix", exists: false, link: false },
+        { path: "people/personas.html", label: "Personas — viewable", exists: false, link: true }
+      ]
+    },
+    {
+      id: "structure",
+      number: 3,
+      name: "Structure",
+      status: "locked",
+      commands: ["/design:ia"],
+      tag: "phase-3-ia",
+      tagged: false,
+      artifacts: [
+        { path: "ia/sitemap.md", label: "Entities, screens, navigation, traceability", exists: false, link: false },
+        { path: "ia/flows.md", label: "User flows in Mermaid", exists: false, link: false },
+        { path: "ia/ia.html", label: "IA — viewable", exists: false, link: true }
+      ]
+    },
+    {
+      id: "wireframes",
+      number: 4,
+      name: "Wireframes",
+      status: "locked",
+      commands: ["/design:wireframes"],
+      tag: "phase-4-wireframes",
+      tagged: false,
+      artifacts: [
+        { path: "wireframes/_screens.md", label: "Screen × state inventory", exists: false, link: false },
+        { path: "wireframes/_conventions.md", label: "Conventions the fan-out follows", exists: false, link: false },
+        { path: "wireframes/index.html", label: "Wireframe navigator", exists: false, link: true },
+        { path: "wireframes/_critique.md", label: "Defect table for this phase", exists: false, link: false }
+      ]
+    },
+    {
+      id: "language",
+      number: 5,
+      name: "Language",
+      status: "locked",
+      commands: ["/design:voice", "/design:concept"],
+      tag: "phase-5-language",
+      tagged: false,
+      artifacts: [
+        { path: "voice/voice.md", label: "Voice principles + dictionary + banned list", exists: false, link: false },
+        { path: "voice/microcopy.md", label: "Single source of copy truth", exists: false, link: false },
+        { path: "concept/references.md", label: "Visual references + sources", exists: false, link: false },
+        { path: "concept/concept.md", label: "Recorded taste, attributes, base + borrowed", exists: false, link: false },
+        { path: "concept/directions.html", label: "Three contrasting directions — human picks", exists: false, link: true },
+        { path: "concept/concept.html", label: "Chosen direction, proven on two screens", exists: false, link: true }
+      ]
+    },
+    {
+      id: "build",
+      number: 6,
+      name: "Build",
+      status: "locked",
+      commands: ["/design:build"],
+      tag: "phase-6-build",
+      tagged: false,
+      artifacts: [
+        { path: "DESIGN.md", label: "Documented from the two approved screens", exists: false, link: false },
+        { path: "design-system/tokens.css", label: "Primitive + semantic tokens", exists: false, link: false },
+        { path: "design-system/components/", label: "Component CSS, ≥2 occurrences = component", exists: false, link: false },
+        { path: "ui/inventory.md", label: "Component inventory read from wireframes", exists: false, link: false },
+        { path: "ui/shell.html", label: "Header + tab bar markup", exists: false, link: true },
+        { path: "ui/kit.html", label: "Kit showcase — human gate", exists: false, link: true },
+        { path: "visuals/README.md", label: "Generated imagery + recorded prompts", exists: false, link: false }
+      ]
+    },
+    {
+      id: "system",
+      number: 7,
+      name: "System",
+      status: "locked",
+      commands: ["/design:system"],
+      tag: "phase-7-system",
+      tagged: false,
+      artifacts: [
+        { path: "design-system/index.css", label: "Single entry point", exists: false, link: false },
+        { path: "design-system/docs/index.html", label: "Live showcase — anatomy, variants, rules", exists: false, link: true },
+        { path: "design-system/patterns/", label: "Compositions proven on ≥3 screens", exists: false, link: false },
+        { path: "examples/", label: "New-screen test built purely from the system", exists: false, link: false },
+        { path: "design-system/backlog.md", label: "Gaps found by the new-screen test", exists: false, link: false }
+      ]
+    },
+    {
+      id: "adapt",
+      number: 8,
+      name: "Adapt",
+      status: "locked",
+      commands: ["/design:responsive", "/design:motion"],
+      tag: "phase-8-adapt",
+      tagged: false,
+      artifacts: [
+        { path: "responsive/width-audit.md", label: "Width audit per screen", exists: false, link: false },
+        { path: "animations/motion-inventory.md", label: "Motion tokens + job per movement", exists: false, link: false }
+      ]
+    },
+    {
+      id: "handoff",
+      number: 9,
+      name: "Handoff",
+      status: "locked",
+      commands: ["/design:handoff"],
+      tag: "phase-9-handoff",
+      tagged: false,
+      artifacts: [
+        { path: "handoff/map.md", label: "Screen → component → token → copy key", exists: false, link: false },
+        { path: "handoff/a11y.md", label: "A11y checklist with code locations", exists: false, link: false },
+        { path: "handoff/onboarding-gaps.md", label: "Fresh-eyes audit gap list", exists: false, link: false },
+        { path: "handoff/index.html", label: "Handoff guide — viewable", exists: false, link: true },
+        { path: "examples/one-shot/index.html", label: "Graduation one-shot", exists: false, link: true }
+      ]
+    }
+  ]
+};
+
+/* ---- renderer — reads PIPELINE, writes DOM. Nothing below this line
+ * needs editing to update project state. ------------------------- */
+
+function statusLabel(s) {
+  return s === "in-progress" ? "in progress" : s;
+}
+
+function el(tag, className, text) {
+  const e = document.createElement(tag);
+  if (className) e.className = className;
+  if (text !== undefined) e.textContent = text;
+  return e;
+}
+
+function renderHeaderMeta() {
+  const meta = document.getElementById("header-meta");
+  const done = PIPELINE.phases.filter(p => p.status === "done").length;
+  meta.appendChild(el("span", null, `template v${PIPELINE.templateVersion}`));
+  meta.appendChild(el("span", null, `${done}/${PIPELINE.phases.length} phases done`));
+}
+
+function renderRail() {
+  const rail = document.getElementById("rail");
+  PIPELINE.phases.forEach(phase => {
+    const pill = document.createElement("a");
+    pill.href = `#phase-${phase.id}`;
+    pill.className = `rail-pill status-${phase.status}`;
+    const n = el("span", "n", `${phase.number}`);
+    const name = el("span", "name", phase.name);
+    const dot = el("span", `dot status-${phase.status}`);
+    pill.appendChild(n);
+    pill.appendChild(name);
+    pill.appendChild(dot);
+    rail.appendChild(pill);
+  });
+}
+
+function renderArtifact(a) {
+  const li = document.createElement("li");
+  const glyph = el("span", `glyph ${a.exists ? "yes" : "no"}`, a.exists ? "✓" : "—");
+  li.appendChild(glyph);
+
+  let pathEl;
+  if (a.link && a.exists) {
+    pathEl = document.createElement("a");
+    pathEl.href = a.path;
+    pathEl.className = "path";
+    pathEl.textContent = a.path;
+  } else {
+    pathEl = el("span", "path", a.path);
+  }
+  li.appendChild(pathEl);
+  li.appendChild(el("span", "label", a.label));
+  return li;
+}
+
+function renderPhase(phase) {
+  const card = el("section", `phase-card status-${phase.status}`);
+  card.id = `phase-${phase.id}`;
+
+  const head = el("div", "phase-head");
+  const title = el("div", "title");
+  title.appendChild(el("span", "num", `${String(phase.number).padStart(2, "0")}`));
+  title.appendChild(el("h2", null, phase.name));
+  head.appendChild(title);
+  head.appendChild(el("span", `badge status-${phase.status}`, statusLabel(phase.status)));
+  card.appendChild(head);
+
+  const metaRow = el("div", "phase-meta");
+  const cmd = el("span", "cmd", phase.commands.join(" · "));
+  metaRow.appendChild(cmd);
+  const tag = el("span", `tag${phase.tagged ? " tagged" : ""}`, phase.tagged ? `✓ ${phase.tag}` : phase.tag);
+  metaRow.appendChild(tag);
+  card.appendChild(metaRow);
+
+  const list = el("ul", "artifact-list");
+  phase.artifacts.forEach(a => list.appendChild(renderArtifact(a)));
+  card.appendChild(list);
+
+  return card;
+}
+
+function render() {
+  document.title = `${PIPELINE.product} — pipeline`;
+  document.querySelectorAll(".product-name").forEach(e => e.textContent = PIPELINE.product);
+  renderHeaderMeta();
+  renderRail();
+  const phasesEl = document.getElementById("phases");
+  PIPELINE.phases.forEach(phase => phasesEl.appendChild(renderPhase(phase)));
+}
+
+render();
+</script>
+</body>
+</html>
