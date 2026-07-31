@@ -14,10 +14,6 @@ The project home page (`index.html`) leads the designer through the pipeline —
 
 ![How this works onboarding](docs/screens/how-it-works.png)
 
-Every phase has a Result view: a placeholder until the phase runs, then the live artifact, decisions and progress — with the phase's artifacts tracked on the right:
-
-![Result view with artifacts rail](docs/screens/phase-result.png)
-
 ## Why this exists
 
 Most product design work has three chronic problems, and none of them is about talent:
