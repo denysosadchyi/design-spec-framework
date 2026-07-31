@@ -184,7 +184,7 @@ Verify against `.design/checklists/phase-9-motion.md` (or run `/dsf:check 9`):
 - [ ] State transitions follow `voice.md`; error does not bounce; motion agrees with microcopy
 - [ ] Only `transform` / `opacity` animate anywhere in the product
 - [ ] Global `prefers-reduced-motion` verified with the system setting actually on
-- [ ] Identical moments share a duration; `animations/motion-inventory.html` linked from `pipeline.html`
+- [ ] Identical moments share a duration; `animations/motion-inventory.html` linked from `index.html`
 
 ## Close the phase
 
@@ -192,7 +192,7 @@ Verify against `.design/checklists/phase-9-motion.md` (or run `/dsf:check 9`):
    jobs rule, where micro-interactions live, the reduced-motion policy.
 2. `README.md` — the **Motion** section: two or three sentences and links to
    `animations/motion-inventory.md` and the `DESIGN.md` motion sections.
-3. Update `pipeline.html` — edit **only** the `<script id="pipeline-data">` JSON block:
+3. Update `index.html` — edit **only** the `<script id="pipeline-data">` JSON block:
    phase 9 status, its artifact entries, `animations/motion-inventory.html` plus the
    docs pages showing live micro-interactions as live links, and the `steps` object. Leave
    the `context` object as it is; this phase fills none of its keys. Do not touch the

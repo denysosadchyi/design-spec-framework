@@ -12,7 +12,7 @@ Read this file first, then the artifacts it points to. Never re-ask what is alre
 If this looks like a fresh clone (toolbox rows still `[?]`, no `phase-0` ledger), your FIRST
 message to the designer must, before anything else:
 
-1. Hand them the project home page: the absolute local path to `pipeline.html` (and, once
+1. Hand them the project home page: the absolute local path to `index.html` (and, once
    hosting is active, its URL) with one sentence on how to open it in a browser.
 2. Say in plain words: this page is your home — it shows where you are, every step and prompt
    to type, and what "done" means for each phase. You never need a terminal.
@@ -28,7 +28,7 @@ Designers are not programmers. The page leads; the chat executes.
   `/dsf:*` command. Read it before acting.
 - **Phases:** `.design/memory/phases.md` — the canonical phase table: commands, checklists,
   tags, canonical artifact paths, the done/in-progress/locked definitions, and the
-  `pipeline.html` data contract. When a command and that file disagree, that file wins.
+  `index.html` data contract. When a command and that file disagree, that file wins.
 - **Progress:** `.design/progress/phase-N.md` — the append-only step ledger. Every command
   appends one line the moment a numbered step or a gate finishes, reads its ledger before a
   re-run, and never runs work that belongs to a later phase without stopping first (constitution
@@ -44,8 +44,8 @@ Designers are not programmers. The page leads; the chat executes.
   `.design/checklists/results/phase-N.md`.
 - **Decisions:** every gate answer, "keep it" and contradiction resolution is recorded in
   `.design/decisions.md`; changes after sign-off go through `/dsf:change`.
-- **Dashboard:** `pipeline.html` — current status, artifacts and links. **The project home page
-  is `pipeline.html` — keep its data block current.**
+- **Dashboard:** `index.html` — current status, artifacts and links. **The project home page
+  is `index.html` — keep its data block current.**
 
 ---
 
@@ -65,7 +65,7 @@ ends with a critique cycle and a human gate, updates the living docs, and commit
 
 | Phase | Command(s) | Output lives in | Tag |
 |---|---|---|---|
-| 0 · Init | `/dsf:init` | `.design/memory/toolbox.md`, `pipeline.html` | `phase-0-init` |
+| 0 · Init | `/dsf:init` | `.design/memory/toolbox.md`, `index.html` | `phase-0-init` |
 | 1 · Brief | `/dsf:brief` | this file, `README.md`, folder scaffolding | `phase-1-brief` |
 | 2 · Discover | `/dsf:research` + `/dsf:users` | `research/`, `people/` | `phase-2-discover` |
 | 3 · Structure | `/dsf:ia` | `ia/` | `phase-3-ia` |

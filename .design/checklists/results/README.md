@@ -12,7 +12,7 @@ tag — and `/dsf:check` then appends its fresh verdict below rather than overwr
 reads: what was signed off, what reopened it, what the re-check found.
 
 These files are also the source the dashboard's **success-criteria state** is rebuilt from. Each
-phase entry in the `pipeline-data` block of `pipeline.html` carries
+phase entry in the `pipeline-data` block of `index.html` carries
 `criteria: { total, passed, failed, checkedAt }`, where the numbers are checklist item ordinals —
 item 1 is the first `- [ ]` line of the phase's checklist, and so on (see *Success criteria —
 identity and numbering* in `.design/memory/phases.md`). `/dsf:check` writes that object from the

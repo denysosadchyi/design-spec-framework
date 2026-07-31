@@ -29,7 +29,7 @@ scope.
 | At least one signed-off phase | nothing to change — run the phase command instead |
 | `.design/memory/phases.md` | the canonical phase table; this command carries none of its own |
 | `.design/decisions.md` | create it from the template header before writing the first entry |
-| `pipeline.html` with its `pipeline-data` block | say so and name `/dsf:init`; never hand-build a replacement |
+| `index.html` with its `pipeline-data` block | say so and name `/dsf:init`; never hand-build a replacement |
 
 **Read first:**
 
@@ -95,7 +95,7 @@ content, not memory of what a phase usually produces.
 - **Effort** is `small` (one file, minutes) · `medium` (a handful of files, one fan-out) ·
   `large` (a fan-out across a phase's whole output, worth its own review pass).
 - Count real files. "Several screens" is not a blast radius; `11 screens + 6 state pages` is.
-- Include the living docs (`CLAUDE.md`, `README.md`, `pipeline.html`) and the checklist result
+- Include the living docs (`CLAUDE.md`, `README.md`, `index.html`) and the checklist result
   files of every phase that will be reopened.
 - If a downstream artifact stays true, say so explicitly — knowing what *survives* is half of
   what makes the number believable.
@@ -139,13 +139,14 @@ costs.
 
 ### 6 — Reopen the affected phases
 
-For every phase whose artifacts just changed, rewrite **only** this block in `pipeline.html`:
+For every phase whose artifacts just changed, rewrite **only** this block in `index.html`:
 
 ```html
 <script type="application/json" id="pipeline-data"> … </script>
 ```
 
-Never the markup, never the styling, never the renderer — those ship with the template.
+Never the markup, never the styling, never the renderer — the markup ships in `index.html`, the
+rest in `assets/` next to it, and all of it is off limits.
 
 - Set each reopened phase's `status` back to `"in-progress"`, and update the `exists` flags to
   match what is actually on disk now.
@@ -216,7 +217,7 @@ this contradicts (file and the line quoted), why that decision exists, and my th
 
 ```
 You reopened phases but the dashboard still shows them done — update the pipeline-data block
-in pipeline.html: those phases back to in-progress, exists flags to match the files, markup
+in index.html: those phases back to in-progress, exists flags to match the files, markup
 untouched.
 ```
 

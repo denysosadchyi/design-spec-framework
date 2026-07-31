@@ -53,6 +53,6 @@ existing system.
 - [ ] `animations/motion-inventory.html` opens standalone in a browser — every phase ships
       a viewable page, not only Markdown
 - [ ] `README.md` → Motion section links to `animations/motion-inventory.html`
-- [ ] `pipeline.html` data block regenerated — `animations/motion-inventory.html` present
+- [ ] `index.html` data block regenerated — `animations/motion-inventory.html` present
       and linked
 - [ ] Phase committed; pushed if hosting is `active`

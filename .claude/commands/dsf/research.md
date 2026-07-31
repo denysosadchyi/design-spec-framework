@@ -103,7 +103,7 @@ Run `.design/checklists/phase-2-discover.md`. Report pass/fail per item. Hard it
 
 - `CLAUDE.md` — fill the **Research** block under *Context blocks*: chosen interaction pattern, the three MVP mechanics, the benchmark dimension, the top three open questions. Keep it to what later phases need to read on every prompt.
 - `README.md` — a **Research** section: what lives in `research.md`, `research.html`, `research/screens/`.
-- `pipeline.html` — edit **only** the `<script id="pipeline-data">` JSON block: the phase 2 artifact entries for research, the link to `research.html`, and the `steps` object. Fill the context key this phase owns — `benchmarkDimension` (the dimension confirmed at the benchmark gate); leave the other context keys as they are. Do not touch the markup, CSS or scripts around the block.
+- `index.html` — edit **only** the `<script id="pipeline-data">` JSON block: the phase 2 artifact entries for research, the link to `research.html`, and the `steps` object. Fill the context key this phase owns — `benchmarkDimension` (the dimension confirmed at the benchmark gate); leave the other context keys as they are. Do not touch the markup, CSS or scripts around the block.
 - Commit: `feat: phase 2a — market research, benchmark, patterns`. Push **only** if `toolbox.md` says GitHub hosting is active.
 
 ### 9. Sign-off

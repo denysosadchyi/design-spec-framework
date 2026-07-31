@@ -36,13 +36,13 @@ design-spec-framework attacks all three with one move: **the entire design proce
 | **Responsive** | Separate desktop mockups | Two behavior-based breakpoints as tokens; components adapt, screens don't know about widths |
 | **Handoff** | Redlines, meetings, "ask the designer" | Behavior spec + token map + a11y checklist, verified by a context-free agent building a feature from docs alone |
 | **Design–code drift** | Guaranteed: two artifacts, two truths | Impossible by construction: there is only one artifact |
-| **Progress visibility** | "It's in progress" | `pipeline.html` — the project's home page: every phase, artifact and gate, always current |
+| **Progress visibility** | "It's in progress" | `index.html` — the project's home page: every phase, artifact and gate, always current |
 | **Decision trail** | "I think we agreed on that in the call" | `.design/decisions.md` — every gate answer and "keep it", dated, verbatim |
 
 ## How a designer works in Claude Code
 
 You never touch a terminal command. You talk, the agent does. Your project's home page is
-`pipeline.html` — open it in a browser and keep it open: it shows the phase you are in, every
+`index.html` — open it in a browser and keep it open: it shows the phase you are in, every
 artifact produced so far as a live link, and the command to type next.
 
 ```
@@ -83,7 +83,7 @@ Four mechanisms keep the model honest:
 1. Click **Use this template** on GitHub (or `git clone` this repo) — the repo root IS the working template.
 2. Open it in Claude Code.
 3. Run `/dsf:init` — it sets up the toolbox (with fallbacks for every tool), git and the home page.
-4. Open `pipeline.html` in a browser and keep it open — it is your project's home page.
+4. Open `index.html` in a browser and keep it open — it is your project's home page.
 5. Run `/dsf:brief` and follow the pipeline. `/dsf:status` always tells you where you are; `/dsf:check` closes each phase.
 
 ## The pipeline
@@ -94,7 +94,7 @@ ones: `/dsf:status`, `/dsf:check`, `/dsf:critique` and `/dsf:change`. Each phase
 
 | Phase | Command(s) | Output | Tag |
 |---|---|---|---|
-| 0 Init | `/dsf:init` | toolbox (`.design/memory/toolbox.md`), repo, `pipeline.html` home page | `phase-0-init` |
+| 0 Init | `/dsf:init` | toolbox (`.design/memory/toolbox.md`), repo, `index.html` home page | `phase-0-init` |
 | 1 Brief | `/dsf:brief` | interrogated brief in `CLAUDE.md`, folder scaffold | `phase-1-brief` |
 | 2 Discover | `/dsf:research` · `/dsf:users` | `research/research.md` + `.html`, benchmark, patterns · `people/personas.md`, `people/jtbd.md` | `phase-2-discover` |
 | 3 Structure | `/dsf:ia` | `ia/sitemap.md`, `ia/flows.md`, `ia/ia.html`, coverage matrix | `phase-3-ia` |
@@ -120,7 +120,7 @@ Cross-cutting: `/dsf:status` (where am I, what to type next), `/dsf:critique` (d
 - **`.design/checklists/results/`** — where `/dsf:check` writes its verdict, one file per phase.
 - **`.design/progress/`** — append-only step ledgers, one file per phase: what ran, when, which files it touched.
 - **`.design/decisions.md`** — append-only log of every gate answer, "keep it" and resolved contradiction.
-- **`template/pipeline.html`** — the project's home page: a self-contained dashboard of all phases and artifacts. Commands update its JSON data block, never its markup.
+- **`index.html`** + **`assets/`** — the project's home page: a dashboard of all phases and artifacts, with its styling, dictionaries and renderer in `assets/` (relative paths, same repo, nothing fetched from outside it — it opens from a static host and from `file://` alike). Commands update the JSON data block inside `index.html`, never its markup and never `assets/`.
 
 The framework automates execution, not judgment: direction choices, defect priorities and "keep it" decisions always stop and wait for the designer.
 

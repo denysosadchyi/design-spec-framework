@@ -1,5 +1,5 @@
 ---
-description: Phase 0 — verify the toolbox, record every tool choice and its fallback, set up hosting, render pipeline.html, first commit, and hand the designer their project home page.
+description: Phase 0 — verify the toolbox, record every tool choice and its fallback, set up hosting, render index.html, first commit, and hand the designer their project home page.
 argument-hint: (no arguments)
 ---
 
@@ -13,7 +13,7 @@ asked to run a terminal command; you run everything.
 
 - This repo was created from the design-spec-framework template: `.design/memory/constitution.md`,
   `.design/memory/phases.md`, `.design/prompts/`, `.design/templates/`, `.design/checklists/`,
-  `.design/progress/` and `pipeline.html` must exist. If they do not, stop and tell the user this command must run
+  `.design/progress/` and `index.html` must exist. If they do not, stop and tell the user this command must run
   inside a repo created from the template.
 - `git` available. If the folder is not a git repo, `git init` it yourself.
 - If `.design/memory/toolbox.md` has no `[?]` left in its Status column, this is a re-run: read
@@ -109,9 +109,11 @@ command has run. Then:
 
 If GitHub was chosen in the gate: create the repo with the name and visibility the user gave,
 push, enable GitHub Pages from the default branch root, and record the Pages URL in
-`toolbox.md` and `README.md`. Do not re-ask anything — the answer came in step 2.
+`toolbox.md` and `README.md`. Pages serves `index.html` at the repo URL itself, so the address
+to record is the bare `https://<user>.github.io/<repo>/` — no file name needed. `assets/` sits
+in the same repo and is published with it. Do not re-ask anything — the answer came in step 2.
 
-If the fallback was chosen or the setup fails: record it — commits stay local, `pipeline.html`
+If the fallback was chosen or the setup fails: record it — commits stay local, `index.html`
 and every `*.html` artifact are viewed through a local static server you start on request. Do
 not push anywhere.
 
@@ -124,9 +126,11 @@ you started above. Create no other ledger file: `phase-1.md` … `phase-10.md` a
 commands that run those phases, and an empty ledger for a phase nobody has opened is noise
 pretending to be state.
 
-**The dashboard.** `pipeline.html` already exists at the repo root: markup, styling and renderer all ship with the
-template. There is **no** `.design/templates/pipeline.html` and you do not create one. Your job
-is exactly one block:
+**The dashboard.** `index.html` already exists at the repo root; its styles, dictionaries and
+renderer ship beside it in `assets/` (`fonts.css`, `pipeline.css`, `i18n-uk.js`, `pipeline.js`),
+loaded by relative paths from this same repo. There is **no** `.design/templates/index.html` and
+you do not create one, and you never touch `assets/` here. Your job is exactly one block, in
+`index.html`:
 
 ```html
 <script type="application/json" id="pipeline-data"> … </script>
@@ -172,8 +176,8 @@ command creates no tag.
 
 - `CLAUDE.md`: fill the **Toolbox** section — one line per `active` tool, one per `fallback` in
   force. This is the section every later command consults.
-- `README.md`: the repo index skeleton and, if hosting is active, the `pipeline.html` URL.
-- `pipeline.html`: bring phase 0's `steps` in line with `.design/progress/phase-0.md` — the
+- `README.md`: the repo index skeleton and, if hosting is active, the `index.html` URL.
+- `index.html`: bring phase 0's `steps` in line with `.design/progress/phase-0.md` — the
   `init.*` ids you have written lines for into `done`, `current` set to `"init.9"` while step 9
   runs and `""` when it is finished. Ledger first, JSON after; the JSON never claims a step the
   ledger has no line for.
@@ -189,9 +193,9 @@ in plain words, in this order:
 
 **(a) The link.** Give the direct address of their project page:
 
-- hosting `active` → the GitHub Pages URL of `pipeline.html`
-  (`https://<user>.github.io/<repo>/pipeline.html`) — the real one, not a template of one;
-- hosting on `fallback` → the local file path (`<repo>/pipeline.html`) plus one sentence on how
+- hosting `active` → the GitHub Pages URL of `index.html`, which Pages serves at the repo root
+  (`https://<user>.github.io/<repo>/`) — the real one, not a template of one;
+- hosting on `fallback` → the local file path (`<repo>/index.html`) plus one sentence on how
   to open it: double-click the file, or ask me to start a local preview server and I will hand
   you a `localhost` address.
 
@@ -233,8 +237,9 @@ commits stay local.
 ```
 
 ```
-You edited pipeline.html outside the pipeline-data block, or created a second
-pipeline template. Restore the shipped file and rewrite only the JSON block.
+You edited index.html outside the pipeline-data block (or edited assets/), or
+created a second pipeline template. Restore the shipped files and rewrite only
+the JSON block.
 ```
 
 ```

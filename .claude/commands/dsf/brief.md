@@ -52,7 +52,7 @@ Present the assembled brief in chat as a short structured block: name, pitch, au
 Only after approval:
 
 - `CLAUDE.md` — the brief as the top section, followed by the **Toolbox** section from phase 0 and an empty **Phase log** section that later phases append to. This file is agent context: dense, no marketing, no fluff.
-- `README.md` — rebuild it as the product's human index from `.design/templates/readme.md`: one-paragraph pitch, the repo map, a link to `pipeline.html`, and a "current phase" line (the framework's own README this replaces lives on in git).
+- `README.md` — rebuild it as the product's human index from `.design/templates/readme.md`: one-paragraph pitch, the repo map, a link to `index.html`, and a "current phase" line (the framework's own README this replaces lives on in git).
 
 Open questions stay visible in both as `[?]` with their hypothesis attached. Do not resolve them by guessing.
 
@@ -75,17 +75,17 @@ animations/         motion-inventory.md, motion-inventory.html
 handoff/            spec/, map.md, a11y.md, onboarding-gaps.md, index.html
 ```
 
-Folders are created empty with `.gitkeep`. Do not pre-create the artifact files themselves — their absence is what `pipeline.html` reads as "not done yet".
+Folders are created empty with `.gitkeep`. Do not pre-create the artifact files themselves — their absence is what `index.html` reads as "not done yet".
 
-### 6. Name the project in `pipeline.html`
+### 6. Name the project in `index.html`
 
-`pipeline.html` ships with the placeholder `{{PRODUCT_NAME}}`. Replace **every** occurrence with the approved product name from step 3 — in the `<title>`, in the page heading, and in the `product` field of the `<script id="pipeline-data">` JSON block. After this step the placeholder must not appear anywhere in the file.
+`index.html` ships with the placeholder `{{PRODUCT_NAME}}`. Replace **every** occurrence with the approved product name from step 3 — in the `<title>`, in the page heading, and in the `product` field of the `<script id="pipeline-data">` JSON block. After this step the placeholder must not appear anywhere in the file.
 
 ### 7. Run the phase checklist
 
 Run `.design/checklists/phase-1-brief.md`. Report pass/fail per item. The hard items: every one of the five areas answered or explicitly `[?]`, platform decided, success criteria observable.
 
-### 8. Update `pipeline.html`
+### 8. Update `index.html`
 
 Edit **only** the `<script id="pipeline-data">` JSON block: phase 1 status, its artifact entries and their links, phase 2 unlocked, and the `steps` object. Fill the `context` keys this phase owns — `product` (the approved name) and `oneLiner` (the one-sentence pitch); leave the other context keys as they are. Do not touch the markup, CSS or scripts around the block — the page renders itself from that JSON.
 
@@ -95,7 +95,7 @@ Edit **only** the `<script id="pipeline-data">` JSON block: phase 1 status, its 
 
 ### 10. Sign-off
 
-Report the brief in three lines, list the open `[?]` items that phase 2 should try to close, and point the human back at their own project page: **open `pipeline.html` — it now carries the product name and shows phase 2 unlocked.** That page is the home of this project; every later phase adds links to it.
+Report the brief in three lines, list the open `[?]` items that phase 2 should try to close, and point the human back at their own project page: **open `index.html` — it now carries the product name and shows phase 2 unlocked.** That page is the home of this project; every later phase adds links to it.
 
 Then say: run `/dsf:check` to close the phase. It verifies the checklist against the files and creates the phase tag `phase-1-brief`. Do not create the tag yourself. The next command after that is `/dsf:research`.
 
@@ -128,7 +128,7 @@ visuals/, responsive/, animations/, handoff/.
 ```
 
 ```
-pipeline.html still contains {{PRODUCT_NAME}}. Replace every occurrence with the
+index.html still contains {{PRODUCT_NAME}}. Replace every occurrence with the
 approved product name — title, heading, and the product field of the
 pipeline-data JSON block.
 ```

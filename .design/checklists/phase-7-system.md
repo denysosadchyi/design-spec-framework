@@ -74,6 +74,6 @@ the product runs.
 - [ ] `README.md` → Design system section carries that link
 - [ ] `CLAUDE.md` → **System** block records the contribution rules, showcase location and
       the backlog
-- [ ] `pipeline.html` data block regenerated — phase 7 artifacts marked present, the showcase
+- [ ] `index.html` data block regenerated — phase 7 artifacts marked present, the showcase
       `design-system/docs/index.html` linked
 - [ ] Phase committed; pushed if hosting is `active`

@@ -104,5 +104,5 @@ place — the same `wireframes/` files, never copies.
 - [ ] `CLAUDE.md` → "keep it" destination is updated: changes now go into the token or the
       component, never the screen
 - [ ] `README.md` → UI section links to `ui/kit.html`
-- [ ] `pipeline.html` data block regenerated — phase 6 artifacts marked present
+- [ ] `index.html` data block regenerated — phase 6 artifacts marked present
 - [ ] Phase committed; pushed if hosting is `active`

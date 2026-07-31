@@ -68,7 +68,7 @@ Identical on every wireframe page, from the sample onward.
 - Every node is a link to its own page; the current page is marked.
 - Structure comes from `wireframes/_screens.md` and `ia/sitemap.md` — invent nothing.
 - Grey, like the rest of the wireframe.
-- **Top of the panel:** one service link `← Pipeline` to `../pipeline.html` — the bridge back
+- **Top of the panel:** one service link `← Pipeline` to `../index.html` — the bridge back
   to the process home page. It belongs to the navigator, not to the product's navigation;
   `/dsf:handoff` strips it from the release build.
 

@@ -1,0 +1,860 @@
+/* ---------------------------------------------------------------------------
+ * assets/pipeline.css — every style the dashboard uses, except @font-face
+ * (that is assets/fonts.css, loaded first).
+ *
+ * Loaded by index.html with a relative <link>, so it works from a static host
+ * and from file:// unchanged.
+ *
+ * Humans and agents may edit this file freely when the look changes; it carries
+ * no project state. The state contract lives in index.html, in
+ * <script type="application/json" id="pipeline-data"> — nothing here.
+ * ------------------------------------------------------------------------ */
+  :root {
+    color-scheme: light;
+
+    --bg:            #fbfbfa;
+    --bg-sidebar:    #f6f6f4;
+    --bg-panel:      #ffffff;
+    --bg-inset:      #f4f4f2;
+    --line:          #e3e3df;
+    --line-strong:   #d2d2cd;
+
+    --text:          #16181d;
+    --text-body:     #3b414b;
+    --text-dim:      #5b6270;
+    --text-faint:    #676d76;
+
+    --accent:        #3b52c4;
+    --accent-hover:  #2b3f9f;
+    --accent-weak:   #eef1fc;
+    --accent-border: #c6cff2;
+
+    --done:          #24704a;
+    --done-weak:     #e8f4ed;
+    --done-border:   #b4d6c2;
+
+    --progress:      #8a5f0d;
+    --progress-weak: #fdf4e3;
+    --progress-border:#e9d4a4;
+
+    --locked:        #b0b4bb;
+    --locked-weak:   #f1f1ef;
+    --pending-mark:  #868c96;  /* 3.1:1 on the sidebar, 3.4:1 on a panel */
+
+    /* the pipeline route in the sidebar: the walked part carries the done hue,
+       the rest is a plain hairline. Both are decoration, never text. */
+    --route-line:    #dcdcd7;
+    --route-done:    #8fc0a7;
+
+    --fail:          #a32b28;
+    --fail-weak:     #fdecea;
+    --fail-border:   #eec3c0;
+
+    --ph-underline:  rgba(138, 95, 13, 0.45);
+
+    --radius:  10px;
+    --measure: 68ch;
+
+    /* Type scale, one ratio (1.125) between UI steps, sizes in rem. */
+    --fs-2xs:  0.6875rem;  /* 11px · mono labels, eyebrows */
+    --fs-xs:   0.75rem;    /* 12px · mono meta */
+    --fs-sm:   0.8125rem;  /* 13px · captions */
+    --fs-md:   0.875rem;   /* 14px · secondary UI */
+    --fs-base: 1rem;       /* 16px · body */
+    --fs-lg:   1.125rem;   /* 18px · lede, h3 */
+    --fs-xl:   1.25rem;    /* 20px · section headings */
+
+    --track-caps: 0.09em;  /* letter-spacing for uppercase labels */
+
+    /* Weight roles: body sits a notch above hairline regular, labels are
+       semibold, headings bold. Nothing lands between body and label. */
+    --w-body:  450;
+    --w-label: 600;
+    --w-head:  700;
+
+    /* Inter when the reader already has it, the system stack otherwise. Nothing
+       is fetched: this page makes zero external requests, by rule. */
+    --sans: "Inter", "Inter Variable", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+  }
+
+  * { box-sizing: border-box; }
+  /* Root type step, one point down from the browser default (16px). Every
+     size on this page is rem-based, so the whole scale rides along with it. */
+  html { -webkit-text-size-adjust: 100%; font-size: 15px; }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text-body);
+    font-family: var(--sans);
+    font-size: var(--fs-base);
+    font-weight: var(--w-body);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    display: grid;
+    grid-template-columns: 292px minmax(0, 1fr);
+    align-items: start;
+  }
+
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 3px; }
+
+  /* ---------------------------------------------------------------- sidebar */
+
+  #sidebar {
+    /* Geometry of the phase route, derived once so the connector, the dots and
+       the labels can never drift apart:
+       dot centre = 1px border + 12px padding + 10px half-dot
+       label edge = 1px border + 12px padding + 20px dot + 12px gap  */
+    --nav-line-x: 22px;
+    --nav-text-x: 45px;
+
+    position: sticky; top: 0; height: 100vh; overflow-y: auto;
+    background: var(--bg-sidebar);
+    border-right: 1px solid var(--line);
+    padding: 24px 16px 24px 24px;
+    display: flex; flex-direction: column; gap: 24px;
+  }
+
+  .brand { display: flex; flex-direction: column; gap: 4px; }
+  .brand .product {
+    font-size: var(--fs-base); font-weight: var(--w-label); letter-spacing: -0.01em;
+    color: var(--text); line-height: 1.3; overflow-wrap: anywhere;
+  }
+  .brand .kicker {
+    font-family: var(--mono); font-size: var(--fs-2xs); font-weight: 400;
+    letter-spacing: var(--track-caps); text-transform: uppercase; color: var(--text-faint);
+  }
+
+  /* ---- the collapse control ---------------------------------------------- */
+
+  .brand-row { display: flex; align-items: flex-start; gap: 8px; }
+  .brand-row .brand { flex: 1 1 auto; min-width: 0; }
+
+  #side-toggle {
+    flex: none; width: 28px; height: 28px; margin: -2px -6px 0 0;
+    display: grid; place-items: center;
+    background: transparent; border: 1px solid transparent; border-radius: 8px;
+    color: var(--text-faint); cursor: pointer; padding: 0;
+    transition: background-color 120ms ease, color 120ms ease;
+  }
+  #side-toggle:hover { background: var(--bg-panel); border-color: var(--line-strong); color: var(--text); }
+  #side-toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+  /* One chevron for the whole page: the same sprite symbol the mobile "Phases"
+     disclosure uses, rotated to point the way the panel will move. */
+  #side-toggle .i { transform: rotate(90deg); transition: transform 120ms ease; }
+  body.side-collapsed #side-toggle .i { transform: rotate(-90deg); }
+
+  #menu-toggle {
+    display: none; align-items: center; gap: 8px;
+    font: inherit; font-size: var(--fs-sm); font-weight: var(--w-label);
+    color: var(--text-dim); background: var(--bg-panel); border: 1px solid var(--line-strong);
+    border-radius: 8px; padding: 8px 12px; cursor: pointer;
+  }
+
+  #nav { display: flex; flex-direction: column; }
+
+  /* ---- rows -------------------------------------------------------------- */
+
+  .nav-item {
+    position: relative;
+    display: grid; grid-template-columns: 20px minmax(0, 1fr);
+    align-items: center; gap: 12px; padding: 8px 12px; border-radius: 8px;
+    text-decoration: none; color: var(--text-dim);
+    font-size: var(--fs-md); font-weight: var(--w-body); line-height: 1.35;
+    border: 1px solid transparent;
+    transition: background-color 120ms ease, color 120ms ease;
+  }
+  .nav-item:hover { background: var(--bg-panel); color: var(--text); }
+  .nav-item:focus-visible,
+  .nav-sub a:focus-visible {
+    outline: 2px solid var(--accent); outline-offset: 1px; border-radius: 8px;
+  }
+
+  .nav-item .dot {
+    /* above the connector, so the ring on the current phase clips it cleanly */
+    position: relative; z-index: 1;
+    width: 20px; height: 20px; border-radius: 50%; background: var(--locked);
+    justify-self: center; display: flex; align-items: center; justify-content: center;
+    font-family: var(--mono); font-size: var(--fs-2xs); font-weight: var(--w-label);
+    font-variant-numeric: tabular-nums; line-height: 1; color: var(--text-dim);
+  }
+
+  .nav-item[data-status="done"] .dot        { background: var(--done); color: #fff; }
+  .nav-item[data-status="in-progress"] .dot { background: var(--progress); color: #fff; }
+  .nav-item[data-status="locked"] .dot      { background: transparent; border: 1px solid var(--pending-mark); color: var(--text-dim); }
+
+  /* Where you are in the pipeline: carried by the row itself, no label text. */
+  .nav-item.is-current-phase {
+    background: var(--progress-weak); border-color: var(--progress-border);
+    color: var(--text); font-weight: var(--w-label);
+  }
+  .nav-item.is-current-phase .dot { box-shadow: 0 0 0 2px var(--progress-weak), 0 0 0 3px var(--progress); }
+
+  /* Which page is open: the panel-white row. Wins over the tint when both apply. */
+  .nav-item[aria-current="page"] {
+    background: var(--bg-panel); border-color: var(--line-strong);
+    color: var(--text); font-weight: var(--w-label);
+  }
+  .nav-item[aria-current="page"].is-current-phase { border-color: var(--progress); }
+
+  .nav-item .name > span { display: block; }
+
+  /* "How this works" is a page, not a phase: no dot, no route, its own indent.
+     Its dot only ever shows in the collapsed rail, where a label cannot. */
+  .nav-item.is-meta { grid-template-columns: minmax(0, 1fr); margin-bottom: 12px; }
+  .nav-item.is-meta > .dot {
+    display: none;
+    background: transparent; border: 1px solid var(--pending-mark); color: var(--text-dim);
+  }
+
+  .nav-label {
+    margin: 0 0 8px; padding: 16px 12px 0; border-top: 1px solid var(--line);
+    font-family: var(--mono); font-size: var(--fs-2xs); font-weight: var(--w-label);
+    letter-spacing: var(--track-caps); text-transform: uppercase;
+    color: var(--text-faint);
+  }
+
+  /* ---- the route --------------------------------------------------------- */
+
+  /* One connector segment above and one below every dot, so the line survives
+     the sub-item blocks that sit between two phases. The walked part, from the
+     first phase down to the one you are on, carries the done hue. */
+  .nav-route { display: flex; flex-direction: column; }
+
+  .nav-route > .nav-item::before,
+  .nav-route > .nav-item::after {
+    content: ""; position: absolute; left: var(--nav-line-x); width: 1px;
+    background: var(--route-line);
+  }
+  .nav-route > .nav-item::before { top: 0; height: calc(50% - 10px); }
+  .nav-route > .nav-item::after  { top: calc(50% + 10px); bottom: 0; }
+  .nav-route > .nav-item:first-child::before,
+  .nav-route > .nav-item:last-child::after { content: none; }
+
+  .nav-route > .nav-item[data-status="done"]::before,
+  .nav-route > .nav-item[data-status="done"]::after,
+  .nav-route > .nav-item.is-current-phase::before,
+  .nav-item[data-status="done"] + .nav-sub::before,
+  .nav-item[data-status="done"] + .nav-sub a::before { background: var(--route-done); }
+
+  /* ---- sub-items: subordinate to the row above, never a phase ------------- */
+
+  .nav-sub { position: relative; display: flex; flex-direction: column; padding: 4px 0; }
+  .nav-sub::before {
+    content: ""; position: absolute; left: var(--nav-line-x); top: 0; bottom: 0;
+    width: 1px; background: var(--route-line);
+  }
+  .nav-sub a {
+    position: relative; display: block;
+    padding: 6px 12px 6px var(--nav-text-x); border-radius: 8px;
+    font-size: var(--fs-sm); font-weight: 400; line-height: 1.4;
+    color: var(--text-faint); text-decoration: none;
+    transition: background-color 120ms ease, color 120ms ease;
+  }
+  .nav-sub a::before {
+    content: ""; position: absolute; left: calc(var(--nav-line-x) + 1px); top: 50%;
+    width: 8px; height: 1px; background: var(--route-line);
+  }
+  .nav-sub a:hover { background: var(--bg-panel); color: var(--text-dim); }
+
+  /* ---- the quiet end of the panel ---------------------------------------- */
+
+  .sidebar-foot {
+    margin-top: auto; padding-top: 24px; border-top: 1px solid var(--line);
+    display: flex; flex-direction: column; align-items: flex-start; gap: 16px;
+  }
+
+  .lang {
+    display: inline-flex;
+    border: 1px solid var(--line-strong); border-radius: 999px;
+    background: var(--bg-panel); padding: 2px; gap: 2px;
+  }
+  .lang button {
+    font: inherit; font-family: var(--mono); font-size: var(--fs-2xs);
+    font-weight: var(--w-label); letter-spacing: var(--track-caps);
+    color: var(--text-dim); background: transparent; border: 0; border-radius: 999px;
+    padding: 4px 11px; cursor: pointer; line-height: 1.4;
+  }
+  .lang button:hover { color: var(--text); }
+  .lang button[aria-pressed="true"] {
+    background: var(--text); color: #fff;
+  }
+
+  #sidebar footer {
+    font-family: var(--mono); font-size: var(--fs-2xs); font-weight: 400;
+    line-height: 1.65; color: var(--text-faint); font-variant-numeric: tabular-nums;
+  }
+  #sidebar footer .hint { margin-top: 8px; }
+
+  /* ------------------------------------------------------------------ main */
+
+  /* Narrow: one column, the rail stacked under the content. Wide: two columns,
+     and the content is centred in the space that is left between the sidebar
+     and the rail, not in the whole pane (see the rail-beside query below). */
+  #workspace { position: relative; min-width: 0; }
+
+  main { max-width: 800px; margin: 0 auto; padding: 40px 40px 40px; min-width: 0; }
+  .page[hidden] { display: none; }
+  .page-head { margin-bottom: 40px; }
+
+  .eyebrow {
+    font-family: var(--mono); font-size: var(--fs-xs); font-weight: var(--w-label);
+    letter-spacing: var(--track-caps); text-transform: uppercase;
+    color: var(--text-faint); margin-bottom: 12px; font-variant-numeric: tabular-nums;
+  }
+
+  h1 {
+    margin: 0; font-size: clamp(1.625rem, 3.4vw, 2rem); line-height: 1.15;
+    letter-spacing: -0.022em; font-weight: var(--w-head); color: var(--text);
+  }
+
+  .lede {
+    margin: 16px 0 0; max-width: var(--measure);
+    font-size: var(--fs-lg); font-weight: 400; line-height: 1.55; color: var(--text-dim);
+  }
+
+  .badge {
+    display: inline-block; font-family: var(--mono); font-size: var(--fs-2xs);
+    font-weight: var(--w-label); letter-spacing: 0.04em;
+    padding: 3px 9px; border-radius: 999px; border: 1px solid;
+    vertical-align: 4px; margin-left: 8px; white-space: nowrap;
+  }
+  .badge[data-status="done"]        { color: var(--done);     background: var(--done-weak);     border-color: var(--done-border); }
+  .badge[data-status="in-progress"] { color: var(--progress); background: var(--progress-weak); border-color: var(--progress-border); }
+  .badge[data-status="locked"]      { color: var(--text-dim); background: var(--locked-weak);   border-color: var(--line-strong); }
+
+  /* Vertical rhythm: sections sit far apart, a heading sits close to its own
+     text. Space above a heading is always larger than the space below it. */
+  section.block { margin-top: 52px; }
+  section.block:first-of-type { margin-top: 0; }
+  /* the "to get here" block carries its own section; the first real section
+     after it is still a new section and must not sit flush against its panel */
+  div[data-unlock] + section.block { margin-top: 52px; }
+
+  h2 {
+    margin: 0 0 12px; font-size: var(--fs-xl); line-height: 1.2;
+    font-weight: var(--w-head); letter-spacing: -0.012em; color: var(--text);
+  }
+  h3 { margin: 32px 0 8px; font-size: var(--fs-lg); line-height: 1.25; font-weight: var(--w-head); letter-spacing: -0.008em; color: var(--text); }
+  h4 { margin: 0 0 8px; font-size: var(--fs-md); line-height: 1.3; font-weight: var(--w-label); letter-spacing: 0.005em; color: var(--text); }
+  h3 + p, h4 + p, h2 + p { margin-top: 0; }
+
+  p { margin: 0 0 16px; }
+  p:last-child { margin-bottom: 0; }
+
+  /* Prose is measured; tables, prompts and artifact lists use the full column. */
+  section.block > p,
+  section.block > ul,
+  section.block > ol:not(.steps),
+  .panel > p,
+  .panel > ul,
+  ol.steps > li > p,
+  .aftercare,
+  .legend { max-width: var(--measure); }
+
+  a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 2px; }
+  a:hover { color: var(--accent-hover); }
+  strong { color: var(--text); font-weight: var(--w-label); }
+
+  code {
+    font-family: var(--mono); font-size: 0.85em; background: var(--bg-inset);
+    border: 1px solid var(--line); border-radius: 5px; padding: 1px 5px;
+    /* a long path may break rather than push the page sideways on a small screen */
+    overflow-wrap: break-word;
+  }
+  code.cmd {
+    color: var(--accent); background: var(--accent-weak); border-color: var(--accent-border);
+    white-space: nowrap;
+  }
+  /* File/artifact names in running prose: classified by classifyFileCodes() at
+     render time (see the script), never hand-tagged. Contrast checked: accent
+     #3b52c4 on bg-inset #f4f4f2 is 5.98:1, well past AA. */
+  code.file { color: var(--accent); }
+
+  /* ----------------------------------------------------------------- steps */
+
+  ol.steps { list-style: none; counter-reset: step; margin: 0; padding: 0; }
+
+  ol.steps > li { counter-increment: step; position: relative; padding: 0 0 32px 44px; }
+
+  ol.steps > li::before {
+    content: counter(step); position: absolute; left: 0; top: 0;
+    width: 26px; height: 26px; border-radius: 50%;
+    border: 1px solid var(--line-strong); background: var(--bg-panel); color: var(--text-dim);
+    font-family: var(--mono); font-size: var(--fs-xs); font-weight: var(--w-label);
+    font-variant-numeric: tabular-nums; display: grid; place-items: center;
+  }
+  ol.steps > li::after {
+    content: ""; position: absolute; left: 13px; top: 30px; bottom: 4px;
+    width: 1px; background: var(--line);
+  }
+  ol.steps > li:last-child { padding-bottom: 0; }
+  ol.steps > li:last-child::after { display: none; }
+
+  ol.steps > li.gate::before { border-color: var(--progress-border); background: var(--progress-weak); color: var(--progress); }
+
+  /* Step progress rides on the numbered circle itself: one object per step,
+     never a number and a state mark side by side. The state comes from the
+     JSON steps ledger at render time (data-state on the <li>, set by
+     renderSteps), so a fresh clone with an empty ledger keeps the neutral
+     look above. Same fills as the sidebar dots: white on --done (6.7:1) and
+     white on --progress (6.2:1), both past AA. */
+  ol.steps > li[data-state="done"]::before {
+    background: var(--done); border-color: var(--done); color: #fff;
+  }
+  ol.steps > li[data-state="current"]::before {
+    background: var(--progress); border-color: var(--progress); color: #fff;
+    box-shadow: 0 0 0 3px var(--progress-weak);
+  }
+
+  .chip {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-family: var(--mono); font-size: var(--fs-2xs);
+    font-weight: var(--w-label); letter-spacing: 0.03em;
+    color: var(--progress); background: var(--progress-weak); border: 1px solid var(--progress-border);
+    border-radius: 999px; padding: 2px 9px; margin-bottom: 8px; white-space: nowrap;
+  }
+
+  /* --------------------------------------------------------- prompt blocks */
+
+  .prompt {
+    margin: 16px 0 0; border: 1px solid var(--line);
+    border-radius: 8px; background: var(--bg-inset); overflow: hidden;
+  }
+  .prompt + .prompt { margin-top: 8px; }
+
+  .prompt-head {
+    display: flex; align-items: center; justify-content: space-between; gap: 10px;
+    padding: 5px 6px 5px 12px; border-bottom: 1px solid var(--line);
+  }
+  .prompt-head .plabel {
+    font-family: var(--mono); font-size: var(--fs-2xs); font-weight: var(--w-label);
+    letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-faint);
+  }
+  .copy {
+    display: inline-flex; align-items: center; gap: 6px;
+    font: inherit; font-family: var(--mono); font-size: var(--fs-2xs);
+    font-weight: var(--w-label); color: var(--text-dim);
+    background: var(--bg-panel); border: 1px solid var(--line-strong); border-radius: 6px;
+    padding: 3px 10px; cursor: pointer; white-space: nowrap;
+  }
+  .copy:hover { color: var(--text); border-color: var(--text-faint); }
+  .copy.done { color: var(--done); border-color: var(--done-border); background: var(--done-weak); }
+
+  pre.prompt-body {
+    margin: 0; padding: 12px 14px; font-family: var(--mono); font-size: var(--fs-sm);
+    font-weight: 400; line-height: 1.7; color: var(--text-body);
+    white-space: pre-wrap; overflow-wrap: anywhere;
+  }
+  pre.prompt-body .ph {
+    color: var(--progress); border-bottom: 1px dashed var(--ph-underline);
+  }
+
+  /* ---------------------------------------------------------------- panels */
+
+  .panel { border: 1px solid var(--line); background: var(--bg-panel); border-radius: var(--radius); padding: 24px; }
+  .panel.unlock { border-color: var(--progress-border); background: var(--progress-weak); }
+  .panel.good { background: var(--bg-panel); border-color: var(--line); border-left: 2px solid var(--done); }
+  .panel.drift { background: var(--bg-inset); border-color: var(--line); }
+  .panel + .panel { margin-top: 12px; }
+  .panel ul { margin: 8px 0 0; padding-left: 18px; }
+  .panel li { margin-bottom: 8px; }
+  .panel li:last-child { margin-bottom: 0; }
+  .panel.unlock .prompt, .panel.drift .prompt { background: var(--bg-panel); }
+
+  .sub { border-left: 1px solid var(--line-strong); padding-left: 24px; margin-top: 32px; }
+  .sub > h3:first-child { margin-top: 0; }
+  .sub-cmd { font-family: var(--mono); font-size: var(--fs-xs); color: var(--text-faint); letter-spacing: 0.04em; }
+
+  /* ------------------------------------------------------------- artifacts */
+
+  ul.artifacts { list-style: none; margin: 4px 0 0; padding: 0; border-top: 1px solid var(--line); }
+  ul.artifacts li {
+    display: grid; grid-template-columns: 16px minmax(0, 1fr); gap: 12px;
+    align-items: baseline; padding: 12px 2px; border-bottom: 1px solid var(--line);
+  }
+  /* The mark stays an inline box: ul.artifacts li aligns on the baseline, and an
+     inline <svg> with .i's vertical-align lands on it exactly as the old glyph did. */
+  ul.artifacts .glyph { font-size: var(--fs-sm); line-height: 1.6; color: var(--text-faint); text-align: center; }
+  /* The two inline marks are bigger than the 12px mono they ride with, so they
+     need more descent than .i's default to land on the text's optical centre. */
+  ul.artifacts .glyph .i { vertical-align: -0.41em; }
+  ul.artifacts a.path .i { vertical-align: -0.33em; }
+  ul.artifacts li.has .glyph { color: var(--done); }
+  ul.artifacts .path { font-family: var(--mono); font-size: var(--fs-sm); color: var(--text-dim); overflow-wrap: anywhere; }
+  ul.artifacts li.has .path { color: var(--text); font-weight: var(--w-label); }
+  ul.artifacts a.path { color: var(--accent); }
+  ul.artifacts li.missing .path { color: var(--text-faint); }
+  ul.artifacts .desc { display: block; font-size: var(--fs-sm); font-weight: 400; color: var(--text-faint); margin-top: 4px; }
+  .pending { font-family: var(--mono); font-size: var(--fs-2xs); color: var(--text-faint); }
+
+  /* ----------------------------------------------------------------- close */
+
+  .close-row {
+    display: flex; flex-wrap: wrap; gap: 8px; align-items: center;
+    font-family: var(--mono); font-size: var(--fs-xs); color: var(--text-faint);
+    margin-top: 16px; font-variant-numeric: tabular-nums;
+  }
+  .tag-pill {
+    display: inline-flex; align-items: center; gap: 6px;
+    border: 1px solid var(--line-strong); border-radius: 999px; padding: 2px 10px;
+    color: var(--text-dim); background: var(--bg-panel);
+  }
+  .tag-pill.is-tagged { color: var(--done); border-color: var(--done-border); background: var(--done-weak); }
+
+  .aftercare { margin-top: 16px; font-size: var(--fs-md); line-height: 1.6; color: var(--text-faint); }
+
+  /* ------------------------------------------------------------- how-page */
+
+  .rhythm { list-style: none; margin: 0; padding: 0; counter-reset: r; }
+  .rhythm { max-width: var(--measure); }
+  .rhythm li {
+    counter-increment: r; display: grid; grid-template-columns: 26px 1fr; gap: 12px;
+    padding: 12px 0; border-bottom: 1px solid var(--line);
+  }
+  .rhythm li:last-child { border-bottom: none; }
+  .rhythm li::before {
+    content: counter(r); font-family: var(--mono); font-size: var(--fs-xs);
+    font-variant-numeric: tabular-nums; color: var(--text-faint); padding-top: 4px;
+  }
+
+  .legend { display: flex; flex-wrap: wrap; gap: 8px 24px; margin-top: 8px; }
+  .legend span { display: inline-flex; align-items: center; gap: 8px; font-size: var(--fs-md); color: var(--text-dim); }
+  .legend i { width: 8px; height: 8px; border-radius: 50%; display: inline-block; font-style: normal; flex: none; }
+  .legend .l-done { background: var(--done); }
+  .legend .l-prog { background: var(--progress); }
+  .legend .l-lock { border: 1px solid var(--locked); }
+
+  .options { list-style: none; margin: 12px 0 0; padding: 0; }
+  .options li { padding: 12px 0; border-top: 1px solid var(--line); font-size: var(--fs-md); line-height: 1.6; }
+
+  hr.rule { border: 0; border-top: 1px solid var(--line); margin: 52px 0 0; }
+
+  .colophon {
+    margin: 16px 0 0; max-width: var(--measure);
+    font-family: var(--mono); font-size: var(--fs-2xs); font-weight: 400;
+    line-height: 1.65; color: var(--text-faint);
+  }
+
+  /* --------------------------------------------------- success-criteria rail */
+
+  /* Default (narrow): a normal section under the content. The media query at
+     the end of the sheet pins it to the right once there is room. */
+  #rail { width: 100%; max-width: 800px; margin: 0 auto; padding: 12px 40px 104px; min-width: 0; }
+
+  .rail-card {
+    border: 1px solid var(--line); background: var(--bg-panel);
+    border-radius: var(--radius); overflow: hidden;
+  }
+
+  .rail-head {
+    /* pinned only when the card is the scrolling box (see the wide query) */
+    position: static; top: 0; z-index: 1;
+    background: var(--bg-panel); border-bottom: 1px solid var(--line);
+    padding: 16px 16px 12px;
+  }
+  .rail-title {
+    display: flex; align-items: baseline; justify-content: space-between; gap: 12px;
+    font-family: var(--mono); font-size: var(--fs-2xs); font-weight: var(--w-label);
+    letter-spacing: var(--track-caps); text-transform: uppercase; color: var(--text-faint);
+  }
+  .rail-count {
+    font-family: var(--mono); font-size: var(--fs-sm); font-weight: var(--w-label);
+    font-variant-numeric: tabular-nums; letter-spacing: 0; color: var(--text);
+    text-transform: none;
+  }
+  .rail-meta {
+    margin-top: 4px; font-family: var(--mono); font-size: var(--fs-2xs);
+    font-variant-numeric: tabular-nums; color: var(--text-faint); line-height: 1.5;
+  }
+  .rail-meta .m-fail { color: var(--fail); }
+
+  .rail-body { padding: 8px 16px 16px; }
+  .rail-panel[hidden], ol.crit[hidden] { display: none; }
+
+  /* Permanent check/status chip, under the header/counter in every rail view. */
+  .rail-check {
+    padding: 12px 16px; border-bottom: 1px solid var(--line); background: var(--bg-inset);
+  }
+  .rail-check-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+  .rail-check code.cmd { font-size: var(--fs-2xs); }
+  .rail-check .copy { font-size: var(--fs-2xs); padding: 2px 8px; }
+  .rail-check-caption {
+    margin: 6px 2px 0; font-size: var(--fs-2xs); line-height: 1.5; color: var(--text-faint);
+  }
+
+  .rail-note {
+    margin: 12px 2px 16px; font-size: var(--fs-sm); line-height: 1.6; color: var(--text-dim);
+  }
+  .rail-sub {
+    margin: 24px 2px 8px; font-family: var(--mono); font-size: var(--fs-2xs);
+    font-weight: var(--w-label); letter-spacing: var(--track-caps);
+    text-transform: uppercase; color: var(--text-faint);
+  }
+
+  .rail-legend { list-style: none; margin: 0; padding: 0; }
+  .rail-legend li {
+    display: grid; grid-template-columns: 16px 1fr; gap: 12px; align-items: baseline;
+    padding: 8px 2px; font-size: var(--fs-sm); line-height: 1.5; color: var(--text-dim);
+  }
+  .rail-legend i {
+    font-style: normal; font-family: var(--mono); font-size: var(--fs-xs);
+    text-align: center; color: var(--text-faint);
+  }
+  .rail-legend .m-pass { color: var(--done); }
+  .rail-legend .m-fail { color: var(--fail); }
+
+  /* One tight line per criterion. The ordinal lives inside the state mark, the
+     same way a phase number lives inside its dot in the sidebar: one object to
+     read, not a number and a tick side by side. */
+  ol.crit { list-style: none; margin: 12px 0 0; padding: 0; }
+  ol.crit > li {
+    display: grid; grid-template-columns: 20px minmax(0, 1fr); gap: 12px;
+    align-items: start; padding: 8px 2px; border-top: 1px solid var(--line);
+    font-size: var(--fs-sm); line-height: 1.45; color: var(--text-dim);
+    overflow-wrap: break-word;
+  }
+  ol.crit > li:first-child { border-top: 0; }
+  ol.crit .cm {
+    width: 20px; height: 20px; border-radius: 50%; flex: none;
+    display: flex; align-items: center; justify-content: center;
+    border: 1px solid var(--pending-mark); background: var(--bg-panel);
+    font-style: normal; font-family: var(--mono); font-size: var(--fs-2xs);
+    font-weight: var(--w-label); font-variant-numeric: tabular-nums;
+    line-height: 1; letter-spacing: 0; color: var(--text-faint);
+  }
+  ol.crit > li[data-state="pass"] { color: var(--text-body); }
+  ol.crit > li[data-state="pass"] .cm { background: var(--done); border-color: var(--done); color: #fff; }
+  ol.crit > li[data-state="fail"] { color: var(--text); }
+  ol.crit > li[data-state="fail"] .cm { background: var(--fail); border-color: var(--fail); color: #fff; }
+
+  .tally { list-style: none; margin: 0; padding: 0; }
+  .tally li {
+    display: grid; grid-template-columns: 14px minmax(0, 1fr) auto; gap: 12px;
+    align-items: baseline; padding: 8px 2px; border-top: 1px solid var(--line);
+    font-size: var(--fs-sm); color: var(--text-dim);
+  }
+  .tally li:first-child { border-top: 0; }
+  .tally .tn, .tally .tc {
+    font-family: var(--mono); font-size: var(--fs-2xs); font-variant-numeric: tabular-nums;
+    font-weight: 400; color: var(--text-faint);
+  }
+  .tally .tc { font-size: var(--fs-xs); }
+  .tally li.is-current { color: var(--text); font-weight: var(--w-label); }
+  .tally li.is-current .tn, .tally li.is-current .tc { color: var(--progress); }
+
+  /* -------------------------------------------------- guide | result view */
+
+  /* Two views of the same phase: the walkthrough you read, and the thing the
+     phase actually produced. The control sits under the page header and is
+     hash-addressable (#phase-4/result), so a view can be linked to. */
+  /* Pinned to the top of the content pane: the view can be switched from
+     anywhere in a long phase page without scrolling back up. The control
+     floats, nothing behind it: no plate, no rule, no shadow. The strip itself
+     is click-through so the page under it stays fully usable. */
+  .segbar {
+    position: sticky; top: 8px; z-index: 20;
+    margin-bottom: 12px; padding: 0;
+    pointer-events: none;
+  }
+
+  .segs {
+    pointer-events: auto;
+    display: inline-flex; gap: 2px;
+    padding: 2px; border: 1px solid var(--line-strong); border-radius: 999px;
+    background: var(--bg-panel);
+  }
+  .segs .seg {
+    font: inherit; font-size: var(--fs-md); font-weight: var(--w-label);
+    color: var(--text-dim); background: transparent; border: 0; border-radius: 999px;
+    padding: 5px 16px; cursor: pointer; line-height: 1.4;
+  }
+  .segs .seg:hover { color: var(--text); }
+  .segs .seg:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+  .segs .seg[aria-pressed="true"] { background: var(--text); color: #fff; }
+
+  .phase-view[hidden], .result-view[hidden] { display: none; }
+
+  /* The Result view is a stage: the criteria rail belongs to the Guide, and
+     the content column takes the width the rail gives back. */
+  body.result-open #rail { display: none; }
+  body.result-open main { max-width: 1120px; }
+
+  .result-empty, .result-facts {
+    border: 1px solid var(--line); border-radius: var(--radius);
+    background: var(--bg-inset); padding: 24px;
+  }
+  .result-empty[hidden], .result-facts[hidden] { display: none; }
+  .result-empty p { max-width: var(--measure); color: var(--text-dim); margin: 0; }
+
+  /* Nothing has run yet: one quiet line, centred in the empty stage. */
+  .result-empty.is-center {
+    display: flex; align-items: center; justify-content: center;
+    min-height: 56vh; padding: 40px 0; border: 0; background: transparent;
+  }
+  .result-empty.is-center p { max-width: 46ch; text-align: center; }
+  .result-facts dl { margin: 0; display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; }
+  .result-facts dt {
+    font-family: var(--mono); font-size: var(--fs-2xs); font-weight: var(--w-label);
+    letter-spacing: var(--track-caps); text-transform: uppercase; color: var(--text-faint);
+    margin-bottom: 2px;
+  }
+  .result-facts dd { margin: 0; color: var(--text); }
+  .result-facts dd.is-blank { color: var(--progress); }
+
+  /* Artifact tabs: derived from the phase's own artifacts, labelled with the
+     file name they open, so a phase that gains a page gains a tab. */
+  .result-tabs {
+    display: flex; gap: 4px; overflow-x: auto; padding-bottom: 4px;
+    margin-bottom: 12px; scrollbar-width: thin;
+  }
+  .result-tabs button {
+    font: inherit; font-family: var(--mono); font-size: var(--fs-xs); white-space: nowrap;
+    color: var(--text-dim); background: var(--bg-inset);
+    border: 1px solid var(--line); border-radius: 999px;
+    padding: 4px 12px; cursor: pointer;
+  }
+  .result-tabs button:hover { color: var(--text); }
+  .result-tabs button:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+  .result-tabs button[aria-pressed="true"] {
+    background: var(--accent-weak); border-color: var(--accent-border); color: var(--accent);
+    font-weight: var(--w-label);
+  }
+
+  .result-frame-box {
+    border: 1px solid var(--line-strong); border-radius: var(--radius);
+    background: var(--bg-panel); overflow: hidden;
+    display: flex; flex-direction: column; min-height: 0;
+  }
+  .result-frame-bar {
+    display: flex; align-items: center; justify-content: space-between; gap: 10px;
+    padding: 6px 6px 6px 12px; border-bottom: 1px solid var(--line); background: var(--bg-inset);
+  }
+  .result-frame-bar .rf-path {
+    font-family: var(--mono); font-size: var(--fs-2xs); color: var(--text-dim);
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  .result-frame-bar .rf-full {
+    font: inherit; font-family: var(--mono); font-size: var(--fs-2xs); font-weight: var(--w-label);
+    color: var(--text-dim); background: var(--bg-panel); border: 1px solid var(--line-strong);
+    border-radius: 6px; padding: 3px 10px; cursor: pointer; white-space: nowrap; flex: none;
+  }
+  .result-frame-bar .rf-full:hover { color: var(--text); }
+  .result-frame-bar .rf-full:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+  .result-frame-box iframe {
+    display: block; width: 100%; height: 70vh; min-height: 320px; border: 0; background: #fff;
+  }
+
+  /* Fullscreen is "take over the workspace", not the browser's own mode: the
+     collapsed sidebar rail stays visible and reachable next to it. */
+  body.frame-full .result-frame-box.is-full {
+    position: fixed; inset: 0 0 0 56px; z-index: 40; border-radius: 0; border: 0;
+    border-left: 1px solid var(--line);
+  }
+  body.frame-full .result-frame-box.is-full iframe { height: auto; flex: 1 1 auto; }
+
+  .result-links { margin-top: 32px; }
+  .result-links h3 { margin-top: 0; }
+
+  /* ------------------------------------------------- the collapsed rail */
+
+  /* Collapsed: the route and nothing else. Every dot keeps its status colour,
+     its ring and its connector; the name moves into a tooltip. */
+  /* ----------------------------------------------------------------- icons */
+
+  /* Lucide, referenced from the sprite at the top of <body>. Geometry only in the
+     symbols; weight, size and colour are set here so one symbol serves every size.
+     Never give an icon a colour: it inherits the state colour of whatever it sits
+     in (--done on .copy.done and li.has .glyph, --progress on .chip and
+     .panel.unlock, --text-faint in the sidebar foot and the rail head). */
+  .i {
+    width: 16px; height: 16px; flex: none;
+    fill: none; stroke: currentColor; stroke-width: 1.75;
+    stroke-linecap: round; stroke-linejoin: round;
+    vertical-align: -0.15em; pointer-events: none;
+  }
+  /* Small sizes need the heavier stroke to stay crisp on a light ground. */
+  .i-sm { width: 14px; height: 14px; stroke-width: 2; }
+
+  /* Hosts that gain an icon next to their label. */
+  .nav-item.is-meta .name { display: inline-flex; align-items: center; gap: 10px; }
+  #menu-toggle .i { transition: transform 120ms ease; }
+  #menu-toggle[aria-expanded="true"] .i { transform: rotate(180deg); }
+  .lang-row { display: flex; align-items: center; gap: 8px; color: var(--text-faint); }
+  .panel h4 { display: flex; align-items: center; gap: 8px; }
+  .rail-label { display: inline-flex; align-items: center; gap: 8px; }
+
+  @media (min-width: 901px) {
+    body.side-collapsed { grid-template-columns: 56px minmax(0, 1fr); }
+    body.side-collapsed #sidebar {
+      --nav-line-x: 20px;
+      padding: 24px 8px; gap: 16px; align-items: stretch;
+    }
+    body.side-collapsed .brand,
+    body.side-collapsed .nav-label,
+    body.side-collapsed .nav-sub,
+    body.side-collapsed .sidebar-foot,
+    body.side-collapsed .nav-item .name { display: none; }
+    body.side-collapsed .brand-row { justify-content: center; }
+    body.side-collapsed #side-toggle { margin: 0; }
+    body.side-collapsed .nav-item {
+      grid-template-columns: 20px; gap: 0; padding: 8px 10px;
+    }
+    body.side-collapsed .nav-item.is-meta { margin-bottom: 8px; }
+    body.side-collapsed .nav-item.is-meta > .dot { display: flex; }
+  }
+
+  /* ------------------------------------------------------------ responsive */
+
+  /* Wide enough for the rail to sit beside the content. Two real columns: the
+     rail takes a fixed track on the right, and the content column centres in
+     what is left, so the gap to the sidebar and the gap to the rail are the
+     same number at every width above this point. */
+  @media (min-width: 1460px) {
+    #workspace { display: grid; grid-template-columns: minmax(0, 1fr) 400px; }
+    main { padding-bottom: 120px; }
+    #rail {
+      width: auto; max-width: none; margin: 0; padding: 40px 40px 40px 0;
+    }
+    .rail-card {
+      position: sticky; top: 24px; max-height: calc(100vh - 48px);
+      overflow-y: auto; overscroll-behavior: contain;
+      scrollbar-width: thin; scrollbar-color: var(--line-strong) transparent;
+    }
+    .rail-card::-webkit-scrollbar { width: 5px; }
+    .rail-card::-webkit-scrollbar-track { background: transparent; }
+    .rail-card::-webkit-scrollbar-thumb { background: var(--line-strong); border-radius: 999px; }
+    .rail-card:hover::-webkit-scrollbar-thumb { background: var(--locked); }
+    .rail-head { position: sticky; top: 0; }
+  }
+
+  @media (max-width: 900px) {
+    body { grid-template-columns: 1fr; }
+    #sidebar {
+      position: static; height: auto; border-right: none;
+      border-bottom: 1px solid var(--line); padding: 16px 24px; gap: 16px;
+    }
+    #menu-toggle { display: inline-flex; align-self: flex-start; }
+    #nav { display: none; }
+    body.nav-open #nav { display: flex; }
+    .sidebar-foot { margin-top: 0; padding-top: 16px; }
+    main { padding: 32px 24px; }
+    #rail { padding: 12px 24px 80px; }
+  }
+
+  /* Below the sidebar breakpoint there is no rail to leave room for. */
+  @media (max-width: 900px) {
+    body.frame-full .result-frame-box.is-full { inset: 0; border-left: 0; }
+  }
+
+  @media (max-width: 520px) {
+    main { padding: 24px 16px 32px; }
+    #rail { padding: 12px 16px 80px; }
+    section.block { margin-top: 40px; }
+    ol.steps > li { padding-left: 40px; }
+    .sub { padding-left: 16px; }
+    pre.prompt-body { font-size: var(--fs-xs); }
+  }
+
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }

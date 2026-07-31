@@ -23,7 +23,7 @@ against the files, writes `.design/checklists/results/phase-1.md`, and creates t
       `concept/`, `ui/`, `design-system/`, `visuals/`, `responsive/`, `animations/`, `handoff/`
       — no folder missing and none invented
 - [ ] `README.md` → **Brief** section is filled in and matches `CLAUDE.md`
-- [ ] `pipeline.html` renders standalone in a browser and shows phase 1 `in progress` with its
+- [ ] `index.html` renders standalone in a browser and shows phase 1 `in progress` with its
       artifacts present; `context.product` and `context.oneLiner` are filled from the brief
 - [ ] `.design/memory/toolbox.md` has no `[?]` in the Status column — `/dsf:init` has run
 - [ ] Repo is under git with the brief committed

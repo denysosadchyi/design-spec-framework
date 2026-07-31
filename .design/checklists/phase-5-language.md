@@ -117,6 +117,6 @@ taste — never from the model's default and never cloned from one reference.
 - [ ] `CLAUDE.md` → **Concept** block records the chosen direction, the recorded taste,
       the icon set and the image source
 - [ ] `README.md` → Voice and Concept sections link to the pages
-- [ ] `pipeline.html` data block regenerated — phase 5 artifacts marked present,
+- [ ] `index.html` data block regenerated — phase 5 artifacts marked present,
       `context.chosenDirection` filled
 - [ ] Phase committed; pushed if hosting is `active`

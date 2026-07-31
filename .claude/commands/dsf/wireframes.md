@@ -94,7 +94,7 @@ Add a navigator panel to the sample screen, identical on every wireframe page af
 - structure comes from `_screens.md` and `ia/sitemap.md` — invent nothing;
 - grey, like the rest of the wireframe;
 - at the very top of the panel, one quiet service link: `← Pipeline`, pointing to
-  `../pipeline.html`. It bridges the product world back to the process home page. It is part
+  `../index.html`. It bridges the product world back to the process home page. It is part
   of the navigator (a workbench tool), not of the product's own navigation — `/dsf:handoff`
   strips it from the release build.
 
@@ -166,7 +166,7 @@ Leave no sitemap screen without a wireframe. When all agents finish, verify the 
 coherent — zones, naming, navigation — and report mismatches as a table.
 
 Then build the navigator index page **`wireframes/index.html`** — the entrance to the whole
-set, and the link `pipeline.html` points at:
+set, and the link `index.html` points at:
 
 - the same tree as the panel on every screen: section → screen → its states, indented,
   every node a real link to its own page;
@@ -207,7 +207,7 @@ what was wrong and what was fixed in `wireframes/_critique.md`.
    and that later phases edit these same files rather than redrawing them.
 3. Update `README.md` — a Wireframes section: two or three sentences and a link to
    `wireframes/index.html`.
-4. Update `pipeline.html` — edit **only** the `<script id="pipeline-data">` JSON block:
+4. Update `index.html` — edit **only** the `<script id="pipeline-data">` JSON block:
    phase 4 status, its artifact entries, `wireframes/index.html` as the live navigator
    link, and the `steps` object. Leave the `context` object as it is; this phase fills none of its keys. Do not
    touch the markup, CSS or scripts around the block.

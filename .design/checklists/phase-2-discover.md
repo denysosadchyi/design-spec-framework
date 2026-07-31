@@ -49,6 +49,6 @@ creates the `phase-2-discover` tag on a full pass.
 - [ ] `people/personas.html` opens standalone in a browser
 - [ ] `CLAUDE.md` → **People** block names the primary persona and the main job
 - [ ] `README.md` → Research and People sections link to the HTML pages
-- [ ] `pipeline.html` data block regenerated — phase 2 artifacts marked present, `context`
+- [ ] `index.html` data block regenerated — phase 2 artifacts marked present, `context`
       carries the benchmark dimension, the primary persona and the main job
 - [ ] Phase committed; pushed if hosting is `active`

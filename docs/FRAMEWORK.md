@@ -13,7 +13,7 @@ Design work is driven by **specs that live in the repo**, not by conversations t
 1. reads the artifacts of previous phases (never re-asks what is already written),
 2. produces a **Markdown artifact for the agent** and an **HTML artifact for humans**,
 3. ends with a critique cycle and a human gate,
-4. updates the living docs (`CLAUDE.md`, `README.md`, and the data block of `pipeline.html`) and commits — the phase's git tag is created by `/dsf:check`, never by the phase itself.
+4. updates the living docs (`CLAUDE.md`, `README.md`, and the data block of `index.html`) and commits — the phase's git tag is created by `/dsf:check`, never by the phase itself.
 
 The product grows as one set of files: the grey wireframe of phase 4 is the *same file* that ships styled and tokenized in phase 6, responsive in phase 8 and animated in phase 9. Nothing is redrawn, everything is layered.
 
@@ -33,7 +33,7 @@ These rules live in `.design/memory/constitution.md` and are injected into every
 | **New enters the system first** | From the moment a system exists, nothing appears on a screen before it exists in the system. |
 | **Human gates** | The agent stops at seven fixed decision points: brief approval, direction choice, recorded taste, sample sign-off, defect prioritization, phase sign-off, "keep it". It never chooses taste for you. Every answer is appended to `.design/decisions.md`. |
 | **Spec consistency** | An instruction that contradicts a written decision stops the agent: update the spec and propagate, record an exception, or withdraw. It is never obeyed silently. |
-| **Living docs** | `CLAUDE.md` (agent context), `README.md` (human index) and the `pipeline.html` data block (the project's home page) are updated at the end of every phase. |
+| **Living docs** | `CLAUDE.md` (agent context), `README.md` (human index) and the `index.html` data block (the project's home page) are updated at the end of every phase. |
 
 ---
 
@@ -56,7 +56,9 @@ my-product/                      ← created from the design-spec-framework temp
 │   ├── checklists/results/      ← `/dsf:check` verdicts, one file per phase
 │   ├── progress/                ← append-only step ledgers, one file per phase
 │   └── decisions.md             ← append-only log of every gate answer and "keep it"
-├── pipeline.html                ← the project's home page: phases, artifacts, links, status
+├── index.html                   ← the project's home page: phases, artifacts, links, status
+├── assets/                      ← the page's own files: fonts.css, pipeline.css,
+│                                  i18n-uk.js, pipeline.js (relative paths, same repo)
 ├── CLAUDE.md                    ← brief + accumulated context (grows every phase)
 ├── README.md                    ← human index of the repo
 │   — everything below is created by the phases —
@@ -78,7 +80,7 @@ my-product/                      ← created from the design-spec-framework temp
 
 Three files in `.design/` are the ones an agent consults before acting: **constitution.md**
 (the rules), **phases.md** (the canonical phase table — commands, checklists, tags, artifact
-paths, the `pipeline.html` data contract; when a command and that file disagree, that file
+paths, the `index.html` data contract; when a command and that file disagree, that file
 wins) and **toolbox.md** (what is active and what runs on a fallback). Every fallback named
 in `toolbox.md` has an actual prompt file in `.design/prompts/` — nothing in the pipeline is
 a hard dependency on an external tool.
@@ -96,7 +98,7 @@ artifact paths — lives in `.design/memory/phases.md`.
 The 12-lesson canon is compressed into a working pipeline. The main compression: **tokens-first build** — the kit is built directly on two-level tokens (primitive + semantic) instead of the teaching path "flat kit first, refactor to tokens later".
 
 ### Phase 0 — `/dsf:init`
-Verifies the toolbox (see §6), offers to install what's missing, records choices in `.design/memory/toolbox.md`. Sets up GitHub repo + Pages (or the chosen fallback). Renders the empty `pipeline.html`.
+Verifies the toolbox (see §6), offers to install what's missing, records choices in `.design/memory/toolbox.md`. Sets up GitHub repo + Pages (or the chosen fallback). Renders the empty `index.html`.
 
 ### Phase 1 — Brief · `/dsf:brief`
 Runs a structured brainstorm (obra/superpowers **brainstorming** skill; built-in fallback) — the agent interrogates the idea before anything is written: audience, problem, platform, constraints, success criteria.
@@ -150,7 +152,7 @@ Onboarding, not an archive: fresh-eyes audit ("walk the repo as a new developer"
 **Out:** `handoff/` (spec, map, a11y, gaps, `handoff/index.html`), release, verified onboarding.
 
 ### Cross-cutting commands
-- `/dsf:status` — reads the repo, determines the current phase from artifact presence + `/dsf:check` results + git tags, prints "where you are / what to type next", refreshes the `pipeline.html` data block.
+- `/dsf:status` — reads the repo, determines the current phase from artifact presence + `/dsf:check` results + git tags, prints "where you are / what to type next", refreshes the `index.html` data block.
 - `/dsf:critique` — runs the standard critique cycle on any scope (defect table → human prioritizes → fixes at the source). Uses `/impeccable critique|audit` when active, `.design/prompts/critique.md` and `audit.md` otherwise.
 - `/dsf:check` — verifies a phase against its `.design/checklists/` done-criteria, writes the verdict, and — on a full pass, after the human confirms — creates the phase's single git tag. **Phase commands never tag.**
 - `/dsf:change "<request>"` — the entry point for "the client changed their mind": classifies the earliest invalidated phase, prints the blast radius, gates on the human, re-opens the affected phases and logs the decision.
@@ -178,21 +180,27 @@ through `/dsf:change`, not through an ad-hoc edit.
 
 ---
 
-## 5. Progress tracking — `pipeline.html`
+## 5. Progress tracking — `index.html`
 
-`pipeline.html` at the repo root is **the project's home page** — the surface the designer
+`index.html` at the repo root is **the project's home page** — the surface the designer
 opens between prompts and the page a stakeholder is sent:
 
 - 11 phases (0–10) as a rail: done / in-progress / locked, with gate criteria per phase;
 - under each phase — the artifact checklist (exists ✓ / missing —) where **every HTML artifact is a link**: `research.html`, `personas.html`, `ia.html`, the wireframe navigator `wireframes/index.html`, `voice.html`, `directions.html`, `concept.html`, `kit.html`, the showcase, `width-audit.html`, `motion-inventory.html`, `handoff/index.html`;
-- deployed with GitHub Pages, so the home page is also the project's public front page.
+- deployed with GitHub Pages, which serves it at the repo URL itself, so the home page is also
+  the project's public front page.
+
+**Its files.** `index.html` carries the markup and the state block; its styling, dictionaries and
+behaviour sit next to it in `assets/` — `fonts.css` (Inter, base64-embedded), `pipeline.css`,
+`i18n-uk.js`, `pipeline.js` — linked with relative paths from the same repo. Nothing is fetched
+from outside the repo, and the page opens the same way from a static host and from `file://`.
 
 **The data contract.** All state lives in one `<script type="application/json" id="pipeline-data">`
-block: phase statuses, artifact entries with their links, and a `context` object (product,
-one-liner, benchmark dimension, primary persona, main job, chosen direction) that the page
-uses to fill product context into its prompt hints. **Phase commands edit that block and
-nothing else** — never the markup, CSS or scripts around it. The page renders itself from the
-JSON, so a command cannot break the dashboard by touching layout.
+block, inside `index.html`: phase statuses, artifact entries with their links, and a `context`
+object (product, one-liner, benchmark dimension, primary persona, main job, chosen direction)
+that the page uses to fill product context into its prompt hints. **Phase commands edit that
+block and nothing else** — never the markup around it, never anything in `assets/`. The page
+renders itself from the JSON, so a command cannot break the dashboard by touching layout.
 
 Status is derived from **artifact presence + `/dsf:check` results + git tags** — no separate
 state file to drift out of sync. Git history is the timeline: **exactly one tag per phase**
@@ -221,7 +229,7 @@ human confirms. Phases 2 and 5 have two commands each and still get one tag.
 
 - **Template repo on GitHub** (`Use this template` → new product repo). Everything ships inside the repo: commands, constitution, templates, checklists, dashboard. Zero external CLI — cloning is the installation.
 - Optional later: a Claude Code **plugin/marketplace** wrapper so commands can be installed into an existing repo (`design-spec-framework` as a skill bundle), mirroring spec-kit's `specify init --here`.
-- Versioned like a product: the template has releases; `pipeline.html` shows which template version a project was started from.
+- Versioned like a product: the template has releases; `index.html` shows which template version a project was started from.
 
 ---
 

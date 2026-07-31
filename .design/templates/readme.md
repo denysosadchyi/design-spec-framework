@@ -7,7 +7,7 @@
 This repo **is** the design file. Research, structure, screens, copy, visual language, the
 design system and the handoff all live here as files. No Figma required.
 
-**→ [Open the pipeline page](./pipeline.html)** — this is your home: current phase, every
+**→ [Open the pipeline page](./index.html)** — this is your home: current phase, every
 step and prompt to type, success criteria, and links to every viewable page. **Start here**,
 then type `/dsf:init` in Claude Code.
 
@@ -86,7 +86,7 @@ Code; the rules live in `.design/memory/constitution.md`.
 | `.design/` | Constitution, phase table, toolbox, fallback prompts, artifact templates, phase checklists, `checklists/results/` (the `/dsf:check` verdicts), `progress/` (the append-only step ledgers), decision log |
 | `.claude/commands/dsf/` | The `/dsf:*` commands |
 | `CLAUDE.md` | Agent context — brief plus a block per phase |
-| `pipeline.html` | The project's home page — phases, artifacts, links, status |
+| `index.html` | The project's home page — phases, artifacts, links, status |
 | `research/` · `people/` | Phase 2 |
 | `ia/` | Phase 3 |
 | `wireframes/` | Phase 4 — the screens, layered by every later phase |

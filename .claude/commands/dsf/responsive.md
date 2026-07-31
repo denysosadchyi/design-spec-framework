@@ -194,7 +194,7 @@ Verify against `.design/checklists/phase-8-responsive.md` (or run `/dsf:check 8`
 - [ ] `split-view` lives in `design-system/patterns/`, assembled from components, driven by the breakpoint
 - [ ] No horizontal scroll at any width; `--container-max` keeps line length readable
 - [ ] No action lost on desktop; empty / loading / error present at all widths, incl. "nothing selected"
-- [ ] `responsive/width-audit.html` renders and is linked from `pipeline.html`
+- [ ] `responsive/width-audit.html` renders and is linked from `index.html`
 
 ## Close the phase
 
@@ -203,7 +203,7 @@ Verify against `.design/checklists/phase-8-responsive.md` (or run `/dsf:check 8`
    "current destination for a change" line if it moved.
 2. `README.md` — the **Responsive** section: two or three sentences and links to
    `responsive/width-audit.md`, the pattern page, the shell.
-3. Update `pipeline.html` — edit **only** the `<script id="pipeline-data">` JSON block:
+3. Update `index.html` — edit **only** the `<script id="pipeline-data">` JSON block:
    phase 8 status, its artifact entries,
    `responsive/width-audit.html` plus the split-view docs page as live links, and the
    `steps` object. Leave the

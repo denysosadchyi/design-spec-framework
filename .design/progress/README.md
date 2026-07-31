@@ -55,7 +55,7 @@ Both commands of a two-command phase write into the same file, in the order the 
 4. **A step with no line did not happen.** Same standard the decision log holds gates to.
 5. **This is the resume signal.** A command re-run reads its ledger first and reports what it
    will skip and what it will redo, before touching anything.
-6. **The ledger is the truth; `pipeline.html` is the cache.** The dashboard's per-phase
+6. **The ledger is the truth; `index.html` is the cache.** The dashboard's per-phase
    `steps: { total, done, current }` is derived from these files. When they disagree, the ledger
    wins and the JSON gets rebuilt — `/dsf:status` does that.
 7. **The gate line does not replace `.design/decisions.md`.** The full entry — trigger,

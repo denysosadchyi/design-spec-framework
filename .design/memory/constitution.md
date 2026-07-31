@@ -22,7 +22,7 @@ page a human can open, show and deploy.
 
 - The Markdown is the source of truth for machines. Keep it structured and linkable.
 - The HTML is generated from the Markdown, opens standalone in a browser, and is
-  linked from `pipeline.html`.
+  linked from `index.html`.
 - Never ship one without the other. A phase with no viewable page is not done.
 
 ## 3. Data or `[?]`
@@ -118,7 +118,7 @@ Three files are updated at the end of every phase, before the commit:
   it instead of re-asking.
 - `README.md` — the human index. Two or three sentences and a link per section. A route,
   not a museum.
-- `pipeline.html` — the status dashboard. Phase states, artifact checklist, live links to
+- `index.html` — the status dashboard. Phase states, artifact checklist, live links to
   every HTML artifact. Regenerated, never hand-edited into a lie.
 
 Status is derived from artifact presence plus checklist results. There is no separate
@@ -133,7 +133,7 @@ Append-only, never rewritten, a re-run appends again. The format and the ids are
 - **Before you start**, read the ledger of the command you are running and say what you will
   skip and what you will redo. Resuming is reading, not guessing.
 - **The ledger is the truth, the dashboard is the cache.** Keep the phase's `steps` object in
-  `pipeline.html` in step with the lines you write; when they disagree, the ledger wins.
+  `index.html` in step with the lines you write; when they disagree, the ledger wins.
 
 A step with no line did not happen — the same standard the decision log holds gates to.
 

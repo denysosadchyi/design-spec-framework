@@ -145,7 +145,7 @@ Verify against `.design/checklists/phase-7-system.md` (or run `/dsf:check 7`); d
 
 1. Update `CLAUDE.md` — fill the **System** block under *Context blocks* (contribution rules, showcase location and URL, patterns, backlog) and update the "keep it" routing.
 2. Update `README.md` — "Design system" section: entry point, showcase link, `design-system/backlog.md`, `design-system/examples/`.
-3. Update `pipeline.html` — edit **only** the `<script id="pipeline-data">` JSON block: phase 7 status, its artifact entries, the showcase link, the `docs/why.html` link, and the `steps` object. Leave the `context` object as it is; this phase fills none of its keys. Do not touch the markup, CSS or scripts around the block.
+3. Update `index.html` — edit **only** the `<script id="pipeline-data">` JSON block: phase 7 status, its artifact entries, the showcase link, the `docs/why.html` link, and the `steps` object. Leave the `context` object as it is; this phase fills none of its keys. Do not touch the markup, CSS or scripts around the block.
 4. Commit (push per `toolbox.md`).
 5. Do not create a git tag. Tell the human to run `/dsf:check` to close the phase — it verifies the checklist and creates the phase tag `phase-7-system`. The next command after that is `/dsf:responsive` (phase 8).
 

@@ -141,7 +141,7 @@ for each question. A route, not a museum.
 - Deploy the product and the showcase (GitHub Pages, or the toolbox's fallback).
 - Collect three links in `handoff/README.md`: repository, live showcase, live product.
 - Render **`handoff/index.html`** — the human-facing onboarding route, linking the spec, map,
-  a11y checklist and the three release links. This is the page `pipeline.html` points at for
+  a11y checklist and the three release links. This is the page `index.html` points at for
   phase 10; nothing else in the repo is called the handoff page.
 - **Create no tag here.** The release tag `v1.0` and the phase tag `phase-10-handoff` are both
   created by `/dsf:check` after the human signs the phase off.
@@ -209,14 +209,14 @@ Verify against `.design/checklists/phase-10-handoff.md` (or run `/dsf:check 10`)
 - [ ] A clean clone comes up with no verbal explanation
 - [ ] Fresh-subagent test passed; every stumble closed with documentation, not a feature
 - [ ] `design-system/examples/one-shot/` — a new feature assembled in one pass, with states, adaptivity and micro-interactions, plus a retrospective
-- [ ] `CLAUDE.md` has a "Handoff" section; `handoff/index.html` linked from `pipeline.html`
+- [ ] `CLAUDE.md` has a "Handoff" section; `handoff/index.html` linked from `index.html`
 
 ## Close the phase
 
 1. `CLAUDE.md` — the **Handoff** context block: package contents, live URLs, the standing
    rule that new work starts a new cycle and does not ride inside handoff.
 2. `README.md` — already rewritten in step 5; verify every link resolves.
-3. Update `pipeline.html` — edit **only** the `<script id="pipeline-data">` JSON block: all
+3. Update `index.html` — edit **only** the `<script id="pipeline-data">` JSON block: all
    eleven phases resolved, the phase 10 artifact entries, `handoff/index.html` as a live link,
    the three release links in the fields the block provides for them, and the `steps`
    object. Leave the

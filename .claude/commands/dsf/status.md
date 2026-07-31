@@ -1,5 +1,5 @@
 ---
-description: Read the repo, derive every phase's state from artifacts + check results + tags and the current step from the progress ledgers, report where you are and what to type next, and refresh the pipeline.html data block. Never modifies artifacts.
+description: Read the repo, derive every phase's state from artifacts + check results + tags and the current step from the progress ledgers, report where you are and what to type next, and refresh the index.html data block. Never modifies artifacts.
 argument-hint: (no arguments)
 allowed-tools: Read, Glob, Grep, Edit, Bash(git tag:*), Bash(git log:*), Bash(git status:*), Bash(git add:*), Bash(git commit:*), Bash(git push:*)
 ---
@@ -8,7 +8,7 @@ allowed-tools: Read, Glob, Grep, Edit, Bash(git tag:*), Bash(git log:*), Bash(gi
 Tool budget, deliberately narrow. This command is read-only against every artifact, so it gets
 no Write and no artifact-producing tool. `Edit` is the one exception and it is load-bearing: the
 command's only write target is the `<script id="pipeline-data">` JSON block inside
-`pipeline.html` (step 7). `git tag` / `git log` / `git status` are how the state is derived;
+`index.html` (step 7). `git tag` / `git log` / `git status` are how the state is derived;
 `git add` / `git commit` / `git push` exist only for the single dashboard-only commit in step 8.
 -->
 
@@ -17,7 +17,7 @@ command's only write target is the `<script id="pipeline-data">` JSON block insi
 
 Reports the state of the project and refreshes the dashboard. **Read-only against every
 artifact**: this command never edits, fixes, generates or "helpfully completes" anything. The
-only file it writes is the data block inside `pipeline.html`.
+only file it writes is the data block inside `index.html`.
 
 Status is derived, never stored. There is no state file to drift out of sync — artifact
 presence, the `/dsf:check` results files and the git tags are the truth; git history is the
@@ -150,7 +150,7 @@ line each (date · what was decided). Skip the block entirely if the log is empt
 
 Keep it to one screen. This is a status readout, not a report.
 
-### 7 — Regenerate the `pipeline.html` data block
+### 7 — Regenerate the `index.html` data block
 
 Rewrite **only** this block:
 
@@ -158,8 +158,10 @@ Rewrite **only** this block:
 <script type="application/json" id="pipeline-data"> … </script>
 ```
 
-Never the markup, never the styling, never the renderer. Those ship with the template and are
-not yours.
+Never the markup, never the styling, never the renderer. The markup ships in `index.html`; the
+styling, the dictionaries and the renderer ship beside it in `assets/` (`fonts.css`,
+`pipeline.css`, `i18n-uk.js`, `pipeline.js`), loaded by relative paths from this same repo.
+None of it is yours: the one agent-writable thing in the whole page is this JSON block.
 
 **`phases`** — regenerate `status`, `tagged` and every artifact's `exists` wholesale from the
 derivation above (`criteria` is the exception — see below), with `link: true` on the HTML pages a human opens — the canonical
@@ -232,7 +234,7 @@ Two exceptions:
 Never overwrite a non-empty `context` value, and never guess one into existence — an empty
 string is the honest answer and the page handles it.
 
-If `pipeline.html` is missing entirely, say so and name `/dsf:init`; do not hand-build a
+If `index.html` is missing entirely, say so and name `/dsf:init`; do not hand-build a
 replacement page.
 
 Never write the dashboard into a state the files do not support. A green phase with a missing
@@ -240,7 +242,7 @@ artifact is the one lie the whole framework depends on not telling.
 
 ### 8 — Commit (only the dashboard)
 
-If `pipeline.html` changed, commit it alone with a status message. Push if `toolbox.md` records
+If `index.html` changed, commit it alone with a status message. Push if `toolbox.md` records
 hosting as `active`; otherwise stop at the commit and say so. **No tags** — tags are created by
 `/dsf:check` on a signed-off pass, and this command signs nothing off.
 

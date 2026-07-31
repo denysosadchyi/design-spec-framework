@@ -9,7 +9,7 @@ Tool budget, deliberately narrow. This command verifies and never fixes, so it g
 could rewrite an artifact beyond its own two files. `Write` is for the verdict file
 `.design/checklists/results/phase-N.md`; `Edit` is for appending a fresh verdict below a
 `Reopened` line in that same file and for the `criteria` / `status` / `tagged` / `exists` keys of
-the `pipeline-data` block in `pipeline.html`. `Bash(grep:*)` runs the checklists' embedded
+the `pipeline-data` block in `index.html`. `Bash(grep:*)` runs the checklists' embedded
 `<!-- check: grep … -->` assertions verbatim — the evidence must be the real output, not a claim.
 `git tag` creates the phase tag (and `v1.0` at phase 10) after the sign-off gate; `git log` reads
 history; `git add` / `git commit` / `git push` are for the results-file + dashboard commit only.
@@ -124,10 +124,11 @@ confirmed by the human in this session. Anything else is `fail`, however close.
 ### 4 — Write the criteria state into the dashboard
 
 Immediately after the results file, update **this phase's `criteria` object** inside the
-`<script type="application/json" id="pipeline-data">` block of `pipeline.html`. This happens on
+`<script type="application/json" id="pipeline-data">` block of `index.html`. This happens on
 **every** run — a failing check updates it just as a passing one does, because a dashboard that
 shows which criteria are still open is the whole point. Nothing else in the block changes at this
-step: no `status`, no `tagged`, no `context`, no markup, no renderer.
+step: no `status`, no `tagged`, no `context`, no markup — and nothing in `assets/`, where the
+styling, the dictionaries and the renderer live.
 
 ```json
 "criteria": { "total": 24, "passed": [1, 2, 3, 5], "failed": [4], "checkedAt": "2026-07-31" }
@@ -174,11 +175,12 @@ After the human confirms:
   the tag already exists — this phase was signed off before and reopened by `/dsf:change` — that
   is **not** a failure: leave the tag in place, say the phase is re-closed on the existing tag,
   and never rewrite history to move it;
-- update the `<script type="application/json" id="pipeline-data">` block in `pipeline.html`: this
+- update the `<script type="application/json" id="pipeline-data">` block in `index.html`: this
   phase to `status: "done"` and `tagged: true`, the next phase from `locked` to `in-progress`,
   and the `exists` flags of this phase's artifacts to match what you just verified — on top of
-  the `criteria` object you already wrote in step 4, which now reads all-passed. Markup, styling
-  and renderer are not yours to touch, and **`context` is left exactly as it is** — those values
+  the `criteria` object you already wrote in step 4, which now reads all-passed. The markup in
+  `index.html` and everything in `assets/` (styling, dictionaries, renderer) are not yours to
+  touch, and **`context` is left exactly as it is** — those values
   belong to the phase commands and to `/dsf:status`;
 - commit the results file and the dashboard together; push if `toolbox.md` records hosting as
   `active`.

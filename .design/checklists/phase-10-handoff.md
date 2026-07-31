@@ -84,6 +84,6 @@ no verbal explanation. Second rule: **document what exists, introduce nothing ne
       is either answered or moved to `handoff/onboarding-gaps.md` as a named debt
       <!-- check: grep -rnF '[?]' handoff/ DESIGN.md | grep -v onboarding-gaps → expect 0 -->
 - [ ] `handoff/index.html` opens standalone and links the spec, the map and the a11y checklist
-- [ ] `pipeline.html` data block regenerated: all eleven phases 0–10 `done`, every artifact
+- [ ] `index.html` data block regenerated: all eleven phases 0–10 `done`, every artifact
       present, the release links live
 - [ ] Phase committed; pushed if hosting is `active`

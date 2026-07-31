@@ -221,7 +221,7 @@ disagree, the Markdown wins and the page is regenerated.
    `<screen>.<zone>.<element>`, new copy is written from the rules and never from mood,
    user-generated content is out of scope.
 3. Update `README.md` — a Voice section with links to both files and to `voice/voice.html`.
-4. Update `pipeline.html` — edit **only** the `<script id="pipeline-data">` JSON block: the
+4. Update `index.html` — edit **only** the `<script id="pipeline-data">` JSON block: the
    phase 5 artifact entries for voice, `voice/voice.html` as a live link, and the `steps`
    object. Leave the `context` object as it is; this phase fills none of its keys. Do not
    touch the markup, CSS or scripts around the block.

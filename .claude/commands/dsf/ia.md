@@ -148,7 +148,7 @@ Run `.design/checklists/phase-3-ia.md`. Hard items: every screen annotated with 
 - `CLAUDE.md` — fill the **Structure** block under *Context blocks*: the top-level sitemap, the main flow, the global navigation, and the tap depth to the main job.
 - `README.md` — a **Structure** section: what lives in `sitemap.md` and `flows.md`.
 - If building the IA exposed a data gap, extend `research/research.md` — it stays a living file.
-- `pipeline.html` — edit **only** the `<script id="pipeline-data">` JSON block: phase 3 status, its artifact entries, the link to `ia.html`, and the `steps` object. Leave the `context` object as it is; this phase fills none of its keys. Do not touch the markup, CSS or scripts around the block.
+- `index.html` — edit **only** the `<script id="pipeline-data">` JSON block: phase 3 status, its artifact entries, the link to `ia.html`, and the `steps` object. Leave the `context` object as it is; this phase fills none of its keys. Do not touch the markup, CSS or scripts around the block.
 - Commit: `feat: phase 3 — entities, sitemap, navigation, flows, traceability`. Push **only** if `toolbox.md` says GitHub hosting is active.
 
 ### 10. Sign-off

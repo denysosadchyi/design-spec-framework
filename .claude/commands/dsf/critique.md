@@ -147,7 +147,7 @@ Then:
 - Anything deferred goes to `design-system/backlog.md` (system gaps) or
   `handoff/onboarding-gaps.md` (documentation gaps) — never to nowhere.
 - If a "keep it" was said, write the rule into `CLAUDE.md` and route it to the current source.
-- Update `CLAUDE.md` / `README.md` only if a rule changed. Refresh `pipeline.html` by running
+- Update `CLAUDE.md` / `README.md` only if a rule changed. Refresh `index.html` by running
   `/dsf:status` — only its `<script type="application/json" id="pipeline-data">` block changes,
   and the `context` values are left alone.
 - Commit; push if `toolbox.md` records hosting as `active`.

@@ -233,7 +233,7 @@ Then walk the ordered table and fix everything — the pages and `concept/concep
    the photography rule, and that edits are made at the source and rolled out.
 3. Update `README.md` — a Concept section linking `directions.html`, `concept.html` and the
    two styled screens.
-4. Update `pipeline.html` — edit **only** the `<script id="pipeline-data">` JSON block: the
+4. Update `index.html` — edit **only** the `<script id="pipeline-data">` JSON block: the
    phase 5 artifact entries for concept, with `directions.html` and `concept.html` as live
    links, and the `steps` object. Fill the context key this phase owns — `chosenDirection`
    (number and name); leave the other context keys as they are. Do not touch the markup,

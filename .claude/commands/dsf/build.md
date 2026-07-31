@@ -211,7 +211,7 @@ Verify against `.design/checklists/phase-6-build.md` (or run `/dsf:check 6`); do
 
 1. Update `CLAUDE.md` — "Build" section: kit location, edit-routing rule, "new goes to the kit first", the dark-theme decision, and that `concept/concept.html` is retired.
 2. Update `README.md` — "UI" section: `DESIGN.md`, `ui/inventory.md`, `ui/tokens-audit.md`, `ui/kit.html`, `design-system/`, `visuals/`.
-3. Update `pipeline.html` — edit **only** the `<script id="pipeline-data">` JSON block: phase 6 status, its artifact entries, `ui/kit.html` plus the styled screens as live links, and the `steps` object. Leave the `context` object as it is; this phase fills none of its keys. Do not touch the markup, CSS or scripts around the block.
+3. Update `index.html` — edit **only** the `<script id="pipeline-data">` JSON block: phase 6 status, its artifact entries, `ui/kit.html` plus the styled screens as live links, and the `steps` object. Leave the `context` object as it is; this phase fills none of its keys. Do not touch the markup, CSS or scripts around the block.
 4. Commit (push per `toolbox.md`).
 5. Do not create a git tag. Tell the human to run `/dsf:check` to close the phase — it verifies the checklist and creates the phase tag `phase-6-build`. The next command after that is `/dsf:system`.
 

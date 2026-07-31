@@ -108,7 +108,7 @@ Run `.design/checklists/phase-2-discover.md`. Hard items: personas differ by beh
 
 - `CLAUDE.md` — fill the **People** block under *Context blocks*: primary persona (2–3 lines), main job, top-3 MVP jobs. This is what phase 3 reads on every prompt.
 - `README.md` — a **People** section: what lives in `personas.md` and `jtbd.md`.
-- `pipeline.html` — edit **only** the `<script id="pipeline-data">` JSON block: the phase 2 artifact entries for people, the link to `personas.html`, and the `steps` object. Fill the context keys this phase owns — `primaryPersona` (one short line) and `mainJob` (the main job statement); leave the other context keys as they are. Do not touch the markup, CSS or scripts around the block.
+- `index.html` — edit **only** the `<script id="pipeline-data">` JSON block: the phase 2 artifact entries for people, the link to `personas.html`, and the `steps` object. Fill the context keys this phase owns — `primaryPersona` (one short line) and `mainJob` (the main job statement); leave the other context keys as they are. Do not touch the markup, CSS or scripts around the block.
 - Commit: `feat: phase 2b — personas, JTBD, coverage matrix`. Push **only** if `toolbox.md` says GitHub hosting is active.
 
 ### 10. Sign-off

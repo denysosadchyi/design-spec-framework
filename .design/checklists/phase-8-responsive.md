@@ -57,6 +57,6 @@ existing system.
 - [ ] `responsive/width-audit.html` opens standalone in a browser — every phase ships a
       viewable page, not only Markdown
 - [ ] `README.md` → Responsive section links to `responsive/width-audit.html`
-- [ ] `pipeline.html` data block regenerated — `responsive/width-audit.html` present and
+- [ ] `index.html` data block regenerated — `responsive/width-audit.html` present and
       linked
 - [ ] Phase committed; pushed if hosting is `active`

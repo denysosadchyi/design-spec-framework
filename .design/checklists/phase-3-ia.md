@@ -52,5 +52,5 @@ creates the `phase-3-ia` tag on a full pass.
       Mermaid diagrams and the coverage matrix visible
 - [ ] `CLAUDE.md` → **Structure** block records the main flow and the navigation model
 - [ ] `README.md` → Structure section links to `ia/ia.html`
-- [ ] `pipeline.html` data block regenerated — phase 3 artifacts marked present
+- [ ] `index.html` data block regenerated — phase 3 artifacts marked present
 - [ ] Phase committed; pushed if hosting is `active`

@@ -63,6 +63,6 @@ behavior in phase 8 and motion in phase 9. Nothing here is redrawn later.
 - [ ] `CLAUDE.md` → **Wireframes** block records where screens live, the naming convention
       and the state-page rule
 - [ ] `README.md` → Wireframes section links into `wireframes/`
-- [ ] `pipeline.html` data block regenerated — phase 4 artifacts marked present, the navigator
+- [ ] `index.html` data block regenerated — phase 4 artifacts marked present, the navigator
       `wireframes/index.html` linked
 - [ ] Phase committed; pushed if hosting is `active`
