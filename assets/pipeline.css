@@ -737,6 +737,9 @@
   /* The Result view is a stage: the criteria rail belongs to the Guide, and
      the content column takes the width the rail gives back. */
   body.result-open #rail { display: none; }
+  /* Result is the artifact stage: guide copy and page meta stay out of it. */
+  body.result-open .page-head .lede { display: none; }
+  body.result-open .rule, body.result-open .colophon { display: none; }
   body.result-open main { max-width: 1120px; }
 
   .result-empty, .result-facts {
