@@ -798,17 +798,34 @@
     });
   }
 
+  function sizeFrame(frame) {
+    /* Same-origin artifacts grow to their full height: the page scrolls, the
+       frame does not. Cross-origin (never the case in-repo) keeps the CSS 70vh. */
+    try {
+      var doc = frame.contentDocument;
+      if (!doc || !doc.documentElement) return;
+      var h = Math.max(doc.documentElement.scrollHeight, doc.body ? doc.body.scrollHeight : 0);
+      if (h > 0) frame.style.height = h + "px";
+    } catch (e) { /* cross-origin: leave the CSS height */ }
+  }
+
   function mountFrame(box, src) {
     var frame = box.querySelector("iframe");
     if (frame && frame.getAttribute("src") === src) return;  /* leave it alone */
     if (!frame) {
       frame = document.createElement("iframe");
       frame.setAttribute("loading", "lazy");
+      frame.addEventListener("load", function () { sizeFrame(frame); });
       box.appendChild(frame);
     }
+    frame.style.height = "";
     frame.setAttribute("title", src);
     frame.setAttribute("src", src);
   }
+
+  window.addEventListener("resize", function () {
+    Array.prototype.forEach.call(document.querySelectorAll(".result-frame-box iframe"), sizeFrame);
+  });
 
   function dropFrame(box) {
     var frame = box.querySelector("iframe");
