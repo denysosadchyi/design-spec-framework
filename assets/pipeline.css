@@ -12,12 +12,14 @@
   :root {
     color-scheme: light;
 
-    --bg:            #fbfbfa;
-    --bg-sidebar:    #f6f6f4;
-    --bg-panel:      #ffffff;
-    --bg-inset:      #f4f4f2;
-    --line:          #e3e3df;
-    --line-strong:   #d2d2cd;
+    /* Every neutral is tinted toward the accent hue, surfaces and text alike,
+       so the page runs one temperature instead of two. */
+    --bg:            #fbfbfd;
+    --bg-sidebar:    #f5f6f9;
+    --bg-panel:      #fdfdff;
+    --bg-inset:      #f2f3f7;
+    --line:          #e2e4ec;
+    --line-strong:   #ced2de;
 
     --text:          #16181d;
     --text-body:     #3b414b;
@@ -28,6 +30,8 @@
     --accent-hover:  #2b3f9f;
     --accent-weak:   #eef1fc;
     --accent-border: #c6cff2;
+    /* The one light value that sits on a filled mark. Never pure white. */
+    --on-accent:     #f7f8fc;
 
     --done:          #24704a;
     --done-weak:     #e8f4ed;
@@ -38,12 +42,12 @@
     --progress-border:#e9d4a4;
 
     --locked:        #b0b4bb;
-    --locked-weak:   #f1f1ef;
+    --locked-weak:   #f0f1f5;
     --pending-mark:  #868c96;  /* 3.1:1 on the sidebar, 3.4:1 on a panel */
 
     /* the pipeline route in the sidebar: the walked part carries the done hue,
        the rest is a plain hairline. Both are decoration, never text. */
-    --route-line:    #dcdcd7;
+    --route-line:    #dbdde6;
     --route-done:    #8fc0a7;
 
     --fail:          #a32b28;
@@ -52,7 +56,10 @@
 
     --ph-underline:  rgba(138, 95, 13, 0.45);
 
-    --radius:  10px;
+    /* Three steps, one rule behind them: inline chrome, controls, containers. */
+    --radius-sm: 6px;   /* code, small buttons */
+    --radius:    8px;   /* nav rows, prompt blocks, toggles */
+    --radius-lg: 10px;  /* panels, the rail card, the result stage */
     --measure: 68ch;
 
     /* Type scale, one ratio (1.125) between UI steps, sizes in rem. */
@@ -62,9 +69,14 @@
     --fs-md:   0.875rem;   /* 14px · secondary UI */
     --fs-base: 1rem;       /* 16px · body */
     --fs-lg:   1.125rem;   /* 18px · lede, h3 */
-    --fs-xl:   1.25rem;    /* 20px · section headings */
+    --fs-xl:   1.375rem;   /* 22px · section headings */
 
     --track-caps: 0.09em;  /* letter-spacing for uppercase labels */
+
+    /* One duration and one curve for every state change on the page, so two
+       controls of the same class never answer at different speeds. */
+    --t-fast: 160ms;
+    --ease:   cubic-bezier(0.22, 1, 0.36, 1);
 
     /* Weight roles: body sits a notch above hairline regular, labels are
        semibold, headings bold. Nothing lands between body and label. */
@@ -97,7 +109,7 @@
     align-items: start;
   }
 
-  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 3px; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: var(--radius-sm); }
 
   /* ---------------------------------------------------------------- sidebar */
 
@@ -134,23 +146,31 @@
   #side-toggle {
     flex: none; width: 28px; height: 28px; margin: -2px -6px 0 0;
     display: grid; place-items: center;
-    background: transparent; border: 1px solid transparent; border-radius: 8px;
+    background: transparent; border: 1px solid transparent; border-radius: var(--radius);
     color: var(--text-faint); cursor: pointer; padding: 0;
-    transition: background-color 120ms ease, color 120ms ease;
+    transition: background-color var(--t-fast) var(--ease),
+                border-color     var(--t-fast) var(--ease),
+                color            var(--t-fast) var(--ease);
   }
-  #side-toggle:hover { background: var(--bg-panel); border-color: var(--line-strong); color: var(--text); }
+  #side-toggle:hover  { background: var(--bg-panel); border-color: var(--line-strong); color: var(--text); }
+  #side-toggle:active { background: var(--bg-inset); }
   #side-toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
   /* One chevron for the whole page: the same sprite symbol the mobile "Phases"
      disclosure uses, rotated to point the way the panel will move. */
-  #side-toggle .i { transform: rotate(90deg); transition: transform 120ms ease; }
+  #side-toggle .i { transform: rotate(90deg); transition: transform var(--t-fast) var(--ease); }
   body.side-collapsed #side-toggle .i { transform: rotate(-90deg); }
 
   #menu-toggle {
     display: none; align-items: center; gap: 8px;
     font: inherit; font-size: var(--fs-sm); font-weight: var(--w-label);
     color: var(--text-dim); background: var(--bg-panel); border: 1px solid var(--line-strong);
-    border-radius: 8px; padding: 8px 12px; cursor: pointer;
+    border-radius: var(--radius); padding: 8px 12px; cursor: pointer;
+    transition: background-color var(--t-fast) var(--ease),
+                border-color     var(--t-fast) var(--ease),
+                color            var(--t-fast) var(--ease);
   }
+  #menu-toggle:hover  { background: var(--bg); border-color: var(--text-faint); color: var(--text); }
+  #menu-toggle:active { background: var(--bg-inset); }
 
   #nav { display: flex; flex-direction: column; }
 
@@ -159,16 +179,19 @@
   .nav-item {
     position: relative;
     display: grid; grid-template-columns: 20px minmax(0, 1fr);
-    align-items: center; gap: 12px; padding: 8px 12px; border-radius: 8px;
+    align-items: center; gap: 12px; padding: 8px 12px; border-radius: var(--radius);
     text-decoration: none; color: var(--text-dim);
     font-size: var(--fs-md); font-weight: var(--w-body); line-height: 1.35;
     border: 1px solid transparent;
-    transition: background-color 120ms ease, color 120ms ease;
+    transition: background-color var(--t-fast) var(--ease),
+                border-color     var(--t-fast) var(--ease),
+                color            var(--t-fast) var(--ease);
   }
-  .nav-item:hover { background: var(--bg-panel); color: var(--text); }
+  .nav-item:hover  { background: var(--bg-panel); color: var(--text); }
+  .nav-item:active { background: var(--bg-inset); }
   .nav-item:focus-visible,
   .nav-sub a:focus-visible {
-    outline: 2px solid var(--accent); outline-offset: 1px; border-radius: 8px;
+    outline: 2px solid var(--accent); outline-offset: 1px; border-radius: var(--radius);
   }
 
   .nav-item .dot {
@@ -180,8 +203,8 @@
     font-variant-numeric: tabular-nums; line-height: 1; color: var(--text-dim);
   }
 
-  .nav-item[data-status="done"] .dot        { background: var(--done); color: #fff; }
-  .nav-item[data-status="in-progress"] .dot { background: var(--progress); color: #fff; }
+  .nav-item[data-status="done"] .dot        { background: var(--done); color: var(--on-accent); }
+  .nav-item[data-status="in-progress"] .dot { background: var(--progress); color: var(--on-accent); }
   .nav-item[data-status="locked"] .dot      { background: transparent; border: 1px solid var(--pending-mark); color: var(--text-dim); }
 
   /* Where you are in the pipeline: carried by the row itself, no label text. */
@@ -247,16 +270,19 @@
   }
   .nav-sub a {
     position: relative; display: block;
-    padding: 6px 12px 6px var(--nav-text-x); border-radius: 8px;
+    padding: 6px 12px 6px var(--nav-text-x); border-radius: var(--radius);
     font-size: var(--fs-sm); font-weight: 400; line-height: 1.4;
     color: var(--text-faint); text-decoration: none;
-    transition: background-color 120ms ease, color 120ms ease;
+    transition: background-color var(--t-fast) var(--ease),
+                border-color     var(--t-fast) var(--ease),
+                color            var(--t-fast) var(--ease);
   }
   .nav-sub a::before {
     content: ""; position: absolute; left: calc(var(--nav-line-x) + 1px); top: 50%;
     width: 8px; height: 1px; background: var(--route-line);
   }
-  .nav-sub a:hover { background: var(--bg-panel); color: var(--text-dim); }
+  .nav-sub a:hover  { background: var(--bg-panel); color: var(--text-dim); }
+  .nav-sub a:active { background: var(--bg-inset); }
 
   /* ---- the quiet end of the panel ---------------------------------------- */
 
@@ -274,11 +300,15 @@
     font: inherit; font-family: var(--mono); font-size: var(--fs-2xs);
     font-weight: var(--w-label); letter-spacing: var(--track-caps);
     color: var(--text-dim); background: transparent; border: 0; border-radius: 999px;
-    padding: 4px 11px; cursor: pointer; line-height: 1.4;
+    padding: 4px 12px; cursor: pointer; line-height: 1.4;
+    transition: background-color var(--t-fast) var(--ease),
+                border-color     var(--t-fast) var(--ease),
+                color            var(--t-fast) var(--ease);
   }
-  .lang button:hover { color: var(--text); }
+  .lang button:hover  { color: var(--text); }
+  .lang button:active { color: var(--text); background: var(--bg-inset); }
   .lang button[aria-pressed="true"] {
-    background: var(--text); color: #fff;
+    background: var(--text); color: var(--on-accent);
   }
 
   #sidebar footer {
@@ -317,7 +347,7 @@
   .badge {
     display: inline-block; font-family: var(--mono); font-size: var(--fs-2xs);
     font-weight: var(--w-label); letter-spacing: 0.04em;
-    padding: 3px 9px; border-radius: 999px; border: 1px solid;
+    padding: 4px 8px; border-radius: 999px; border: 1px solid;
     vertical-align: 4px; margin-left: 8px; white-space: nowrap;
   }
   .badge[data-status="done"]        { color: var(--done);     background: var(--done-weak);     border-color: var(--done-border); }
@@ -337,7 +367,7 @@
     font-weight: var(--w-head); letter-spacing: -0.012em; color: var(--text);
   }
   h3 { margin: 32px 0 8px; font-size: var(--fs-lg); line-height: 1.25; font-weight: var(--w-head); letter-spacing: -0.008em; color: var(--text); }
-  h4 { margin: 0 0 8px; font-size: var(--fs-md); line-height: 1.3; font-weight: var(--w-label); letter-spacing: 0.005em; color: var(--text); }
+  h4 { margin: 0 0 8px; font-size: var(--fs-base); line-height: 1.35; font-weight: var(--w-label); letter-spacing: -0.004em; color: var(--text); }
   h3 + p, h4 + p, h2 + p { margin-top: 0; }
 
   p { margin: 0 0 16px; }
@@ -353,13 +383,14 @@
   .aftercare,
   .legend { max-width: var(--measure); }
 
-  a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 2px; }
+  a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 2px;
+      transition: color var(--t-fast) var(--ease); }
   a:hover { color: var(--accent-hover); }
   strong { color: var(--text); font-weight: var(--w-label); }
 
   code {
     font-family: var(--mono); font-size: 0.85em; background: var(--bg-inset);
-    border: 1px solid var(--line); border-radius: 5px; padding: 1px 5px;
+    border: 1px solid var(--line); border-radius: var(--radius-sm); padding: 2px 4px;
     /* a long path may break rather than push the page sideways on a small screen */
     overflow-wrap: break-word;
   }
@@ -367,6 +398,8 @@
     color: var(--accent); background: var(--accent-weak); border-color: var(--accent-border);
     white-space: nowrap;
   }
+  /* the same chip one step down, for running text set in a smaller size */
+  code.cmd.sm { font-size: var(--fs-2xs); }
   /* File/artifact names in running prose: classified by classifyFileCodes() at
      render time (see the script), never hand-tagged. Contrast checked: accent
      #3b52c4 on bg-inset #f4f4f2 is 5.98:1, well past AA. */
@@ -376,17 +409,17 @@
 
   ol.steps { list-style: none; counter-reset: step; margin: 0; padding: 0; }
 
-  ol.steps > li { counter-increment: step; position: relative; padding: 0 0 32px 44px; }
+  ol.steps > li { counter-increment: step; position: relative; padding: 0 0 32px 40px; }
 
   ol.steps > li::before {
     content: counter(step); position: absolute; left: 0; top: 0;
-    width: 26px; height: 26px; border-radius: 50%;
+    width: 24px; height: 24px; border-radius: 50%;
     border: 1px solid var(--line-strong); background: var(--bg-panel); color: var(--text-dim);
     font-family: var(--mono); font-size: var(--fs-xs); font-weight: var(--w-label);
     font-variant-numeric: tabular-nums; display: grid; place-items: center;
   }
   ol.steps > li::after {
-    content: ""; position: absolute; left: 13px; top: 30px; bottom: 4px;
+    content: ""; position: absolute; left: 12px; top: 28px; bottom: 4px;
     width: 1px; background: var(--line);
   }
   ol.steps > li:last-child { padding-bottom: 0; }
@@ -401,10 +434,10 @@
      look above. Same fills as the sidebar dots: white on --done (6.7:1) and
      white on --progress (6.2:1), both past AA. */
   ol.steps > li[data-state="done"]::before {
-    background: var(--done); border-color: var(--done); color: #fff;
+    background: var(--done); border-color: var(--done); color: var(--on-accent);
   }
   ol.steps > li[data-state="current"]::before {
-    background: var(--progress); border-color: var(--progress); color: #fff;
+    background: var(--progress); border-color: var(--progress); color: var(--on-accent);
     box-shadow: 0 0 0 3px var(--progress-weak);
   }
 
@@ -413,20 +446,20 @@
     font-family: var(--mono); font-size: var(--fs-2xs);
     font-weight: var(--w-label); letter-spacing: 0.03em;
     color: var(--progress); background: var(--progress-weak); border: 1px solid var(--progress-border);
-    border-radius: 999px; padding: 2px 9px; margin-bottom: 8px; white-space: nowrap;
+    border-radius: 999px; padding: 4px 8px; margin-bottom: 8px; white-space: nowrap;
   }
 
   /* --------------------------------------------------------- prompt blocks */
 
   .prompt {
     margin: 16px 0 0; border: 1px solid var(--line);
-    border-radius: 8px; background: var(--bg-inset); overflow: hidden;
+    border-radius: var(--radius); background: var(--bg-inset); overflow: hidden;
   }
   .prompt + .prompt { margin-top: 8px; }
 
   .prompt-head {
-    display: flex; align-items: center; justify-content: space-between; gap: 10px;
-    padding: 5px 6px 5px 12px; border-bottom: 1px solid var(--line);
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    padding: 4px 4px 4px 12px; border-bottom: 1px solid var(--line);
   }
   .prompt-head .plabel {
     font-family: var(--mono); font-size: var(--fs-2xs); font-weight: var(--w-label);
@@ -436,28 +469,43 @@
     display: inline-flex; align-items: center; gap: 6px;
     font: inherit; font-family: var(--mono); font-size: var(--fs-2xs);
     font-weight: var(--w-label); color: var(--text-dim);
-    background: var(--bg-panel); border: 1px solid var(--line-strong); border-radius: 6px;
-    padding: 3px 10px; cursor: pointer; white-space: nowrap;
+    background: var(--bg-panel); border: 1px solid var(--line-strong); border-radius: var(--radius-sm);
+    padding: 4px 12px; cursor: pointer; white-space: nowrap;
+    transition: background-color var(--t-fast) var(--ease),
+                border-color     var(--t-fast) var(--ease),
+                color            var(--t-fast) var(--ease);
   }
-  .copy:hover { color: var(--text); border-color: var(--text-faint); }
+  .copy:hover  { color: var(--text); border-color: var(--text-faint); }
+  .copy:active { background: var(--bg-inset); border-color: var(--text-dim); }
   .copy.done { color: var(--done); border-color: var(--done-border); background: var(--done-weak); }
 
   pre.prompt-body {
-    margin: 0; padding: 12px 14px; font-family: var(--mono); font-size: var(--fs-sm);
+    margin: 0; padding: 12px 16px; font-family: var(--mono); font-size: var(--fs-sm);
     font-weight: 400; line-height: 1.7; color: var(--text-body);
     white-space: pre-wrap; overflow-wrap: anywhere;
   }
-  pre.prompt-body .ph {
+  /* A blank the reader fills in: the same mark inside a prompt block and in
+     the prose that explains one. */
+  .ph {
     color: var(--progress); border-bottom: 1px dashed var(--ph-underline);
   }
 
   /* ---------------------------------------------------------------- panels */
 
-  .panel { border: 1px solid var(--line); background: var(--bg-panel); border-radius: var(--radius); padding: 24px; }
+  .panel { border: 1px solid var(--line); background: var(--bg-panel); border-radius: var(--radius-lg); padding: 24px; }
   .panel.unlock { border-color: var(--progress-border); background: var(--progress-weak); }
-  .panel.good { background: var(--bg-panel); border-color: var(--line); border-left: 2px solid var(--done); }
+  .panel.good { background: var(--done-weak); border-color: var(--done-border); }
   .panel.drift { background: var(--bg-inset); border-color: var(--line); }
   .panel + .panel { margin-top: 12px; }
+  /* The closing panels of a phase page open a new beat after the step list;
+     a second panel under one of them stays in the same beat. */
+  ol.steps + .panel { margin-top: 24px; }
+  /* "Must exist first:" is the lead-in to the list right under it. */
+  .lead-in { margin-bottom: 0; }
+  /* A paragraph that resumes prose after a list, a prompt or the legend. */
+  ul.options + p, .prompt + p, .legend + p { margin-top: 16px; }
+  /* An aside inside a panel: one notch quieter than the panel's own copy. */
+  .note { font-size: var(--fs-sm); color: var(--text-dim); }
   .panel ul { margin: 8px 0 0; padding-left: 18px; }
   .panel li { margin-bottom: 8px; }
   .panel li:last-child { margin-bottom: 0; }
@@ -472,7 +520,7 @@
   ul.artifacts { list-style: none; margin: 4px 0 0; padding: 0; border-top: 1px solid var(--line); }
   ul.artifacts li {
     display: grid; grid-template-columns: 16px minmax(0, 1fr); gap: 12px;
-    align-items: baseline; padding: 12px 2px; border-bottom: 1px solid var(--line);
+    align-items: baseline; padding: 12px 0; border-bottom: 1px solid var(--line);
   }
   /* The mark stays an inline box: ul.artifacts li aligns on the baseline, and an
      inline <svg> with .i's vertical-align lands on it exactly as the old glyph did. */
@@ -498,7 +546,7 @@
   }
   .tag-pill {
     display: inline-flex; align-items: center; gap: 6px;
-    border: 1px solid var(--line-strong); border-radius: 999px; padding: 2px 10px;
+    border: 1px solid var(--line-strong); border-radius: 999px; padding: 4px 12px;
     color: var(--text-dim); background: var(--bg-panel);
   }
   .tag-pill.is-tagged { color: var(--done); border-color: var(--done-border); background: var(--done-weak); }
@@ -541,11 +589,11 @@
 
   /* Default (narrow): a normal section under the content. The media query at
      the end of the sheet pins it to the right once there is room. */
-  #rail { width: 100%; max-width: 800px; margin: 0 auto; padding: 12px 40px 104px; min-width: 0; }
+  #rail { width: 100%; max-width: 800px; margin: 0 auto; padding: 12px 40px 96px; min-width: 0; }
 
   .rail-card {
     border: 1px solid var(--line); background: var(--bg-panel);
-    border-radius: var(--radius); overflow: hidden;
+    border-radius: var(--radius-lg); overflow: hidden;
   }
 
   .rail-head {
@@ -579,31 +627,37 @@
   }
   .rail-check-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
   .rail-check code.cmd { font-size: var(--fs-2xs); }
-  .rail-check .copy { font-size: var(--fs-2xs); padding: 2px 8px; }
+  .rail-check .copy { font-size: var(--fs-2xs); padding: 4px 8px; }
   .rail-check-caption {
-    margin: 6px 2px 0; font-size: var(--fs-2xs); line-height: 1.5; color: var(--text-faint);
+    margin: 8px 0 0; font-size: var(--fs-2xs); line-height: 1.5; color: var(--text-faint);
   }
 
   .rail-note {
-    margin: 12px 2px 16px; font-size: var(--fs-sm); line-height: 1.6; color: var(--text-dim);
+    margin: 12px 0 16px; font-size: var(--fs-sm); line-height: 1.6; color: var(--text-dim);
   }
   .rail-sub {
-    margin: 24px 2px 8px; font-family: var(--mono); font-size: var(--fs-2xs);
+    margin: 24px 0 8px; font-family: var(--mono); font-size: var(--fs-2xs);
     font-weight: var(--w-label); letter-spacing: var(--track-caps);
     text-transform: uppercase; color: var(--text-faint);
   }
 
   .rail-legend { list-style: none; margin: 0; padding: 0; }
   .rail-legend li {
-    display: grid; grid-template-columns: 16px 1fr; gap: 12px; align-items: baseline;
-    padding: 8px 2px; font-size: var(--fs-sm); line-height: 1.5; color: var(--text-dim);
+    display: grid; grid-template-columns: 20px 1fr; gap: 12px; align-items: baseline;
+    padding: 8px 0; font-size: var(--fs-sm); line-height: 1.5; color: var(--text-dim);
   }
+  /* A literal picture of a criteria row: the same numbered circle, the same
+     three fills. A legend that teaches a mark the rail never renders is a lie. */
   .rail-legend i {
-    font-style: normal; font-family: var(--mono); font-size: var(--fs-xs);
-    text-align: center; color: var(--text-faint);
+    width: 20px; height: 20px; border-radius: 50%; flex: none;
+    display: flex; align-items: center; justify-content: center;
+    border: 1px solid var(--pending-mark); background: var(--bg-panel);
+    font-style: normal; font-family: var(--mono); font-size: var(--fs-2xs);
+    font-weight: var(--w-label); font-variant-numeric: tabular-nums;
+    line-height: 1; color: var(--text-faint);
   }
-  .rail-legend .m-pass { color: var(--done); }
-  .rail-legend .m-fail { color: var(--fail); }
+  .rail-legend .m-pass { background: var(--done); border-color: var(--done); color: var(--on-accent); }
+  .rail-legend .m-fail { background: var(--fail); border-color: var(--fail); color: var(--on-accent); }
 
   /* One tight line per criterion. The ordinal lives inside the state mark, the
      same way a phase number lives inside its dot in the sidebar: one object to
@@ -611,7 +665,7 @@
   ol.crit { list-style: none; margin: 12px 0 0; padding: 0; }
   ol.crit > li {
     display: grid; grid-template-columns: 20px minmax(0, 1fr); gap: 12px;
-    align-items: start; padding: 8px 2px; border-top: 1px solid var(--line);
+    align-items: start; padding: 8px 0; border-top: 1px solid var(--line);
     font-size: var(--fs-sm); line-height: 1.45; color: var(--text-dim);
     overflow-wrap: break-word;
   }
@@ -625,14 +679,14 @@
     line-height: 1; letter-spacing: 0; color: var(--text-faint);
   }
   ol.crit > li[data-state="pass"] { color: var(--text-body); }
-  ol.crit > li[data-state="pass"] .cm { background: var(--done); border-color: var(--done); color: #fff; }
+  ol.crit > li[data-state="pass"] .cm { background: var(--done); border-color: var(--done); color: var(--on-accent); }
   ol.crit > li[data-state="fail"] { color: var(--text); }
-  ol.crit > li[data-state="fail"] .cm { background: var(--fail); border-color: var(--fail); color: #fff; }
+  ol.crit > li[data-state="fail"] .cm { background: var(--fail); border-color: var(--fail); color: var(--on-accent); }
 
   .tally { list-style: none; margin: 0; padding: 0; }
   .tally li {
     display: grid; grid-template-columns: 14px minmax(0, 1fr) auto; gap: 12px;
-    align-items: baseline; padding: 8px 2px; border-top: 1px solid var(--line);
+    align-items: baseline; padding: 8px 0; border-top: 1px solid var(--line);
     font-size: var(--fs-sm); color: var(--text-dim);
   }
   .tally li:first-child { border-top: 0; }
@@ -668,11 +722,15 @@
   .segs .seg {
     font: inherit; font-size: var(--fs-md); font-weight: var(--w-label);
     color: var(--text-dim); background: transparent; border: 0; border-radius: 999px;
-    padding: 5px 16px; cursor: pointer; line-height: 1.4;
+    padding: 4px 16px; cursor: pointer; line-height: 1.4;
+    transition: background-color var(--t-fast) var(--ease),
+                border-color     var(--t-fast) var(--ease),
+                color            var(--t-fast) var(--ease);
   }
-  .segs .seg:hover { color: var(--text); }
+  .segs .seg:hover  { color: var(--text); }
+  .segs .seg:active { color: var(--text); background: var(--bg-inset); }
   .segs .seg:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
-  .segs .seg[aria-pressed="true"] { background: var(--text); color: #fff; }
+  .segs .seg[aria-pressed="true"] { background: var(--text); color: var(--on-accent); }
 
   .phase-view[hidden], .result-view[hidden] { display: none; }
 
@@ -682,10 +740,15 @@
   body.result-open main { max-width: 1120px; }
 
   .result-empty, .result-facts {
-    border: 1px solid var(--line); border-radius: var(--radius);
+    border: 1px solid var(--line); border-radius: var(--radius-lg);
     background: var(--bg-inset); padding: 24px;
   }
-  .result-empty[hidden], .result-facts[hidden] { display: none; }
+  /* Each of these declares its own display, so it also has to declare the
+     hidden case: an empty Result must be empty, not a row of blank chrome. */
+  .result-empty[hidden], .result-facts[hidden],
+  .result-tabs[hidden], .result-frame-box[hidden],
+  .result-tools[hidden], .result-links[hidden],
+  .result-progress[hidden] { display: none; }
   .result-empty p { max-width: var(--measure); color: var(--text-dim); margin: 0; }
 
   /* Nothing has run yet: one quiet line, centred in the empty stage. */
@@ -703,6 +766,37 @@
   .result-facts dd { margin: 0; color: var(--text); }
   .result-facts dd.is-blank { color: var(--progress); }
 
+  /* Phase 0's own result: one row per tool, the status carried by a chip.
+     Quiet on purpose, it is a record of decisions, not a dashboard. */
+  .result-tools { margin-top: 32px; }
+  .result-tools h3 { margin-top: 0; }
+  ul.tools {
+    list-style: none; margin: 4px 0 0; padding: 0;
+    border-top: 1px solid var(--line); max-width: var(--measure);
+  }
+  ul.tools li {
+    display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 12px;
+    align-items: baseline; padding: 12px 0; border-bottom: 1px solid var(--line);
+  }
+  ul.tools .tool {
+    font-family: var(--mono); font-size: var(--fs-sm); color: var(--text);
+    overflow-wrap: anywhere;
+  }
+  .tool-state {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-family: var(--mono); font-size: var(--fs-2xs); font-weight: var(--w-label);
+    border: 1px solid var(--line-strong); border-radius: 999px; padding: 4px 12px;
+    color: var(--text-dim); background: var(--bg-panel); white-space: nowrap;
+  }
+  .tool-state.is-active { color: var(--done); border-color: var(--done-border); background: var(--done-weak); }
+
+  /* How far the phase has walked, when it has walked at all. */
+  .result-progress {
+    margin: 32px 0 0;
+    font-family: var(--mono); font-size: var(--fs-xs); line-height: 1.6;
+    color: var(--text-faint); font-variant-numeric: tabular-nums;
+  }
+
   /* Artifact tabs: derived from the phase's own artifacts, labelled with the
      file name they open, so a phase that gains a page gains a tab. */
   .result-tabs {
@@ -714,8 +808,12 @@
     color: var(--text-dim); background: var(--bg-inset);
     border: 1px solid var(--line); border-radius: 999px;
     padding: 4px 12px; cursor: pointer;
+    transition: background-color var(--t-fast) var(--ease),
+                border-color     var(--t-fast) var(--ease),
+                color            var(--t-fast) var(--ease);
   }
-  .result-tabs button:hover { color: var(--text); }
+  .result-tabs button:hover  { color: var(--text); }
+  .result-tabs button:active { background: var(--bg-panel); }
   .result-tabs button:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
   .result-tabs button[aria-pressed="true"] {
     background: var(--accent-weak); border-color: var(--accent-border); color: var(--accent);
@@ -723,13 +821,13 @@
   }
 
   .result-frame-box {
-    border: 1px solid var(--line-strong); border-radius: var(--radius);
+    border: 1px solid var(--line-strong); border-radius: var(--radius-lg);
     background: var(--bg-panel); overflow: hidden;
     display: flex; flex-direction: column; min-height: 0;
   }
   .result-frame-bar {
     display: flex; align-items: center; justify-content: space-between; gap: 10px;
-    padding: 6px 6px 6px 12px; border-bottom: 1px solid var(--line); background: var(--bg-inset);
+    padding: 4px 4px 4px 12px; border-bottom: 1px solid var(--line); background: var(--bg-inset);
   }
   .result-frame-bar .rf-path {
     font-family: var(--mono); font-size: var(--fs-2xs); color: var(--text-dim);
@@ -738,12 +836,16 @@
   .result-frame-bar .rf-full {
     font: inherit; font-family: var(--mono); font-size: var(--fs-2xs); font-weight: var(--w-label);
     color: var(--text-dim); background: var(--bg-panel); border: 1px solid var(--line-strong);
-    border-radius: 6px; padding: 3px 10px; cursor: pointer; white-space: nowrap; flex: none;
+    border-radius: var(--radius-sm); padding: 4px 12px; cursor: pointer; white-space: nowrap; flex: none;
+    transition: background-color var(--t-fast) var(--ease),
+                border-color     var(--t-fast) var(--ease),
+                color            var(--t-fast) var(--ease);
   }
-  .result-frame-bar .rf-full:hover { color: var(--text); }
+  .result-frame-bar .rf-full:hover  { color: var(--text); }
+  .result-frame-bar .rf-full:active { background: var(--bg-inset); border-color: var(--text-dim); }
   .result-frame-bar .rf-full:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
   .result-frame-box iframe {
-    display: block; width: 100%; height: 70vh; min-height: 320px; border: 0; background: #fff;
+    display: block; width: 100%; height: 70vh; min-height: 320px; border: 0; background: var(--bg-panel);
   }
 
   /* Fullscreen is "take over the workspace", not the browser's own mode: the
@@ -779,7 +881,7 @@
 
   /* Hosts that gain an icon next to their label. */
   .nav-item.is-meta .name { display: inline-flex; align-items: center; gap: 10px; }
-  #menu-toggle .i { transition: transform 120ms ease; }
+  #menu-toggle .i { transition: transform var(--t-fast) var(--ease); }
   #menu-toggle[aria-expanded="true"] .i { transform: rotate(180deg); }
   .lang-row { display: flex; align-items: center; gap: 8px; color: var(--text-faint); }
   .panel h4 { display: flex; align-items: center; gap: 8px; }
@@ -822,10 +924,6 @@
       overflow-y: auto; overscroll-behavior: contain;
       scrollbar-width: thin; scrollbar-color: var(--line-strong) transparent;
     }
-    .rail-card::-webkit-scrollbar { width: 5px; }
-    .rail-card::-webkit-scrollbar-track { background: transparent; }
-    .rail-card::-webkit-scrollbar-thumb { background: var(--line-strong); border-radius: 999px; }
-    .rail-card:hover::-webkit-scrollbar-thumb { background: var(--locked); }
     .rail-head { position: sticky; top: 0; }
   }
 
@@ -852,7 +950,6 @@
     main { padding: 24px 16px 32px; }
     #rail { padding: 12px 16px 80px; }
     section.block { margin-top: 40px; }
-    ol.steps > li { padding-left: 40px; }
     .sub { padding-left: 16px; }
     pre.prompt-body { font-size: var(--fs-xs); }
   }

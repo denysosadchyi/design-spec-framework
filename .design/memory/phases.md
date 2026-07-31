@@ -236,6 +236,30 @@ It carries two things:
   `product`, `oneLiner`, `benchmarkDimension`, `primaryPersona`, `mainJob`,
   `chosenDirection`. All strings, all empty (`""`) until the phase that learns them fills
   them in. An empty string means "not known yet" — never invent a value to fill a slot.
+  It also carries one non-string key, `toolbox` (below).
+
+#### `context.toolbox` — the tool record phase 0's Result page renders
+
+```json
+"toolbox": [
+  { "tool": "Playwright MCP", "status": "active" },
+  { "tool": "image generation", "status": "fallback" }
+]
+```
+
+One entry per row of `.design/memory/toolbox.md`, in the same order as that table. `status` is
+`active` or `fallback` only — `[?]` never reaches the JSON, because an unresolved row is a
+`fallback` with its reason written in `toolbox.md`.
+
+| Who | What it does with it |
+|---|---|
+| `/dsf:init` | writes it, at step 8, from the `toolbox.md` it has just finished: every row, no invented rows |
+| `/dsf:status` | repairs it — if the key is missing, empty, or contradicts `toolbox.md`, it is rebuilt from `toolbox.md`, which is the source of truth |
+| everyone else | leaves it alone |
+
+`[]` until phase 0 runs. Empty means phase 0's Result shows the standard placeholder; non-empty
+means it shows the tool table. It is never a place a tool decision is *authored*: `toolbox.md`
+decides, this key reflects.
 
 ### `criteria` — the per-phase success-criteria state
 

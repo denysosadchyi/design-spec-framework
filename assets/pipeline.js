@@ -627,6 +627,10 @@
       if (!b.classList.contains("done")) setCopyLabel(b, t.copy);
     });
 
+    /* A Result already on screen is re-read from the new state too: the 5s
+       poll must not leave a stale toolbox or a stale progress line behind. */
+    Object.keys(views).forEach(function (id) { renderResult(id); });
+
     classifyFileCodes();
   }
 
@@ -766,6 +770,17 @@
     facts.hidden = true;
     panel.appendChild(facts);
 
+    var tools = el("div", "result-tools");
+    tools.hidden = true;
+    tools.appendChild(el("h3", "", ""));
+    var toolList = el("ul", "tools");
+    tools.appendChild(toolList);
+    panel.appendChild(tools);
+
+    var progress = el("p", "result-progress", "");
+    progress.hidden = true;
+    panel.appendChild(progress);
+
     var links = el("div", "result-links");
     links.appendChild(el("h3", "", ""));
     var ul = el("ul", "artifacts");
@@ -859,46 +874,104 @@
 
     var empty = panel.querySelector(".result-empty");
     var facts = panel.querySelector(".result-facts");
+    var tools = panel.querySelector(".result-tools");
+    var progressEl = panel.querySelector(".result-progress");
     empty.hidden = true;
-    facts.hidden = true;
-    facts.innerHTML = "";
     empty.className = "result-empty";
 
-    /* Nothing exists yet: one centred line and nothing else. A list of ten
-       files that are all still missing is noise, not a result. */
+    /* A Result is never all-or-nothing: whatever already exists is shown, and
+       whatever does not simply is not rendered. The placeholder is reserved
+       for the one case where the phase has produced literally nothing. */
+    var factRows = (String(id) === "1") ? filledFacts() : [];
+    var toolRows = (String(id) === "0") ? toolboxRows() : [];
+    var work = workDone(phase);
+
+    facts.hidden = !factRows.length;
+    facts.innerHTML = "";
+    if (factRows.length) facts.appendChild(factsList(factRows));
+
+    tools.hidden = !toolRows.length;
+    if (toolRows.length) {
+      tools.querySelector("h3").textContent = t.toolboxTitle;
+      buildToolList(tools.querySelector("ul.tools"), toolRows);
+    }
+
+    progressEl.hidden = !(work.steps || work.crit);
+    if (!progressEl.hidden) {
+      var parts = [];
+      if (work.stepTotal) parts.push(t.stepsDone(work.steps, work.stepTotal));
+      if (work.critTotal) parts.push(t.critClosed(work.crit, work.critTotal));
+      parts.push(t.runCheck(id));
+      progressEl.textContent = parts.join(" · ");
+    }
+
+    /* A list of ten files that are all still missing is noise, not a result. */
     panel.querySelector(".result-links").hidden = !anyArtifact;
 
-    if (!anyArtifact) {
+    if (!anyArtifact && !factRows.length && !toolRows.length && !work.steps && !work.crit) {
       empty.hidden = false;
       empty.className = "result-empty is-center";
       empty.firstChild.textContent = t.resultEmpty;
-    } else if (!live.length) {
-      if (String(id) === "1") {
-        facts.hidden = false;
-        facts.appendChild(factsList());
-      } else {
-        empty.hidden = false;
-        empty.firstChild.textContent = (String(id) === "0") ? t.resultToolbox : t.resultNoPage;
-      }
     }
 
     panel.querySelector(".result-links h3").textContent = stripTags(dict("s10"));
     buildArtifactList(panel.querySelector('[data-result-links="' + id + '"]'), phase);
   }
 
-  /* Phase 1 has no page of its own: what it produced is the two facts every
-     later phase reads out of the brief. */
-  function factsList() {
+  /* How far the phase has actually walked, straight off its own ledgers. */
+  function workDone(phase) {
+    var st = phase.steps || {};
+    var c = critOf(phase);
+    return {
+      steps:     (st.done || []).length,
+      stepTotal: typeof st.total === "number" ? st.total : (st.done || []).length,
+      crit:      c.passed.length,
+      critTotal: c.total
+    };
+  }
+
+  /* Phase 1 has no page of its own: what it produced is the facts every later
+     phase reads out of the brief. Only the ones already answered are shown. */
+  function filledFacts() {
+    var rows = [];
+    if (ctx.product && ctx.product.indexOf("{{") !== 0) rows.push([t.factProduct, ctx.product]);
+    if (ctx.oneLiner) rows.push([t.factOneLiner, ctx.oneLiner]);
+    return rows;
+  }
+
+  function factsList(rows) {
     var dl = document.createElement("dl");
-    var rows = [
-      [t.factProduct, (ctx.product && ctx.product.indexOf("{{") !== 0) ? ctx.product : "", t.blanks.product],
-      [t.factOneLiner, ctx.oneLiner || "", t.blanks.oneLiner]
-    ];
     rows.forEach(function (r) {
       dl.appendChild(el("dt", "", r[0]));
-      dl.appendChild(el("dd", r[1] ? "" : "is-blank", r[1] || r[2]));
+      dl.appendChild(el("dd", "", r[1]));
     });
     return dl;
+  }
+
+  /* Phase 0's own result: the toolbox, one row per tool, as /dsf:init left it. */
+  function toolboxRows() {
+    var raw = ctx.toolbox;
+    if (!raw || typeof raw.length !== "number") return [];
+    var rows = [];
+    Array.prototype.forEach.call(raw, function (r) {
+      if (!r || !r.tool) return;
+      rows.push({ tool: String(r.tool), status: r.status === "active" ? "active" : "fallback" });
+    });
+    return rows;
+  }
+
+  function buildToolList(list, rows) {
+    if (!list) return;
+    list.innerHTML = "";
+    rows.forEach(function (r) {
+      var li = el("li");
+      li.appendChild(el("span", "tool", r.tool));
+      var state = el("span", "tool-state" + (r.status === "active" ? " is-active" : ""));
+      state.appendChild(icon(r.status === "active" ? "circle-check" : "circle-dashed", "i-sm"));
+      state.appendChild(el("span", "", t.toolState[r.status] || r.status));
+      li.appendChild(state);
+      list.appendChild(li);
+    });
   }
 
   function stripTags(s) {

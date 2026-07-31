@@ -150,8 +150,9 @@ Rewrite that block, and nothing else in the file, to the starting state (the con
   starting state — phase 0's own `init.*` ids are folded in at step 8, from the ledger, once
   the rest of this command has actually run;
 - `context` — every value the empty string: `product`, `oneLiner`, `benchmarkDimension`,
-  `primaryPersona`, `mainJob`, `chosenDirection`. Empty means "not known yet". You know none of
-  them here — phase 0 does not discuss the product.
+  `primaryPersona`, `mainJob`, `chosenDirection`, plus `toolbox: []`. Empty means "not known
+  yet". You know none of them here — phase 0 does not discuss the product, and the toolbox rows
+  are only decided once the gate in step 3 is answered (you fill them in at step 8).
 
 **`{{PRODUCT_NAME}}`.** The template ships this placeholder in the title and the header. If the
 user has already named the product, substitute it everywhere it appears — in the markup and in
@@ -181,6 +182,11 @@ command creates no tag.
   `init.*` ids you have written lines for into `done`, `current` set to `"init.9"` while step 9
   runs and `""` when it is finished. Ledger first, JSON after; the JSON never claims a step the
   ledger has no line for.
+- `index.html`: fill `context.toolbox` — one entry per row of `.design/memory/toolbox.md`,
+  `{ "tool": "<the row's tool name>", "status": "active" | "fallback" }`, in the same order as
+  the table. This is what phase 0's Result page shows, so it must match `toolbox.md` row for
+  row: no row left out, no row invented, and no `[?]` (a row you could not resolve is
+  `fallback`, and `toolbox.md` says why).
 - Commit: `chore: phase 0 — toolbox and pipeline scaffolding` (the ledger and
   `.design/progress/README.md` go in the same commit).
 - Push **only** if `toolbox.md` records hosting as `active`.

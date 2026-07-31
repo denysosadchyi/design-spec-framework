@@ -57,10 +57,13 @@ var RT = {
     phaseAria:   function (n, name, st) { return "Phase " + n + " " + name + ", " + st; },
     viewLabel:   "Guide or result",
     resultEmpty: "The result will appear here after the phase runs: the phase's live artifact, decisions made, and criteria state. Complete the steps and run /dsf:check.",
-    resultToolbox: "Phase 0 leaves no page of its own: it records which tools this project can use, and what every phase does instead of the ones it cannot. The files are below.",
-    resultNoPage: "This phase leaves files, not a page. Everything it produced is listed below.",
     factProduct:  "Product",
     factOneLiner: "In one sentence",
+    toolboxTitle: "Toolbox",
+    toolState:   { active: "active", fallback: "fallback" },
+    stepsDone:   function (n, m) { return n + " of " + m + " steps done"; },
+    critClosed:  function (n, m) { return n + " of " + m + " criteria closed"; },
+    runCheck:    function (id) { return "run /dsf:check " + id + " to verify"; },
     frameFull:   "Fullscreen",
     frameExit:   "Exit fullscreen",
     sideCollapse: "Collapse the phase list",
@@ -101,10 +104,13 @@ var RT = {
     phaseAria:   function (n, name, st) { return "Фаза " + n + " " + name + " — " + st; },
     viewLabel:   "Гайд або результат",
     resultEmpty: "Результат з’явиться тут після виконання фази: живий артефакт, ухвалені рішення і стан критеріїв. Виконай кроки і запусти /dsf:check.",
-    resultToolbox: "Фаза 0 не лишає власної сторінки: вона записує, якими інструментами проєкт може користуватися і що робити замість кожного недоступного. Файли — нижче.",
-    resultNoPage: "Ця фаза лишає файли, а не сторінку. Усе, що вона зробила, — у списку нижче.",
     factProduct:  "Продукт",
     factOneLiner: "Одним реченням",
+    toolboxTitle: "Інструменти",
+    toolState:   { active: "активний", fallback: "запасний" },
+    stepsDone:   function (n, m) { return "кроків виконано: " + n + " з " + m; },
+    critClosed:  function (n, m) { return "критеріїв закрито: " + n + " з " + m; },
+    runCheck:    function (id) { return "запусти /dsf:check " + id + ", щоб перевірити"; },
     frameFull:   "На весь екран",
     frameExit:   "Згорнути",
     sideCollapse: "Згорнути список фаз",
@@ -240,7 +246,7 @@ Object.assign(I18N.uk, {
   "how.1": "Почни звідси",
   "how.10": "Дві з них можна писати будь-коли: <code class=\"cmd\">/dsf:status</code> каже, де ти зараз,\n    а <code class=\"cmd\">/dsf:critique</code> і далі те, що хочеш перевірити (екран, папка, весь\n    продукт) — проганяє це через повноцінну критику.",
   "how.11": "Блоки з промптами",
-  "how.12": "Кожен крок на кожній сторінці фази має ось такий блок. Тисни <em>Копіювати</em>, вставляй у чат,\n    надсилай. Вони заповнюються деталями твого проєкту в міру того, як проєкт їх дізнається — усе,\n    що досі показано як <span style=\"color:var(--progress)\">‹ось так›</span>, ти заповнюєш сам, і воно\n    підставиться саме, щойно завершиться фаза, яка це вирішує.",
+  "how.12": "Кожен крок на кожній сторінці фази має ось такий блок. Тисни <em>Копіювати</em>, вставляй у чат,\n    надсилай. Вони заповнюються деталями твого проєкту в міру того, як проєкт їх дізнається — усе,\n    що досі показано як <span class=\"ph\">‹ось так›</span>, ти заповнюєш сам, і воно\n    підставиться саме, щойно завершиться фаза, яка це вирішує.",
   "how.13": "Ритм кожної фази",
   "how.14": "Кожна фаза рухається однаково. Відчуєш це один раз — знатимеш, як минуть усі одинадцять.",
   "how.15": "<div><strong>Спершу один зразок.</strong> Асистент робить одну річ від початку до кінця —\n      один екран, один компонент, один сценарій — замість сорока одразу.</div>",
@@ -295,7 +301,7 @@ Object.assign(I18N.uk, {
   "nav.17": "Передача",
   "nav.19": "шаблон",
   "nav.2": "Фази",
-  "nav.20": "загубився? напиши <code class=\"cmd\" style=\"font-size:var(--fs-2xs)\">/dsf:status</code>",
+  "nav.20": "загубився? напиши <code class=\"cmd sm\">/dsf:status</code>",
   "nav.3": "Старт",
   "nav.4": "Бриф",
   "nav.5": "Дослідження",
@@ -538,7 +544,7 @@ Object.assign(I18N.uk, {
   "s9": "виправлення",
   "seg.guide": "Гайд",
   "seg.result": "Результат",
-  "ui.1": "Цю сторінку перегенеровує кожна команда <code class=\"cmd\" style=\"font-size:var(--fs-2xs)\">/dsf:</code> і\n  <code class=\"cmd\" style=\"font-size:var(--fs-2xs)\">/dsf:status</code>. Статус читається з самих\n  файлів — фаза стає зеленою, лише якщо її артефакти справді на місці."
+  "ui.1": "Цю сторінку перегенеровує кожна команда <code class=\"cmd sm\">/dsf:</code> і\n  <code class=\"cmd sm\">/dsf:status</code>. Статус читається з самих\n  файлів — фаза стає зеленою, лише якщо її артефакти справді на місці."
 });
 /* UK-SLICES-END */
 
@@ -841,9 +847,9 @@ Object.assign(I18N.uk, {
   "c9.8": "Hover і press використовують fast-тривалість; поява — base або slow",
   "c9.9": "Скелетони пульсують під час завантаження й чисто зникають, коли приходить контент",
   "cr.1": "Кожна фаза закривається за писаним списком критеріїв, а не за враженням. <code class=\"cmd\">/dsf:check</code> звіряє їх із файлами по одному і записує вердикт сюди. Відкрий фазу, щоб побачити її список.",
-  "cr.2": "<i class=\"m-pass\">✓</i> перевірено за файлом",
-  "cr.3": "<i class=\"m-fail\">✕</i> перевірено, не пройшло",
-  "cr.4": "<i>○</i> ще не вирішено, мовчання не залік",
+  "cr.2": "<i class=\"m-pass\">1</i> перевірено за файлом",
+  "cr.3": "<i class=\"m-fail\">2</i> перевірено, не пройшло",
+  "cr.4": "<i>3</i> ще не вирішено, мовчання не залік",
   "cr.5": "По всьому процесу"
 });
 /* UK-CRITERIA-END */

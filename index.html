@@ -11,7 +11,8 @@
   <script type="application/json" id="pipeline-data">:
 
     { product, templateVersion,
-      context: { product, oneLiner, benchmarkDimension, primaryPersona, mainJob, chosenDirection },
+      context: { product, oneLiner, benchmarkDimension, primaryPersona, mainJob, chosenDirection,
+                 toolbox: [ { tool, status } ] },
       phases: [ { id, number, name, status, commands, tag, tagged, criteria, artifacts: [...] } ] }
 
     status    "done" | "in-progress" | "locked"
@@ -29,6 +30,10 @@
     context   product facts the prompt blocks are filled with. All strings, "" until the
               phase that learns them fills them in. An empty string renders as a visible
               ‹placeholder› in the prompts. Never invent a value to fill a slot.
+    toolbox   the one exception inside context: an array, one entry per row of
+              .design/memory/toolbox.md, { tool: "name", status: "active" | "fallback" }.
+              Written by /dsf:init, repaired by /dsf:status. [] until phase 0 runs;
+              phase 0's Result renders it.
 
   Do not add, rename or drop fields. Do not hand-edit a phase into a state the files do
   not support: a green phase with a missing artifact is the one lie this whole framework
@@ -123,7 +128,7 @@
     <footer>
       <div><span data-i18n="nav.19">template</span> <span data-version>…</span></div>
       <div data-progress>…</div>
-      <div class="hint" data-i18n="nav.20">lost? type <code class="cmd" style="font-size:var(--fs-2xs)">/dsf:status</code></div>
+      <div class="hint" data-i18n="nav.20">lost? type <code class="cmd sm">/dsf:status</code></div>
     </footer>
   </div>
 </aside>
@@ -173,7 +178,7 @@
     <h2 data-i18n="how.11">The prompt blocks</h2>
     <p data-i18n="how.12">Every step on every phase page carries a block like this one. Press <em>Copy</em>, paste it
     into the chat, send. They are filled in with your project's own details as the project learns
-    them. Anything still shown as <span style="color:var(--progress)">‹like this›</span> is a blank
+    them. Anything still shown as <span class="ph">‹like this›</span> is a blank
     you fill in yourself, and it will auto-fill once the phase that decides it is done.</p>
     <div class="prompt" data-prompt>
       <div class="prompt-head"><span class="plabel" data-i18n="s1">paste into the chat</span><button class="copy" type="button">Copy</button></div>
@@ -234,7 +239,7 @@
       <li data-i18n="how.36"><strong>Withdraw</strong>: drop it, logged, so the same idea does not get argued from
       zero in a month.</li>
     </ul>
-    <p style="margin-top:16px" data-i18n="how.37">This is a feature, not friction. It is what keeps the folder honest:
+    <p data-i18n="how.37">This is a feature, not friction. It is what keeps the folder honest:
     a change that lands on the screens but not on the spec breaks the whole claim that this repo
     <em>is</em> the design file.</p>
     <p data-i18n="how.38">For anything that arrives <strong>after a phase was signed off</strong>, use
@@ -263,7 +268,7 @@
         Then, in three lines: where am I, what's finished, and exactly what do I type next?
       </pre>
     </div>
-    <p style="margin-top:16px" data-i18n="how.41">If the assistant ever drifts, invents facts, colours a screen it was
+    <p data-i18n="how.41">If the assistant ever drifts, invents facts, colours a screen it was
     not supposed to, or fixes things you did not ask for, say so plainly. Every phase page below has
     an <em>If it drifts</em> block with ready corrections, and asking "which of these did you
     actually verify?" is always a fair question.</p>
@@ -276,7 +281,7 @@
       <span data-i18n="how.44"><i class="l-prog"></i> in progress: you are here</span>
       <span data-i18n="how.45"><i class="l-lock"></i> locked: an earlier phase has to finish first</span>
     </div>
-    <p style="margin-top:16px" data-i18n="how.46">Open any phase from the left. A locked phase still opens and still
+    <p data-i18n="how.46">Open any phase from the left. A locked phase still opens and still
     explains itself: it just starts by telling you what has to exist before you can begin. Every
     phase page lists its <strong>artifacts</strong>: the files that phase produces. Once a file is
     real it turns into a live link, so this page slowly becomes the index of the whole project.</p>
@@ -398,13 +403,13 @@
       </li>
     </ol>
 
-    <div class="panel good" style="margin-top:24px">
+    <div class="panel good">
       <h4><svg class="i" aria-hidden="true" focusable="false"><use href="#i-target"/></svg><span data-i18n="s7">What good looks like</span></h4>
       <p data-i18n="p0.14">Every row of the tool table has a real answer, nothing left as pending or <code>[?]</code>.
       This page opens in your browser and shows phase 1 as the next thing to do.</p>
     </div>
 
-    <div class="panel drift" style="margin-top:12px">
+    <div class="panel drift">
       <h4><svg class="i" aria-hidden="true" focusable="false"><use href="#i-triangle-alert"/></svg><span data-i18n="s8">If it drifts</span></h4>
       <div class="prompt" data-prompt>
         <div class="prompt-head"><span class="plabel" data-i18n="s9">correction</span><button class="copy" type="button">Copy</button></div>
@@ -464,7 +469,7 @@
         <h4><svg class="i" aria-hidden="true" focusable="false"><use href="#i-lock"/></svg><span data-i18n="s3">To get here</span></h4>
         <p data-i18n="p1.4">Finish <strong>phase 0 · Init</strong> first, then paste
         <code class="cmd">/dsf:brief</code> followed by a sentence about your idea.</p>
-        <p style="margin-bottom:0" data-i18n="s12">Must exist first:</p>
+        <p class="lead-in" data-i18n="s12">Must exist first:</p>
         <ul>
           <li data-i18n="p1.5">your tool record (<code>.design/memory/toolbox.md</code>), with no row left unanswered</li>
         </ul>
@@ -561,14 +566,14 @@
       </li>
     </ol>
 
-    <div class="panel good" style="margin-top:24px">
+    <div class="panel good">
       <h4><svg class="i" aria-hidden="true" focusable="false"><use href="#i-target"/></svg><span data-i18n="s7">What good looks like</span></h4>
       <p data-i18n="p1.15">The brief fits on one screen. The primary device is decided and owned by you, because it
       constrains every phase after it. Everything unknown is marked <code>[?]</code> with a stated
       hypothesis, and the brief says what the product is <em>not</em> doing.</p>
     </div>
 
-    <div class="panel drift" style="margin-top:12px">
+    <div class="panel drift">
       <h4><svg class="i" aria-hidden="true" focusable="false"><use href="#i-triangle-alert"/></svg><span data-i18n="s8">If it drifts</span></h4>
       <div class="prompt" data-prompt>
         <div class="prompt-head"><span class="plabel" data-i18n="s9">correction</span><button class="copy" type="button">Copy</button></div>
@@ -628,7 +633,7 @@
         <p data-i18n="p2.4">Finish <strong>phase 1 · Brief</strong> first, then paste
         <code class="cmd">/dsf:research</code>. Research before users: the personas are built out of
         what the research found, not the other way round.</p>
-        <p style="margin-bottom:0" data-i18n="s12">Must exist first:</p>
+        <p class="lead-in" data-i18n="s12">Must exist first:</p>
         <ul>
           <li data-i18n="p2.5">your brief (<code>CLAUDE.md</code>)</li>
           <li data-i18n="p2.6">your tool record (<code>.design/memory/toolbox.md</code>)</li>
@@ -731,7 +736,7 @@
       </li>
     </ol>
 
-    <div class="panel drift" style="margin-top:24px">
+    <div class="panel drift">
       <h4><svg class="i" aria-hidden="true" focusable="false"><use href="#i-triangle-alert"/></svg><span data-i18n="s8">If it drifts</span></h4>
       <div class="prompt" data-prompt>
         <div class="prompt-head"><span class="plabel" data-i18n="s9">correction</span><button class="copy" type="button">Copy</button></div>
@@ -845,7 +850,7 @@
       </li>
     </ol>
 
-    <div class="panel drift" style="margin-top:24px">
+    <div class="panel drift">
       <h4><svg class="i" aria-hidden="true" focusable="false"><use href="#i-triangle-alert"/></svg><span data-i18n="s8">If it drifts</span></h4>
       <div class="prompt" data-prompt>
         <div class="prompt-head"><span class="plabel" data-i18n="s9">correction</span><button class="copy" type="button">Copy</button></div>
@@ -914,7 +919,7 @@
         <h4><svg class="i" aria-hidden="true" focusable="false"><use href="#i-lock"/></svg><span data-i18n="s3">To get here</span></h4>
         <p data-i18n="p3.4">Finish <strong>phase 2 · Discover</strong> first, then paste
         <code class="cmd">/dsf:ia</code> into the chat.</p>
-        <p style="margin-bottom:0" data-i18n="s12">Must exist first:</p>
+        <p class="lead-in" data-i18n="s12">Must exist first:</p>
         <ul>
           <li data-i18n="p3.5">your personas and jobs (<code>people/personas.md</code>, <code>people/jtbd.md</code>)</li>
           <li data-i18n="p3.6">your research page (<code>research/research.html</code>)</li>
@@ -1043,14 +1048,14 @@
       </li>
     </ol>
 
-    <div class="panel good" style="margin-top:24px">
+    <div class="panel good">
       <h4><svg class="i" aria-hidden="true" focusable="false"><use href="#i-target"/></svg><span data-i18n="s7">What good looks like</span></h4>
       <p data-i18n="p3.16">Point at any screen and you can say which job it closes. Every flow shows at least one way
       to fail and the way back out of it. And you can say out loud how many taps it takes to do the
       main thing.</p>
     </div>
 
-    <div class="panel drift" style="margin-top:12px">
+    <div class="panel drift">
       <h4><svg class="i" aria-hidden="true" focusable="false"><use href="#i-triangle-alert"/></svg><span data-i18n="s8">If it drifts</span></h4>
       <div class="prompt" data-prompt>
         <div class="prompt-head"><span class="plabel" data-i18n="s9">correction</span><button class="copy" type="button">Copy</button></div>
@@ -1110,7 +1115,7 @@
         <h4><svg class="i" aria-hidden="true" focusable="false"><use href="#i-lock"/></svg><span data-i18n="s3">To get here</span></h4>
         <p data-i18n="p4.4">Finish <strong>phase 3 · Structure</strong> first, then paste
         <code class="cmd">/dsf:wireframes</code> into the chat.</p>
-        <p style="margin-bottom:0" data-i18n="s12">Must exist first:</p>
+        <p class="lead-in" data-i18n="s12">Must exist first:</p>
         <ul>
           <li data-i18n="p4.5">your map and flows (<code>ia/sitemap.md</code>, <code>ia/flows.md</code>)</li>
           <li data-i18n="p4.6">your jobs list (<code>people/jtbd.md</code>)</li>
@@ -1238,14 +1243,14 @@
       </li>
     </ol>
 
-    <div class="panel good" style="margin-top:24px">
+    <div class="panel good">
       <h4><svg class="i" aria-hidden="true" focusable="false"><use href="#i-target"/></svg><span data-i18n="s7">What good looks like</span></h4>
       <p data-i18n="p4.15">Open <strong>wireframes/index.html</strong> and click your way through the main job from the
       first screen to done, without ever getting stuck. Every screen is reachable from the navigator
       panel. Nothing is coloured, and nothing says "Lorem".</p>
     </div>
 
-    <div class="panel drift" style="margin-top:12px">
+    <div class="panel drift">
       <h4><svg class="i" aria-hidden="true" focusable="false"><use href="#i-triangle-alert"/></svg><span data-i18n="s8">If it drifts</span></h4>
       <div class="prompt" data-prompt>
         <div class="prompt-head"><span class="plabel" data-i18n="s9">correction</span><button class="copy" type="button">Copy</button></div>
@@ -1314,7 +1319,7 @@
         <p data-i18n="p5.4">Finish <strong>phase 4 · Wireframes</strong> first, then paste
         <code class="cmd">/dsf:voice</code>. Do the voice half before the visual half: the words are
         part of what the visual direction has to carry.</p>
-        <p style="margin-bottom:0" data-i18n="s12">Must exist first:</p>
+        <p class="lead-in" data-i18n="s12">Must exist first:</p>
         <ul>
           <li data-i18n="p5.5">your grey screens with all their states (<code>wireframes/index.html</code>)</li>
           <li data-i18n="p5.6">your personas and research (<code>people/personas.html</code>, <code>research/research.html</code>)</li>
@@ -1446,7 +1451,7 @@
       </li>
     </ol>
 
-    <div class="panel drift" style="margin-top:24px">
+    <div class="panel drift">
       <h4><svg class="i" aria-hidden="true" focusable="false"><use href="#i-triangle-alert"/></svg><span data-i18n="s8">If it drifts</span></h4>
       <div class="prompt" data-prompt>
         <div class="prompt-head"><span class="plabel" data-i18n="s9">correction</span><button class="copy" type="button">Copy</button></div>
@@ -1606,9 +1611,9 @@
       </li>
     </ol>
 
-    <div class="panel" style="margin-top:24px">
+    <div class="panel">
       <h4 data-i18n="p5.28">Nudging a detail</h4>
-      <p style="font-size:var(--fs-sm);color:var(--text-dim)" data-i18n="p5.29">Try it on one screen first, then make it a
+      <p class="note" data-i18n="p5.29">Try it on one screen first, then make it a
       rule. An edit that stays on one screen only is drift, and the defect table will catch it.</p>
       <div class="prompt" data-prompt>
         <div class="prompt-head"><span class="plabel" data-i18n="p5.30">try it on</span><button class="copy" type="button">Copy</button></div>
@@ -1626,7 +1631,7 @@
       </div>
     </div>
 
-    <div class="panel drift" style="margin-top:12px">
+    <div class="panel drift">
       <h4><svg class="i" aria-hidden="true" focusable="false"><use href="#i-triangle-alert"/></svg><span data-i18n="s8">If it drifts</span></h4>
       <div class="prompt" data-prompt>
         <div class="prompt-head"><span class="plabel" data-i18n="s9">correction</span><button class="copy" type="button">Copy</button></div>
@@ -1702,7 +1707,7 @@
         <h4><svg class="i" aria-hidden="true" focusable="false"><use href="#i-lock"/></svg><span data-i18n="s3">To get here</span></h4>
         <p data-i18n="p6.4">Finish <strong>phase 5 · Voice &amp; Visual design</strong> first, then paste
         <code class="cmd">/dsf:build</code> into the chat.</p>
-        <p style="margin-bottom:0" data-i18n="s12">Must exist first:</p>
+        <p class="lead-in" data-i18n="s12">Must exist first:</p>
         <ul>
           <li data-i18n="p6.5">your chosen direction, proven on two screens (<code>concept/concept.html</code>)</li>
           <li data-i18n="s20">your voice rules and copy source (<code>voice/voice.html</code>, <code>voice/microcopy.md</code>)</li>
@@ -1859,14 +1864,14 @@
       </li>
     </ol>
 
-    <div class="panel good" style="margin-top:24px">
+    <div class="panel good">
       <h4><svg class="i" aria-hidden="true" focusable="false"><use href="#i-target"/></svg><span data-i18n="s7">What good looks like</span></h4>
       <p data-i18n="p6.17">The two phase-5 screens did not change by a pixel when they moved onto the kit, that is the
       kit's own correctness test. No screen carries its own styling. The same card looks identical
       everywhere it appears. Every image belongs to the same set.</p>
     </div>
 
-    <div class="panel drift" style="margin-top:12px">
+    <div class="panel drift">
       <h4><svg class="i" aria-hidden="true" focusable="false"><use href="#i-triangle-alert"/></svg><span data-i18n="s8">If it drifts</span></h4>
       <div class="prompt" data-prompt>
         <div class="prompt-head"><span class="plabel" data-i18n="s9">correction</span><button class="copy" type="button">Copy</button></div>
@@ -1934,7 +1939,7 @@
         <h4><svg class="i" aria-hidden="true" focusable="false"><use href="#i-lock"/></svg><span data-i18n="s3">To get here</span></h4>
         <p data-i18n="p7.4">Finish <strong>phase 6 · UI build</strong> first, then paste
         <code class="cmd">/dsf:system</code> into the chat.</p>
-        <p style="margin-bottom:0" data-i18n="s12">Must exist first:</p>
+        <p class="lead-in" data-i18n="s12">Must exist first:</p>
         <ul>
           <li data-i18n="p7.5">your kit and its showcase (<code>ui/kit.html</code>, <code>design-system/tokens.css</code>)</li>
           <li data-i18n="p7.6">your documented visual language (<code>DESIGN.md</code>)</li>
@@ -2065,14 +2070,14 @@
       </li>
     </ol>
 
-    <div class="panel good" style="margin-top:24px">
+    <div class="panel good">
       <h4><svg class="i" aria-hidden="true" focusable="false"><use href="#i-target"/></svg><span data-i18n="s7">What good looks like</span></h4>
       <p data-i18n="p7.17">Open <strong>design-system/docs/index.html</strong> and tab through it with the keyboard:
       you can always see where you are, in both themes. Every component page shows real states rather
       than descriptions of them. Nothing on a page claims a variant the code does not have.</p>
     </div>
 
-    <div class="panel drift" style="margin-top:12px">
+    <div class="panel drift">
       <h4><svg class="i" aria-hidden="true" focusable="false"><use href="#i-triangle-alert"/></svg><span data-i18n="s8">If it drifts</span></h4>
       <div class="prompt" data-prompt>
         <div class="prompt-head"><span class="plabel" data-i18n="s9">correction</span><button class="copy" type="button">Copy</button></div>
@@ -2140,7 +2145,7 @@
         <h4><svg class="i" aria-hidden="true" focusable="false"><use href="#i-lock"/></svg><span data-i18n="s3">To get here</span></h4>
         <p data-i18n="p8.4">Finish <strong>phase 7 · Design system</strong> first, then paste
         <code class="cmd">/dsf:responsive</code> into the chat.</p>
-        <p style="margin-bottom:0" data-i18n="s12">Must exist first:</p>
+        <p class="lead-in" data-i18n="s12">Must exist first:</p>
         <ul>
           <li data-i18n="p8.5">the design system with its documentation (<code>design-system/docs/index.html</code>)</li>
           <li data-i18n="p8.6">component states: hover, pressed, focus, disabled (built in phase 7)</li>
@@ -2260,13 +2265,13 @@
       </li>
     </ol>
 
-    <div class="panel good" style="margin-top:24px">
+    <div class="panel good">
       <h4><svg class="i" aria-hidden="true" focusable="false"><use href="#i-target"/></svg><span data-i18n="s7">What good looks like</span></h4>
       <p data-i18n="p8.16">No sideways scrolling at any width. Nothing that existed on the phone has quietly disappeared
       on the desktop, and no paragraph runs the full width of a large monitor.</p>
     </div>
 
-    <div class="panel drift" style="margin-top:24px">
+    <div class="panel drift">
       <h4><svg class="i" aria-hidden="true" focusable="false"><use href="#i-triangle-alert"/></svg><span data-i18n="s8">If it drifts</span></h4>
       <div class="prompt" data-prompt>
         <div class="prompt-head"><span class="plabel" data-i18n="s9">correction</span><button class="copy" type="button">Copy</button></div>
@@ -2335,7 +2340,7 @@
         <p data-i18n="p9.4">Finish <strong>phase 8 · Responsive</strong> first, then paste
         <code class="cmd">/dsf:motion</code>. Widths before motion: motion animates transitions
         between states, so the states have to exist first.</p>
-        <p style="margin-bottom:0" data-i18n="s12">Must exist first:</p>
+        <p class="lead-in" data-i18n="s12">Must exist first:</p>
         <ul>
           <li data-i18n="p9.5">the design system with its documentation (<code>design-system/docs/index.html</code>)</li>
           <li data-i18n="p9.6">component states: hover, pressed, focus, disabled (built in phase 7)</li>
@@ -2458,13 +2463,13 @@
       </li>
     </ol>
 
-    <div class="panel good" style="margin-top:24px">
+    <div class="panel good">
       <h4><svg class="i" aria-hidden="true" focusable="false"><use href="#i-target"/></svg><span data-i18n="s7">What good looks like</span></h4>
       <p data-i18n="p9.16">Every movement left on screen can name the job it does. Turn "reduce motion" on in your own
       system settings and the product still works perfectly, just still.</p>
     </div>
 
-    <div class="panel drift" style="margin-top:24px">
+    <div class="panel drift">
       <h4><svg class="i" aria-hidden="true" focusable="false"><use href="#i-triangle-alert"/></svg><span data-i18n="s8">If it drifts</span></h4>
       <div class="prompt" data-prompt>
         <div class="prompt-head"><span class="plabel" data-i18n="s9">correction</span><button class="copy" type="button">Copy</button></div>
@@ -2532,7 +2537,7 @@
         <h4><svg class="i" aria-hidden="true" focusable="false"><use href="#i-lock"/></svg><span data-i18n="s3">To get here</span></h4>
         <p data-i18n="p10.4">Finish <strong>phase 9 · Motion</strong> first, then paste
         <code class="cmd">/dsf:handoff</code> into the chat.</p>
-        <p style="margin-bottom:0" data-i18n="s12">Must exist first:</p>
+        <p class="lead-in" data-i18n="s12">Must exist first:</p>
         <ul>
           <li data-i18n="p10.5">the full design system with documentation (<code>design-system/docs/index.html</code>)</li>
           <li data-i18n="p10.6">the width audit and the motion inventory (<code>responsive/width-audit.html</code>,
@@ -2684,14 +2689,14 @@
       </li>
     </ol>
 
-    <div class="panel good" style="margin-top:24px">
+    <div class="panel good">
       <h4><svg class="i" aria-hidden="true" focusable="false"><use href="#i-target"/></svg><span data-i18n="s7">What good looks like</span></h4>
       <p data-i18n="p10.17">A person who was never here opens the project, gets it running, and adds a feature without
       asking you a single question. Nothing in the handoff duplicates a value that lives in the code.
       Every link resolves.</p>
     </div>
 
-    <div class="panel drift" style="margin-top:12px">
+    <div class="panel drift">
       <h4><svg class="i" aria-hidden="true" focusable="false"><use href="#i-triangle-alert"/></svg><span data-i18n="s8">If it drifts</span></h4>
       <div class="prompt" data-prompt>
         <div class="prompt-head"><span class="plabel" data-i18n="s9">correction</span><button class="copy" type="button">Copy</button></div>
@@ -2740,8 +2745,8 @@
 
 <hr class="rule">
 <p class="colophon" data-i18n="ui.1">
-  This page is regenerated by every <code class="cmd" style="font-size:var(--fs-2xs)">/dsf:</code> command and
-  by <code class="cmd" style="font-size:var(--fs-2xs)">/dsf:status</code>. Status is read from the files
+  This page is regenerated by every <code class="cmd sm">/dsf:</code> command and
+  by <code class="cmd sm">/dsf:status</code>. Status is read from the files
   themselves: a phase can only be green if its artifacts are really there.
 </p>
 
@@ -2775,9 +2780,9 @@
         opinion. <code class="cmd">/dsf:check</code> verifies them one by one against the files and
         records the verdict here. Open a phase to read its list.</p>
         <ul class="rail-legend">
-          <li data-i18n="cr.2"><i class="m-pass">✓</i> verified against a file</li>
-          <li data-i18n="cr.3"><i class="m-fail">✕</i> checked and failed</li>
-          <li data-i18n="cr.4"><i>○</i> not resolved yet, silence is not a pass</li>
+          <li data-i18n="cr.2"><i class="m-pass">1</i> verified against a file</li>
+          <li data-i18n="cr.3"><i class="m-fail">2</i> checked and failed</li>
+          <li data-i18n="cr.4"><i>3</i> not resolved yet, silence is not a pass</li>
         </ul>
         <div class="rail-sub" data-i18n="cr.5">Across the pipeline</div>
         <ol class="tally" data-tally></ol>
@@ -3119,7 +3124,8 @@
     "benchmarkDimension": "",
     "primaryPersona": "",
     "mainJob": "",
-    "chosenDirection": ""
+    "chosenDirection": "",
+    "toolbox": []
   },
   "phases": [
     {
