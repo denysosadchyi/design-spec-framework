@@ -52,7 +52,7 @@ Present the assembled brief in chat as a short structured block: name, pitch, au
 Only after approval:
 
 - `CLAUDE.md` — the brief as the top section, followed by the **Toolbox** section from phase 0 and an empty **Phase log** section that later phases append to. This file is agent context: dense, no marketing, no fluff.
-- `README.md` — the human index: one-paragraph pitch, the repo map, a link to `pipeline.html`, and a "current phase" line.
+- `README.md` — rebuild it as the product's human index from `.design/templates/readme.md`: one-paragraph pitch, the repo map, a link to `pipeline.html`, and a "current phase" line (the framework's own README this replaces lives on in git).
 
 Open questions stay visible in both as `[?]` with their hypothesis attached. Do not resolve them by guessing.
 

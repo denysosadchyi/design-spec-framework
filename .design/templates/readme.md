@@ -1,3 +1,5 @@
+<!-- filled by /dsf:brief — this skeleton replaces the framework README as the product's own index -->
+
 # `[Product name]`
 
 `[One sentence: what this product is and who it is for. Filled in by /dsf:brief.]`

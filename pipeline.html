@@ -197,16 +197,14 @@
   }
   #side-toggle:hover { background: var(--bg-panel); border-color: var(--line-strong); color: var(--text); }
   #side-toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
-  /* Chevron drawn in CSS: no icon font, no SVG file, nothing fetched. */
-  #side-toggle .chev {
-    width: 8px; height: 8px; border-left: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor;
-    transform: rotate(45deg); margin-left: 3px;
-    transition: transform 120ms ease;
-  }
-  body.side-collapsed #side-toggle .chev { transform: rotate(-135deg); margin-left: -3px; }
+  /* One chevron for the whole page: the same sprite symbol the mobile "Phases"
+     disclosure uses, rotated to point the way the panel will move. */
+  #side-toggle .i { transform: rotate(90deg); transition: transform 120ms ease; }
+  body.side-collapsed #side-toggle .i { transform: rotate(-90deg); }
 
   #menu-toggle {
-    display: none; font: inherit; font-size: var(--fs-sm); font-weight: var(--w-label);
+    display: none; align-items: center; gap: 8px;
+    font: inherit; font-size: var(--fs-sm); font-weight: var(--w-label);
     color: var(--text-dim); background: var(--bg-panel); border: 1px solid var(--line-strong);
     border-radius: 8px; padding: 8px 12px; cursor: pointer;
   }
@@ -468,7 +466,8 @@
   }
 
   .chip {
-    display: inline-block; font-family: var(--mono); font-size: var(--fs-2xs);
+    display: inline-flex; align-items: center; gap: 6px;
+    font-family: var(--mono); font-size: var(--fs-2xs);
     font-weight: var(--w-label); letter-spacing: 0.03em;
     color: var(--progress); background: var(--progress-weak); border: 1px solid var(--progress-border);
     border-radius: 999px; padding: 2px 9px; margin-bottom: 8px; white-space: nowrap;
@@ -491,6 +490,7 @@
     letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-faint);
   }
   .copy {
+    display: inline-flex; align-items: center; gap: 6px;
     font: inherit; font-family: var(--mono); font-size: var(--fs-2xs);
     font-weight: var(--w-label); color: var(--text-dim);
     background: var(--bg-panel); border: 1px solid var(--line-strong); border-radius: 6px;
@@ -531,7 +531,13 @@
     display: grid; grid-template-columns: 16px minmax(0, 1fr); gap: 12px;
     align-items: baseline; padding: 12px 2px; border-bottom: 1px solid var(--line);
   }
-  ul.artifacts .glyph { font-family: var(--mono); font-size: var(--fs-xs); color: var(--text-faint); text-align: center; }
+  /* The mark stays an inline box: ul.artifacts li aligns on the baseline, and an
+     inline <svg> with .i's vertical-align lands on it exactly as the old glyph did. */
+  ul.artifacts .glyph { font-size: var(--fs-sm); line-height: 1.6; color: var(--text-faint); text-align: center; }
+  /* The two inline marks are bigger than the 12px mono they ride with, so they
+     need more descent than .i's default to land on the text's optical centre. */
+  ul.artifacts .glyph .i { vertical-align: -0.41em; }
+  ul.artifacts a.path .i { vertical-align: -0.33em; }
   ul.artifacts li.has .glyph { color: var(--done); }
   ul.artifacts .path { font-family: var(--mono); font-size: var(--fs-sm); color: var(--text-dim); overflow-wrap: anywhere; }
   ul.artifacts li.has .path { color: var(--text); font-weight: var(--w-label); }
@@ -540,23 +546,6 @@
   ul.artifacts .desc { display: block; font-size: var(--fs-sm); font-weight: 400; color: var(--text-faint); margin-top: 4px; }
   .pending { font-family: var(--mono); font-size: var(--fs-2xs); color: var(--text-faint); }
 
-  /* ----------------------------------------------------- product-now rows */
-
-  ul.hub-rows { list-style: none; margin: 8px 0 0; padding: 0; border-top: 1px solid var(--line); max-width: var(--measure); }
-  ul.hub-rows li { border-bottom: 1px solid var(--line); }
-  ul.hub-rows .hub-row {
-    display: grid; grid-template-columns: 16px minmax(0, 1fr); gap: 12px;
-    align-items: baseline; padding: 14px 2px; text-decoration: none; color: inherit;
-    border-radius: 8px; transition: background-color 120ms ease;
-  }
-  ul.hub-rows a.hub-row:hover { background: var(--bg-panel); }
-  ul.hub-rows .glyph { font-family: var(--mono); font-size: var(--fs-xs); color: var(--text-faint); text-align: center; }
-  ul.hub-rows li.has .glyph { color: var(--done); }
-  ul.hub-rows .hub-label { display: block; font-size: var(--fs-md); font-weight: var(--w-label); color: var(--text); }
-  ul.hub-rows li.missing .hub-label { color: var(--text-faint); font-weight: 400; }
-  ul.hub-rows a.hub-row .hub-label { color: var(--accent); }
-  ul.hub-rows .hub-path { display: block; font-family: var(--mono); font-size: var(--fs-sm); color: var(--text-faint); margin-top: 4px; overflow-wrap: anywhere; }
-
   /* ----------------------------------------------------------------- close */
 
   .close-row {
@@ -564,7 +553,11 @@
     font-family: var(--mono); font-size: var(--fs-xs); color: var(--text-faint);
     margin-top: 16px; font-variant-numeric: tabular-nums;
   }
-  .tag-pill { border: 1px solid var(--line-strong); border-radius: 999px; padding: 2px 10px; color: var(--text-dim); background: var(--bg-panel); }
+  .tag-pill {
+    display: inline-flex; align-items: center; gap: 6px;
+    border: 1px solid var(--line-strong); border-radius: 999px; padding: 2px 10px;
+    color: var(--text-dim); background: var(--bg-panel);
+  }
   .tag-pill.is-tagged { color: var(--done); border-color: var(--done-border); background: var(--done-weak); }
 
   .aftercare { margin-top: 16px; font-size: var(--fs-md); line-height: 1.6; color: var(--text-faint); }
@@ -742,8 +735,7 @@
 
   /* The Result view is a stage: the criteria rail belongs to the Guide, and
      the content column takes the width the rail gives back. */
-  body.result-open #rail,
-  body.hub-open #rail { display: none; }
+  body.result-open #rail { display: none; }
   body.result-open main { max-width: 1120px; }
 
   .result-empty, .result-facts {
@@ -826,6 +818,30 @@
 
   /* Collapsed: the route and nothing else. Every dot keeps its status colour,
      its ring and its connector; the name moves into a tooltip. */
+  /* ----------------------------------------------------------------- icons */
+
+  /* Lucide, referenced from the sprite at the top of <body>. Geometry only in the
+     symbols; weight, size and colour are set here so one symbol serves every size.
+     Never give an icon a colour: it inherits the state colour of whatever it sits
+     in (--done on .copy.done and li.has .glyph, --progress on .chip and
+     .panel.unlock, --text-faint in the sidebar foot and the rail head). */
+  .i {
+    width: 16px; height: 16px; flex: none;
+    fill: none; stroke: currentColor; stroke-width: 1.75;
+    stroke-linecap: round; stroke-linejoin: round;
+    vertical-align: -0.15em; pointer-events: none;
+  }
+  /* Small sizes need the heavier stroke to stay crisp on a light ground. */
+  .i-sm { width: 14px; height: 14px; stroke-width: 2; }
+
+  /* Hosts that gain an icon next to their label. */
+  .nav-item.is-meta .name { display: inline-flex; align-items: center; gap: 10px; }
+  #menu-toggle .i { transition: transform 120ms ease; }
+  #menu-toggle[aria-expanded="true"] .i { transform: rotate(180deg); }
+  .lang-row { display: flex; align-items: center; gap: 8px; color: var(--text-faint); }
+  .panel h4 { display: flex; align-items: center; gap: 8px; }
+  .rail-label { display: inline-flex; align-items: center; gap: 8px; }
+
   @media (min-width: 901px) {
     body.side-collapsed { grid-template-columns: 56px minmax(0, 1fr); }
     body.side-collapsed #sidebar {
@@ -876,7 +892,7 @@
       position: static; height: auto; border-right: none;
       border-bottom: 1px solid var(--line); padding: 16px 24px; gap: 16px;
     }
-    #menu-toggle { display: block; align-self: flex-start; }
+    #menu-toggle { display: inline-flex; align-self: flex-start; }
     #nav { display: none; }
     body.nav-open #nav { display: flex; }
     .sidebar-foot { margin-top: 0; padding-top: 16px; }
@@ -903,6 +919,26 @@
 </head>
 <body>
 
+<!-- Lucide 1.28.0 (ISC). Geometry only: stroke, fill and width live in CSS (.i) so a
+     single symbol serves every size. Inlined once; the page still makes zero external
+     requests. -->
+<svg xmlns="http://www.w3.org/2000/svg" width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <symbol id="i-map" viewBox="0 0 24 24"><path d="M14.106 5.553a2 2 0 0 0 1.788 0l3.659-1.83A1 1 0 0 1 21 4.619v12.764a1 1 0 0 1-.553.894l-4.553 2.277a2 2 0 0 1-1.788 0l-4.212-2.106a2 2 0 0 0-1.788 0l-3.659 1.83A1 1 0 0 1 3 19.381V6.618a1 1 0 0 1 .553-.894l4.553-2.277a2 2 0 0 1 1.788 0z" /><path d="M15 5.764v15" /><path d="M9 3.236v15" /></symbol>
+  <symbol id="i-chevron-down" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6" /></symbol>
+  <symbol id="i-languages" viewBox="0 0 24 24"><path d="m5 8 6 6" /><path d="m4 14 6-6 2-3" /><path d="M2 5h12" /><path d="M7 2h1" /><path d="m22 22-5-10-5 10" /><path d="M14 18h6" /></symbol>
+  <symbol id="i-lock" viewBox="0 0 24 24"><rect width="18" height="11" x="3" y="11" rx="2" ry="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" /></symbol>
+  <symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /><circle cx="12" cy="12" r="6" /><circle cx="12" cy="12" r="2" /></symbol>
+  <symbol id="i-triangle-alert" viewBox="0 0 24 24"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3" /><path d="M12 9v4" /><path d="M12 17h.01" /></symbol>
+  <symbol id="i-hand" viewBox="0 0 24 24"><path d="M18 11V6a2 2 0 0 0-2-2a2 2 0 0 0-2 2" /><path d="M14 10V4a2 2 0 0 0-2-2a2 2 0 0 0-2 2v2" /><path d="M10 10.5V6a2 2 0 0 0-2-2a2 2 0 0 0-2 2v8" /><path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15" /></symbol>
+  <symbol id="i-copy" viewBox="0 0 24 24"><rect width="14" height="14" x="8" y="8" rx="2" ry="2" /><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" /></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5" /></symbol>
+  <symbol id="i-circle-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /><path d="m9 12 2 2 4-4" /></symbol>
+  <symbol id="i-circle-dashed" viewBox="0 0 24 24"><path d="M10.1 2.182a10 10 0 0 1 3.8 0" /><path d="M13.9 21.818a10 10 0 0 1-3.8 0" /><path d="M17.609 3.721a10 10 0 0 1 2.69 2.7" /><path d="M2.182 13.9a10 10 0 0 1 0-3.8" /><path d="M20.279 17.609a10 10 0 0 1-2.7 2.69" /><path d="M21.818 10.1a10 10 0 0 1 0 3.8" /><path d="M3.721 6.391a10 10 0 0 1 2.7-2.69" /><path d="M6.391 20.279a10 10 0 0 1-2.69-2.7" /></symbol>
+  <symbol id="i-arrow-up-right" viewBox="0 0 24 24"><path d="M7 7h10v10" /><path d="M7 17 17 7" /></symbol>
+  <symbol id="i-list-checks" viewBox="0 0 24 24"><path d="M13 5h8" /><path d="M13 12h8" /><path d="M13 19h8" /><path d="m3 17 2 2 4-4" /><path d="m3 7 2 2 4-4" /></symbol>
+  <symbol id="i-tag" viewBox="0 0 24 24"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z" /><circle cx="7.5" cy="7.5" r=".5" fill="currentColor" /></symbol>
+</svg>
+
 <aside id="sidebar">
   <div class="brand-row">
     <div class="brand">
@@ -912,21 +948,16 @@
     <!-- Outside every [data-i18n] node on purpose: applyLocale rewrites those
          wholesale, and this control has to survive a language switch. -->
     <button id="side-toggle" type="button" aria-expanded="true" aria-controls="sidebar" aria-label="Collapse the phase list">
-      <span class="chev" aria-hidden="true"></span>
+      <svg class="i" aria-hidden="true" focusable="false"><use href="#i-chevron-down"/></svg>
     </button>
   </div>
 
-  <button id="menu-toggle" type="button" aria-expanded="false" aria-controls="nav" data-i18n="nav.2">Phases</button>
+  <button id="menu-toggle" type="button" aria-expanded="false" aria-controls="nav"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-chevron-down"/></svg><span data-i18n="nav.2">Phases</span></button>
 
   <nav id="nav" aria-label="Phases">
     <a class="nav-item is-meta" href="#how" data-nav="how">
       <span class="dot" aria-hidden="true">?</span>
-      <span class="name"><span data-i18n="how.2">How this works</span></span>
-    </a>
-
-    <a class="nav-item is-meta" href="#product" data-nav="product">
-      <span class="dot" aria-hidden="true">→</span>
-      <span class="name"><span data-i18n="nav.21">Product now</span></span>
+      <span class="name"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-map"/></svg><span data-i18n="how.2">How this works</span></span>
     </a>
 
     <div class="nav-label" data-i18n="nav.2">Phases</div>
@@ -955,9 +986,12 @@
   </nav>
 
   <div class="sidebar-foot">
-    <div class="lang" role="group" aria-label="Language / Мова">
-      <button type="button" data-lang="en" aria-pressed="true">EN</button>
-      <button type="button" data-lang="uk" aria-pressed="false">УКР</button>
+    <div class="lang-row">
+      <svg class="i i-sm" aria-hidden="true" focusable="false"><use href="#i-languages"/></svg>
+      <div class="lang" role="group" aria-label="Language / Мова">
+        <button type="button" data-lang="en" aria-pressed="true">EN</button>
+        <button type="button" data-lang="uk" aria-pressed="false">УКР</button>
+      </div>
     </div>
 
     <footer>
@@ -1044,7 +1078,7 @@
   </section>
 
   <section class="block">
-    <h2 data-i18n="how.27">Human gates <span class="chip" data-i18n="s2">🖐 your call</span></h2>
+    <h2 data-i18n="how.27">Human gates <span class="chip"><svg class="i i-sm" aria-hidden="true" focusable="false"><use href="#i-hand"/></svg>your call</span></h2>
     <p data-i18n="how.28">At fixed points the assistant <strong>stops and waits for you</strong>. It will not guess past
     a gate, and it will not choose taste on your behalf. Wherever you see that chip on a phase page,
     nothing happens until you answer.</p>
@@ -1130,19 +1164,6 @@
      built from the artifacts in the data block, so a door opens by itself the
      moment the phase that builds it says the file is real.
 -->
-<article class="page" id="page-product" hidden>
-  <header class="page-head">
-    <div class="eyebrow" data-i18n="hub.1">The product</div>
-    <h1 data-i18n="hub.2">Product now</h1>
-    <p class="lede" data-i18n="hub.3">Every door into the product being designed. Doors open as phases
-    complete.</p>
-  </header>
-
-  <section class="block">
-    <ul class="hub-rows" data-hub></ul>
-  </section>
-</article>
-
 <!-- ══════════════════════════════════════════════════════════ PHASE 0 ══ -->
 <article class="page" id="page-0" hidden>
   <div class="segbar">
@@ -1164,7 +1185,7 @@
   <div data-unlock="0" hidden>
     <section class="block">
       <div class="panel unlock">
-        <h4 data-i18n="s3">To get here</h4>
+        <h4><svg class="i" aria-hidden="true" focusable="false"><use href="#i-lock"/></svg><span data-i18n="s3">To get here</span></h4>
         <p data-i18n="p0.4">This is the first phase: nothing has to be finished before it. Paste the command below
         into the Claude Code chat and answer its questions.</p>
       </div>
@@ -1193,7 +1214,7 @@
         </div>
       </li>
       <li class="gate">
-        <span class="chip" data-i18n="s2">🖐 your call</span>
+        <span class="chip"><svg class="i i-sm" aria-hidden="true" focusable="false"><use href="#i-hand"/></svg><span data-i18n="s2">your call</span></span>
         <p data-i18n="p0.7">It checks what is already available and shows you <strong>one table</strong>: purpose,
         recommended tool, whether it is already there, and what changes in the pipeline if you skip
         it. You answer once. Refusing is a real answer: it will never argue a tool a second time.</p>
@@ -1219,7 +1240,7 @@
         </div>
       </li>
       <li class="gate">
-        <span class="chip" data-i18n="s2">🖐 your call</span>
+        <span class="chip"><svg class="i i-sm" aria-hidden="true" focusable="false"><use href="#i-hand"/></svg><span data-i18n="s2">your call</span></span>
         <p data-i18n="p0.10"><strong>Publishing.</strong> If you want the project's pages reachable at a link, it
         creates the repository and switches hosting on, but it asks first, because this makes work
         public. Say no and everything stays on your machine.</p>
@@ -1252,13 +1273,13 @@
     </ol>
 
     <div class="panel good" style="margin-top:24px">
-      <h4 data-i18n="s7">What good looks like</h4>
+      <h4><svg class="i" aria-hidden="true" focusable="false"><use href="#i-target"/></svg><span data-i18n="s7">What good looks like</span></h4>
       <p data-i18n="p0.14">Every row of the tool table has a real answer, nothing left as pending or <code>[?]</code>.
       This page opens in your browser and shows phase 1 as the next thing to do.</p>
     </div>
 
     <div class="panel drift" style="margin-top:12px">
-      <h4 data-i18n="s8">If it drifts</h4>
+      <h4><svg class="i" aria-hidden="true" focusable="false"><use href="#i-triangle-alert"/></svg><span data-i18n="s8">If it drifts</span></h4>
       <div class="prompt" data-prompt>
         <div class="prompt-head"><span class="plabel" data-i18n="s9">correction</span><button class="copy" type="button">Copy</button></div>
         <pre class="prompt-body">
@@ -1314,7 +1335,7 @@
   <div data-unlock="1" hidden>
     <section class="block">
       <div class="panel unlock">
-        <h4 data-i18n="s3">To get here</h4>
+        <h4><svg class="i" aria-hidden="true" focusable="false"><use href="#i-lock"/></svg><span data-i18n="s3">To get here</span></h4>
         <p data-i18n="p1.4">Finish <strong>phase 0 · Init</strong> first, then paste
         <code class="cmd">/dsf:brief</code> followed by a sentence about your idea.</p>
         <p style="margin-bottom:0" data-i18n="s12">Must exist first:</p>
@@ -1383,7 +1404,7 @@
         </div>
       </li>
       <li class="gate">
-        <span class="chip" data-i18n="s2">🖐 your call</span>
+        <span class="chip"><svg class="i i-sm" aria-hidden="true" focusable="false"><use href="#i-hand"/></svg><span data-i18n="s2">your call</span></span>
         <p data-i18n="p1.12">It plays the whole brief back in the chat and stops. <strong>Nothing is written until you
         approve.</strong> Correcting one area re-opens only that area, not the whole interview.</p>
         <div class="prompt" data-prompt>
@@ -1415,14 +1436,14 @@
     </ol>
 
     <div class="panel good" style="margin-top:24px">
-      <h4 data-i18n="s7">What good looks like</h4>
+      <h4><svg class="i" aria-hidden="true" focusable="false"><use href="#i-target"/></svg><span data-i18n="s7">What good looks like</span></h4>
       <p data-i18n="p1.15">The brief fits on one screen. The primary device is decided and owned by you, because it
       constrains every phase after it. Everything unknown is marked <code>[?]</code> with a stated
       hypothesis, and the brief says what the product is <em>not</em> doing.</p>
     </div>
 
     <div class="panel drift" style="margin-top:12px">
-      <h4 data-i18n="s8">If it drifts</h4>
+      <h4><svg class="i" aria-hidden="true" focusable="false"><use href="#i-triangle-alert"/></svg><span data-i18n="s8">If it drifts</span></h4>
       <div class="prompt" data-prompt>
         <div class="prompt-head"><span class="plabel" data-i18n="s9">correction</span><button class="copy" type="button">Copy</button></div>
         <pre class="prompt-body">
@@ -1477,7 +1498,7 @@
   <div data-unlock="2" hidden>
     <section class="block">
       <div class="panel unlock">
-        <h4 data-i18n="s3">To get here</h4>
+        <h4><svg class="i" aria-hidden="true" focusable="false"><use href="#i-lock"/></svg><span data-i18n="s3">To get here</span></h4>
         <p data-i18n="p2.4">Finish <strong>phase 1 · Brief</strong> first, then paste
         <code class="cmd">/dsf:research</code>. Research before users: the personas are built out of
         what the research found, not the other way round.</p>
@@ -1513,7 +1534,7 @@
         </div>
       </li>
       <li class="gate">
-        <span class="chip" data-i18n="s2">🖐 your call</span>
+        <span class="chip"><svg class="i i-sm" aria-hidden="true" focusable="false"><use href="#i-hand"/></svg><span data-i18n="s2">your call</span></span>
         <p data-i18n="p2.11">It names competitors in three groups: <strong>hard</strong> (same product, same
         audience), <strong>soft</strong> (different product, same underlying job),
         <strong>aspirational</strong> (the international best). You fix the list; your knowledge of
@@ -1543,7 +1564,7 @@
         </div>
       </li>
       <li class="gate">
-        <span class="chip" data-i18n="s2">🖐 your call</span>
+        <span class="chip"><svg class="i i-sm" aria-hidden="true" focusable="false"><use href="#i-hand"/></svg><span data-i18n="s2">your call</span></span>
         <p data-i18n="p2.14"><strong>The benchmark.</strong> The matrix surfaces one dimension where the whole market is
         weak or identical. You confirm it or swap it. Then it scores four or five products that do
         that one thing best <em>in any category</em>: leaving your category is the point.</p>
@@ -1557,7 +1578,7 @@
         </div>
       </li>
       <li class="gate">
-        <span class="chip" data-i18n="s2">🖐 your call</span>
+        <span class="chip"><svg class="i i-sm" aria-hidden="true" focusable="false"><use href="#i-hand"/></svg><span data-i18n="s2">your call</span></span>
         <p data-i18n="p2.15"><strong>The interaction pattern.</strong> Five genuinely different ways the core
         interaction could work, different in mechanism, not five layouts of one idea, with a
         recommendation, a runner-up and a disqualified one. You pick.</p>
@@ -1585,7 +1606,7 @@
     </ol>
 
     <div class="panel drift" style="margin-top:24px">
-      <h4 data-i18n="s8">If it drifts</h4>
+      <h4><svg class="i" aria-hidden="true" focusable="false"><use href="#i-triangle-alert"/></svg><span data-i18n="s8">If it drifts</span></h4>
       <div class="prompt" data-prompt>
         <div class="prompt-head"><span class="plabel" data-i18n="s9">correction</span><button class="copy" type="button">Copy</button></div>
         <pre class="prompt-body">
@@ -1660,7 +1681,7 @@
         </div>
       </li>
       <li class="gate">
-        <span class="chip" data-i18n="s2">🖐 your call</span>
+        <span class="chip"><svg class="i i-sm" aria-hidden="true" focusable="false"><use href="#i-hand"/></svg><span data-i18n="s2">your call</span></span>
         <p data-i18n="p2.22"><strong>The MVP core.</strong> A matrix of jobs against personas produces three jobs that
         matter to your primary persona and are not already covered by the market, plus the features
         that close no job at all. This is scope, so it is yours.</p>
@@ -1699,7 +1720,7 @@
     </ol>
 
     <div class="panel drift" style="margin-top:24px">
-      <h4 data-i18n="s8">If it drifts</h4>
+      <h4><svg class="i" aria-hidden="true" focusable="false"><use href="#i-triangle-alert"/></svg><span data-i18n="s8">If it drifts</span></h4>
       <div class="prompt" data-prompt>
         <div class="prompt-head"><span class="plabel" data-i18n="s9">correction</span><button class="copy" type="button">Copy</button></div>
         <pre class="prompt-body">
@@ -1719,7 +1740,7 @@
 
   <section class="block">
     <div class="panel good">
-      <h4 data-i18n="s7">What good looks like</h4>
+      <h4><svg class="i" aria-hidden="true" focusable="false"><use href="#i-target"/></svg><span data-i18n="s7">What good looks like</span></h4>
       <p data-i18n="p2.25">No confident sentence without a link or a screenshot behind it. The benchmark products are
       not all from your own category. The five patterns differ in how they work, not in how they are
       arranged. And the personas still carry a few <code>[?]</code>: a completely clean coverage
@@ -1764,7 +1785,7 @@
   <div data-unlock="3" hidden>
     <section class="block">
       <div class="panel unlock">
-        <h4 data-i18n="s3">To get here</h4>
+        <h4><svg class="i" aria-hidden="true" focusable="false"><use href="#i-lock"/></svg><span data-i18n="s3">To get here</span></h4>
         <p data-i18n="p3.4">Finish <strong>phase 2 · Discover</strong> first, then paste
         <code class="cmd">/dsf:ia</code> into the chat.</p>
         <p style="margin-bottom:0" data-i18n="s12">Must exist first:</p>
@@ -1864,7 +1885,7 @@
         </div>
       </li>
       <li class="gate">
-        <span class="chip" data-i18n="s2">🖐 your call</span>
+        <span class="chip"><svg class="i i-sm" aria-hidden="true" focusable="false"><use href="#i-hand"/></svg><span data-i18n="s2">your call</span></span>
         <p data-i18n="p3.14">It reviews its own map for four things: dead ends, missing states, excess depth, orphans.
         Then it hands you the table without fixing anything. You order it.</p>
         <div class="prompt" data-prompt>
@@ -1897,14 +1918,14 @@
     </ol>
 
     <div class="panel good" style="margin-top:24px">
-      <h4 data-i18n="s7">What good looks like</h4>
+      <h4><svg class="i" aria-hidden="true" focusable="false"><use href="#i-target"/></svg><span data-i18n="s7">What good looks like</span></h4>
       <p data-i18n="p3.16">Point at any screen and you can say which job it closes. Every flow shows at least one way
       to fail and the way back out of it. And you can say out loud how many taps it takes to do the
       main thing.</p>
     </div>
 
     <div class="panel drift" style="margin-top:12px">
-      <h4 data-i18n="s8">If it drifts</h4>
+      <h4><svg class="i" aria-hidden="true" focusable="false"><use href="#i-triangle-alert"/></svg><span data-i18n="s8">If it drifts</span></h4>
       <div class="prompt" data-prompt>
         <div class="prompt-head"><span class="plabel" data-i18n="s9">correction</span><button class="copy" type="button">Copy</button></div>
         <pre class="prompt-body">
@@ -1960,7 +1981,7 @@
   <div data-unlock="4" hidden>
     <section class="block">
       <div class="panel unlock">
-        <h4 data-i18n="s3">To get here</h4>
+        <h4><svg class="i" aria-hidden="true" focusable="false"><use href="#i-lock"/></svg><span data-i18n="s3">To get here</span></h4>
         <p data-i18n="p4.4">Finish <strong>phase 3 · Structure</strong> first, then paste
         <code class="cmd">/dsf:wireframes</code> into the chat.</p>
         <p style="margin-bottom:0" data-i18n="s12">Must exist first:</p>
@@ -2022,7 +2043,7 @@
         </div>
       </li>
       <li class="gate">
-        <span class="chip" data-i18n="s2">🖐 your call</span>
+        <span class="chip"><svg class="i i-sm" aria-hidden="true" focusable="false"><use href="#i-hand"/></svg><span data-i18n="s2">your call</span></span>
         <p data-i18n="p4.11"><strong>The sample.</strong> One screen, its state pages, and the tree navigator panel that
         appears on every page afterwards. Open it in the browser: real values instead of
         placeholders, an obvious primary action in each zone, a visible way out of the empty and
@@ -2069,7 +2090,7 @@
         </div>
       </li>
       <li class="gate">
-        <span class="chip" data-i18n="s2">🖐 your call</span>
+        <span class="chip"><svg class="i i-sm" aria-hidden="true" focusable="false"><use href="#i-hand"/></svg><span data-i18n="s2">your call</span></span>
         <p data-i18n="p4.14">The defect table: visual decisions that leaked in, placeholder text, missing states, dead
         ends, zones with no action, screens that are not on the map. You order it; dead ends and
         missing states go first.</p>
@@ -2092,14 +2113,14 @@
     </ol>
 
     <div class="panel good" style="margin-top:24px">
-      <h4 data-i18n="s7">What good looks like</h4>
+      <h4><svg class="i" aria-hidden="true" focusable="false"><use href="#i-target"/></svg><span data-i18n="s7">What good looks like</span></h4>
       <p data-i18n="p4.15">Open <strong>wireframes/index.html</strong> and click your way through the main job from the
       first screen to done, without ever getting stuck. Every screen is reachable from the navigator
       panel. Nothing is coloured, and nothing says "Lorem".</p>
     </div>
 
     <div class="panel drift" style="margin-top:12px">
-      <h4 data-i18n="s8">If it drifts</h4>
+      <h4><svg class="i" aria-hidden="true" focusable="false"><use href="#i-triangle-alert"/></svg><span data-i18n="s8">If it drifts</span></h4>
       <div class="prompt" data-prompt>
         <div class="prompt-head"><span class="plabel" data-i18n="s9">correction</span><button class="copy" type="button">Copy</button></div>
         <pre class="prompt-body">
@@ -2163,7 +2184,7 @@
   <div data-unlock="5" hidden>
     <section class="block">
       <div class="panel unlock">
-        <h4 data-i18n="s3">To get here</h4>
+        <h4><svg class="i" aria-hidden="true" focusable="false"><use href="#i-lock"/></svg><span data-i18n="s3">To get here</span></h4>
         <p data-i18n="p5.4">Finish <strong>phase 4 · Wireframes</strong> first, then paste
         <code class="cmd">/dsf:voice</code>. Do the voice half before the visual half: the words are
         part of what the visual direction has to carry.</p>
@@ -2243,7 +2264,7 @@
         </div>
       </li>
       <li class="gate">
-        <span class="chip" data-i18n="s2">🖐 your call</span>
+        <span class="chip"><svg class="i i-sm" aria-hidden="true" focusable="false"><use href="#i-hand"/></svg><span data-i18n="s2">your call</span></span>
         <p data-i18n="p5.13">It rewrites the main screen and its states first and shows you a <strong>before / after
         table</strong>. You check the change of register before the rest of the product follows.</p>
         <div class="prompt" data-prompt>
@@ -2274,7 +2295,7 @@
         </div>
       </li>
       <li class="gate">
-        <span class="chip" data-i18n="s2">🖐 your call</span>
+        <span class="chip"><svg class="i i-sm" aria-hidden="true" focusable="false"><use href="#i-hand"/></svg><span data-i18n="s2">your call</span></span>
         <p data-i18n="p5.15">The copy defect table: terms outside the dictionary, one action with two labels, banned
         material leaking back, a state whose tone is wrong.</p>
         <div class="prompt" data-prompt>
@@ -2300,7 +2321,7 @@
     </ol>
 
     <div class="panel drift" style="margin-top:24px">
-      <h4 data-i18n="s8">If it drifts</h4>
+      <h4><svg class="i" aria-hidden="true" focusable="false"><use href="#i-triangle-alert"/></svg><span data-i18n="s8">If it drifts</span></h4>
       <div class="prompt" data-prompt>
         <div class="prompt-head"><span class="plabel" data-i18n="s9">correction</span><button class="copy" type="button">Copy</button></div>
         <pre class="prompt-body">
@@ -2354,7 +2375,7 @@
         </div>
       </li>
       <li class="gate">
-        <span class="chip" data-i18n="s2">🖐 your call</span>
+        <span class="chip"><svg class="i i-sm" aria-hidden="true" focusable="false"><use href="#i-hand"/></svg><span data-i18n="s2">your call</span></span>
         <p data-i18n="p5.19"><strong>Your taste, on the record.</strong> Before anything visual is written it asks you
         for two or three <em>named products</em> you like and what exactly you like about them, plus
         your anti-references, including the obvious first reflex for this category. Names, not
@@ -2385,7 +2406,7 @@
         </div>
       </li>
       <li class="gate">
-        <span class="chip" data-i18n="s2">🖐 your call</span>
+        <span class="chip"><svg class="i i-sm" aria-hidden="true" focusable="false"><use href="#i-hand"/></svg><span data-i18n="s2">your call</span></span>
         <p data-i18n="p5.22"><strong>The direction.</strong> Three genuinely different directions side by side, each
         shown live. Palettes you could have guessed from the category are thrown out before you ever
         see them. Open the page in your browser and name the one you want.</p>
@@ -2421,7 +2442,7 @@
         </div>
       </li>
       <li class="gate">
-        <span class="chip" data-i18n="s2">🖐 your call</span>
+        <span class="chip"><svg class="i i-sm" aria-hidden="true" focusable="false"><use href="#i-hand"/></svg><span data-i18n="s2">your call</span></span>
         <p data-i18n="p5.25">The language goes onto <strong>two contrasting screens</strong> only: the main screen with
         all its states, plus one of a different density. You open them before anything else gets
         coloured. Colouring the whole product is the next phase.</p>
@@ -2444,7 +2465,7 @@
         </div>
       </li>
       <li class="gate">
-        <span class="chip" data-i18n="s2">🖐 your call</span>
+        <span class="chip"><svg class="i i-sm" aria-hidden="true" focusable="false"><use href="#i-hand"/></svg><span data-i18n="s2">your call</span></span>
         <p data-i18n="p5.27">The defect table: a decision with no attribute behind it, contrast below standard, a colour
         tone that contradicts the voice, the same card looking different across the two screens, a
         grey box where a photo belongs.</p>
@@ -2480,7 +2501,7 @@
     </div>
 
     <div class="panel drift" style="margin-top:12px">
-      <h4 data-i18n="s8">If it drifts</h4>
+      <h4><svg class="i" aria-hidden="true" focusable="false"><use href="#i-triangle-alert"/></svg><span data-i18n="s8">If it drifts</span></h4>
       <div class="prompt" data-prompt>
         <div class="prompt-head"><span class="plabel" data-i18n="s9">correction</span><button class="copy" type="button">Copy</button></div>
         <pre class="prompt-body">
@@ -2508,7 +2529,7 @@
 
   <section class="block">
     <div class="panel good">
-      <h4 data-i18n="s7">What good looks like</h4>
+      <h4><svg class="i" aria-hidden="true" focusable="false"><use href="#i-target"/></svg><span data-i18n="s7">What good looks like</span></h4>
       <p data-i18n="p5.32">Read three error messages in a row and they sound like one product. Put the two styled
       screens side by side and the same card reads as the same card, not as two websites. No grey
       placeholders remain, and every colour pair passes contrast.</p>
@@ -2552,7 +2573,7 @@
   <div data-unlock="6" hidden>
     <section class="block">
       <div class="panel unlock">
-        <h4 data-i18n="s3">To get here</h4>
+        <h4><svg class="i" aria-hidden="true" focusable="false"><use href="#i-lock"/></svg><span data-i18n="s3">To get here</span></h4>
         <p data-i18n="p6.4">Finish <strong>phase 5 · Voice &amp; Visual design</strong> first, then paste
         <code class="cmd">/dsf:build</code> into the chat.</p>
         <p style="margin-bottom:0" data-i18n="s12">Must exist first:</p>
@@ -2589,7 +2610,7 @@
         </div>
       </li>
       <li class="gate">
-        <span class="chip" data-i18n="s2">🖐 your call</span>
+        <span class="chip"><svg class="i i-sm" aria-hidden="true" focusable="false"><use href="#i-hand"/></svg><span data-i18n="s2">your call</span></span>
         <p data-i18n="p6.9">It documents the visual language <em>from the code</em> of the two approved screens. If
         something in them contradicts the taste or anti-references you recorded in phase 5, it does
         not quietly write it in: it lists the conflicts and stops.</p>
@@ -2618,7 +2639,7 @@
         </div>
       </li>
       <li class="gate">
-        <span class="chip" data-i18n="s2">🖐 your call</span>
+        <span class="chip"><svg class="i i-sm" aria-hidden="true" focusable="false"><use href="#i-hand"/></svg><span data-i18n="s2">your call</span></span>
         <p data-i18n="p6.11"><strong>The kit.</strong> The shared values, one file per component, the shared header and
         tab bar, and a showcase page. Open <strong>ui/kit.html</strong> and review every component in
         every state before anything is rolled out: this is the bar the whole product gets built to.</p>
@@ -2654,7 +2675,7 @@
         </div>
       </li>
       <li class="gate">
-        <span class="chip" data-i18n="s2">🖐 your call</span>
+        <span class="chip"><svg class="i i-sm" aria-hidden="true" focusable="false"><use href="#i-hand"/></svg><span data-i18n="s2">your call</span></span>
         <p data-i18n="p6.13">It dresses the screens from the kit, in the same files, never copies, one group at a
         time. You review the first group before the rest are done in parallel.</p>
         <div class="prompt" data-prompt>
@@ -2676,7 +2697,7 @@
         </div>
       </li>
       <li class="gate">
-        <span class="chip" data-i18n="s2">🖐 your call</span>
+        <span class="chip"><svg class="i i-sm" aria-hidden="true" focusable="false"><use href="#i-hand"/></svg><span data-i18n="s2">your call</span></span>
         <p data-i18n="p6.14"><strong>Dark theme as a stress test.</strong> It checks that the colour roles were named
         properly: if a component had to be edited to make dark work, that is a defect in the
         component. Whether dark theme actually <em>ships</em> is a separate decision, and it is yours.</p>
@@ -2698,7 +2719,7 @@
         </div>
       </li>
       <li class="gate">
-        <span class="chip" data-i18n="s2">🖐 your call</span>
+        <span class="chip"><svg class="i i-sm" aria-hidden="true" focusable="false"><use href="#i-hand"/></svg><span data-i18n="s2">your call</span></span>
         <p data-i18n="p6.16">The defect table: a screen with its own styling, the same component with different markup
         in two places, contrast failures in either theme, off-theme imagery, copy that drifted from
         the copy source.</p>
@@ -2713,14 +2734,14 @@
     </ol>
 
     <div class="panel good" style="margin-top:24px">
-      <h4 data-i18n="s7">What good looks like</h4>
+      <h4><svg class="i" aria-hidden="true" focusable="false"><use href="#i-target"/></svg><span data-i18n="s7">What good looks like</span></h4>
       <p data-i18n="p6.17">The two phase-5 screens did not change by a pixel when they moved onto the kit, that is the
       kit's own correctness test. No screen carries its own styling. The same card looks identical
       everywhere it appears. Every image belongs to the same set.</p>
     </div>
 
     <div class="panel drift" style="margin-top:12px">
-      <h4 data-i18n="s8">If it drifts</h4>
+      <h4><svg class="i" aria-hidden="true" focusable="false"><use href="#i-triangle-alert"/></svg><span data-i18n="s8">If it drifts</span></h4>
       <div class="prompt" data-prompt>
         <div class="prompt-head"><span class="plabel" data-i18n="s9">correction</span><button class="copy" type="button">Copy</button></div>
         <pre class="prompt-body">
@@ -2784,7 +2805,7 @@
   <div data-unlock="7" hidden>
     <section class="block">
       <div class="panel unlock">
-        <h4 data-i18n="s3">To get here</h4>
+        <h4><svg class="i" aria-hidden="true" focusable="false"><use href="#i-lock"/></svg><span data-i18n="s3">To get here</span></h4>
         <p data-i18n="p7.4">Finish <strong>phase 6 · UI build</strong> first, then paste
         <code class="cmd">/dsf:system</code> into the chat.</p>
         <p style="margin-bottom:0" data-i18n="s12">Must exist first:</p>
@@ -2904,7 +2925,7 @@
         </div>
       </li>
       <li class="gate">
-        <span class="chip" data-i18n="s2">🖐 your call</span>
+        <span class="chip"><svg class="i i-sm" aria-hidden="true" focusable="false"><use href="#i-hand"/></svg><span data-i18n="s2">your call</span></span>
         <p data-i18n="p7.16">The defect table: documentation describing something the code does not have, a component
         that looks different in the product than on its own page, a state defined in only one theme,
         a pattern that grew its own styling.</p>
@@ -2919,14 +2940,14 @@
     </ol>
 
     <div class="panel good" style="margin-top:24px">
-      <h4 data-i18n="s7">What good looks like</h4>
+      <h4><svg class="i" aria-hidden="true" focusable="false"><use href="#i-target"/></svg><span data-i18n="s7">What good looks like</span></h4>
       <p data-i18n="p7.17">Open <strong>design-system/docs/index.html</strong> and tab through it with the keyboard:
       you can always see where you are, in both themes. Every component page shows real states rather
       than descriptions of them. Nothing on a page claims a variant the code does not have.</p>
     </div>
 
     <div class="panel drift" style="margin-top:12px">
-      <h4 data-i18n="s8">If it drifts</h4>
+      <h4><svg class="i" aria-hidden="true" focusable="false"><use href="#i-triangle-alert"/></svg><span data-i18n="s8">If it drifts</span></h4>
       <div class="prompt" data-prompt>
         <div class="prompt-head"><span class="plabel" data-i18n="s9">correction</span><button class="copy" type="button">Copy</button></div>
         <pre class="prompt-body">
@@ -2990,7 +3011,7 @@
   <div data-unlock="8" hidden>
     <section class="block">
       <div class="panel unlock">
-        <h4 data-i18n="s3">To get here</h4>
+        <h4><svg class="i" aria-hidden="true" focusable="false"><use href="#i-lock"/></svg><span data-i18n="s3">To get here</span></h4>
         <p data-i18n="p8.4">Finish <strong>phase 7 · Design system</strong> first, then paste
         <code class="cmd">/dsf:responsive</code> into the chat.</p>
         <p style="margin-bottom:0" data-i18n="s12">Must exist first:</p>
@@ -3026,7 +3047,7 @@
         </div>
       </li>
       <li class="gate">
-        <span class="chip" data-i18n="s2">🖐 your call</span>
+        <span class="chip"><svg class="i i-sm" aria-hidden="true" focusable="false"><use href="#i-hand"/></svg><span data-i18n="s2">your call</span></span>
         <p data-i18n="p8.10"><strong>The width audit.</strong> Every screen gets exactly one verdict: <em>same</em>
         (width adds nothing but air), <em>wider layout</em> (same content, more columns), or <em>new
         behaviour</em> (width opens something the phone did not have). "Better on desktop" is not a
@@ -3099,7 +3120,7 @@
         </div>
       </li>
       <li class="gate">
-        <span class="chip" data-i18n="s2">🖐 your call</span>
+        <span class="chip"><svg class="i i-sm" aria-hidden="true" focusable="false"><use href="#i-hand"/></svg><span data-i18n="s2">your call</span></span>
         <p data-i18n="p8.15">You open the screens yourself at three widths before the defect table is prioritised.</p>
         <div class="prompt" data-prompt>
           <div class="prompt-head"><span class="plabel" data-i18n="s1">paste into the chat</span><button class="copy" type="button">Copy</button></div>
@@ -3114,13 +3135,13 @@
     </ol>
 
     <div class="panel good" style="margin-top:24px">
-      <h4 data-i18n="s7">What good looks like</h4>
+      <h4><svg class="i" aria-hidden="true" focusable="false"><use href="#i-target"/></svg><span data-i18n="s7">What good looks like</span></h4>
       <p data-i18n="p8.16">No sideways scrolling at any width. Nothing that existed on the phone has quietly disappeared
       on the desktop, and no paragraph runs the full width of a large monitor.</p>
     </div>
 
     <div class="panel drift" style="margin-top:24px">
-      <h4 data-i18n="s8">If it drifts</h4>
+      <h4><svg class="i" aria-hidden="true" focusable="false"><use href="#i-triangle-alert"/></svg><span data-i18n="s8">If it drifts</span></h4>
       <div class="prompt" data-prompt>
         <div class="prompt-head"><span class="plabel" data-i18n="s9">correction</span><button class="copy" type="button">Copy</button></div>
         <pre class="prompt-body">
@@ -3184,7 +3205,7 @@
   <div data-unlock="9" hidden>
     <section class="block">
       <div class="panel unlock">
-        <h4 data-i18n="s3">To get here</h4>
+        <h4><svg class="i" aria-hidden="true" focusable="false"><use href="#i-lock"/></svg><span data-i18n="s3">To get here</span></h4>
         <p data-i18n="p9.4">Finish <strong>phase 8 · Responsive</strong> first, then paste
         <code class="cmd">/dsf:motion</code>. Widths before motion: motion animates transitions
         between states, so the states have to exist first.</p>
@@ -3235,7 +3256,7 @@
         </div>
       </li>
       <li class="gate">
-        <span class="chip" data-i18n="s2">🖐 your call</span>
+        <span class="chip"><svg class="i i-sm" aria-hidden="true" focusable="false"><use href="#i-hand"/></svg><span data-i18n="s2">your call</span></span>
         <p data-i18n="p9.11"><strong>The motion inventory.</strong> Every candidate moment is listed with the job it
         does and the component that owns it. A moment with no named job never enters the table, and so
         never gets animated. You decide which moments are worth it before anything moves.</p>
@@ -3296,7 +3317,7 @@
         </div>
       </li>
       <li class="gate">
-        <span class="chip" data-i18n="s2">🖐 your call</span>
+        <span class="chip"><svg class="i i-sm" aria-hidden="true" focusable="false"><use href="#i-hand"/></svg><span data-i18n="s2">your call</span></span>
         <p data-i18n="p9.15">You watch it in a browser, motion is only visible in motion, never in a description. Then
         order the defect table.</p>
         <div class="prompt" data-prompt>
@@ -3312,13 +3333,13 @@
     </ol>
 
     <div class="panel good" style="margin-top:24px">
-      <h4 data-i18n="s7">What good looks like</h4>
+      <h4><svg class="i" aria-hidden="true" focusable="false"><use href="#i-target"/></svg><span data-i18n="s7">What good looks like</span></h4>
       <p data-i18n="p9.16">Every movement left on screen can name the job it does. Turn "reduce motion" on in your own
       system settings and the product still works perfectly, just still.</p>
     </div>
 
     <div class="panel drift" style="margin-top:24px">
-      <h4 data-i18n="s8">If it drifts</h4>
+      <h4><svg class="i" aria-hidden="true" focusable="false"><use href="#i-triangle-alert"/></svg><span data-i18n="s8">If it drifts</span></h4>
       <div class="prompt" data-prompt>
         <div class="prompt-head"><span class="plabel" data-i18n="s9">correction</span><button class="copy" type="button">Copy</button></div>
         <pre class="prompt-body">
@@ -3382,7 +3403,7 @@
   <div data-unlock="10" hidden>
     <section class="block">
       <div class="panel unlock">
-        <h4 data-i18n="s3">To get here</h4>
+        <h4><svg class="i" aria-hidden="true" focusable="false"><use href="#i-lock"/></svg><span data-i18n="s3">To get here</span></h4>
         <p data-i18n="p10.4">Finish <strong>phase 9 · Motion</strong> first, then paste
         <code class="cmd">/dsf:handoff</code> into the chat.</p>
         <p style="margin-bottom:0" data-i18n="s12">Must exist first:</p>
@@ -3421,7 +3442,7 @@
         </div>
       </li>
       <li class="gate">
-        <span class="chip" data-i18n="s2">🖐 your call</span>
+        <span class="chip"><svg class="i i-sm" aria-hidden="true" focusable="false"><use href="#i-hand"/></svg><span data-i18n="s2">your call</span></span>
         <p data-i18n="p10.9"><strong>Fresh eyes.</strong> It walks the whole project as if it had never seen it and
         writes down everything unclear without you in the room. You confirm the list and add the gaps
         you already know about: it is the order sheet for the rest of the phase.</p>
@@ -3505,7 +3526,7 @@
         </div>
       </li>
       <li class="gate">
-        <span class="chip" data-i18n="s2">🖐 your call</span>
+        <span class="chip"><svg class="i i-sm" aria-hidden="true" focusable="false"><use href="#i-hand"/></svg><span data-i18n="s2">your call</span></span>
         <p data-i18n="p10.15"><strong>The proof.</strong> A fresh assistant that has never seen this project gets only the
         handoff folder and the front page, and is asked to build a small feature. Everywhere it
         stumbles is a hole: closed with documentation, never with a new feature.</p>
@@ -3520,7 +3541,7 @@
         </div>
       </li>
       <li>
-        <p data-i18n="p10.16"><strong>★ The graduation one-shot.</strong> One job driven through every layer in a single
+        <p data-i18n="p10.16"><strong>The graduation one-shot.</strong> One job driven through every layer in a single
         pass: proof that the phases were a training rig, not a ritual.</p>
         <div class="prompt" data-prompt>
           <div class="prompt-head"><span class="plabel" data-i18n="s1">paste into the chat</span><button class="copy" type="button">Copy</button></div>
@@ -3538,14 +3559,14 @@
     </ol>
 
     <div class="panel good" style="margin-top:24px">
-      <h4 data-i18n="s7">What good looks like</h4>
+      <h4><svg class="i" aria-hidden="true" focusable="false"><use href="#i-target"/></svg><span data-i18n="s7">What good looks like</span></h4>
       <p data-i18n="p10.17">A person who was never here opens the project, gets it running, and adds a feature without
       asking you a single question. Nothing in the handoff duplicates a value that lives in the code.
       Every link resolves.</p>
     </div>
 
     <div class="panel drift" style="margin-top:12px">
-      <h4 data-i18n="s8">If it drifts</h4>
+      <h4><svg class="i" aria-hidden="true" focusable="false"><use href="#i-triangle-alert"/></svg><span data-i18n="s8">If it drifts</span></h4>
       <div class="prompt" data-prompt>
         <div class="prompt-head"><span class="plabel" data-i18n="s9">correction</span><button class="copy" type="button">Copy</button></div>
         <pre class="prompt-body">
@@ -3610,7 +3631,7 @@
   <div class="rail-card">
     <div class="rail-head">
       <div class="rail-title">
-        <span id="rail-title-text" data-rail-title>Success criteria</span>
+        <span class="rail-label"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-list-checks"/></svg><span id="rail-title-text" data-rail-title>Success criteria</span></span>
         <b class="rail-count" data-rail-count>0/0</b>
       </div>
       <div class="rail-meta" data-rail-meta></div>
@@ -4228,12 +4249,6 @@ var RT = {
     frameExit:   "Exit fullscreen",
     sideCollapse: "Collapse the phase list",
     sideExpand:   "Expand the phase list",
-    hubRows: {
-      "wireframes/index.html":            "Screens navigator",
-      "ui/kit.html":                      "UI kit",
-      "design-system/docs/index.html":    "Design system docs",
-      "handoff/index.html":               "Live product and showcase"
-    },
     blanks: {
       product:            "‹your product›",
       oneLiner:           "‹one sentence about your idea›",
@@ -4278,12 +4293,6 @@ var RT = {
     frameExit:   "Згорнути",
     sideCollapse: "Згорнути список фаз",
     sideExpand:   "Розгорнути список фаз",
-    hubRows: {
-      "wireframes/index.html":            "Навігатор екранів",
-      "ui/kit.html":                      "UI-набір",
-      "design-system/docs/index.html":    "Документація дизайн-системи",
-      "handoff/index.html":               "Живий продукт і вітрина"
-    },
     blanks: {
       product:            "‹твій продукт›",
       oneLiner:           "‹одне речення про твою ідею›",
@@ -4433,7 +4442,7 @@ Object.assign(I18N.uk, {
   "how.24": "<strong>Ти розставляєш пріоритети.</strong> Впорядковуєш таблицю, викидаєш рядки або\n      підвищуєш щось до правила. Асистент не вирішує, що важливо.",
   "how.25": "<div><strong>Він виправляє в джерелі.</strong> Зміна лягає туди, де живе правда — у значення,\n      у компонент, у файл домовленостей — і розходиться далі. Ніколи не залатується на одному\n      екрані.</div>",
   "how.26": "<strong>Він виправляє в джерелі.</strong> Зміна лягає туди, де живе правда — у значення,\n      у компонент, у файл домовленостей — і розходиться далі. Ніколи не залатується на одному\n      екрані.",
-  "how.27": "Стоп-точки — <span class=\"chip\">🖐 твоє рішення</span>",
+  "how.27": "Стоп-точки — <span class=\"chip\"><svg class=\"i i-sm\" aria-hidden=\"true\" focusable=\"false\"><use href=\"#i-hand\"/></svg>твоє рішення</span>",
   "how.28": "У визначених місцях асистент <strong>зупиняється й чекає на тебе</strong>. Він не вгадуватиме за\n    стоп-точкою і не обиратиме смак замість тебе. Скрізь, де на сторінці фази бачиш цю позначку,\n    нічого не станеться, поки ти не відповіси.",
   "how.29": "Рішення, які завжди твої: які конкуренти справді важать, що входить в MVP, а що відрізаємо,\n    яким із трьох візуальних напрямів стане продукт, у якому порядку правити дефекти й чи фаза\n    завершена. Асистент робить роботу; судження лишається за тобою. Кожна така відповідь потрапляє\n    в журнал рішень, тож потім нічого не доведеться перерішувати по пам’яті.",
   "how.3": "Зараз ти спроєктуєш продукт, жодного разу не відкривши дизайн-інструмент. Ця\n    сторінка — карта. Прочитай її один раз — це п’ять хвилин — а далі йди фазами по порядку\n    через меню зліва.",
@@ -4461,9 +4470,6 @@ Object.assign(I18N.uk, {
   "how.7": "Claude Code і як з ним говорити",
   "how.8": "Claude Code — це асистент, який уміє читати й писати файли в цій папці. Ти говориш із ним у\n    вікні чату — так само, як писав би колезі. <strong>Ти ніколи не відкриваєш термінал, нічого не\n    встановлюєш і нічого не запускаєш сам.</strong> Якщо щось треба створити, перенести, опублікувати\n    чи зняти з нього скриншот — ти просиш, і він робить.",
   "how.9": "<strong>Команда</strong> тут — це просто фраза, яку ти пишеш у тому самому чаті. Вона починається\n    зі скісної риски й виглядає як <code class=\"cmd\">/dsf:brief</code>. Це не команда терміналу, і\n    запам’ятовувати нічого не треба — на кожній сторінці фази нижче є точний текст, який треба вставити.\n    Щойно ти його надішлеш, асистент почне ставити запитання; відповідай звичайними словами.",
-  "hub.1": "Продукт",
-  "hub.2": "Продукт зараз",
-  "hub.3": "Усі входи в продукт, що проєктується. Двері відчиняються в міру проходження фаз.",
   "nav.1": "дизайн-процес",
   "nav.10": "Голос і візуальна мова",
   "nav.11": "Голос",
@@ -4476,7 +4482,6 @@ Object.assign(I18N.uk, {
   "nav.19": "шаблон",
   "nav.2": "Фази",
   "nav.20": "загубився? напиши <code class=\"cmd\" style=\"font-size:var(--fs-2xs)\">/dsf:status</code>",
-  "nav.21": "Продукт зараз",
   "nav.3": "Старт",
   "nav.4": "Бриф",
   "nav.5": "Дослідження",
@@ -4523,7 +4528,7 @@ Object.assign(I18N.uk, {
   "p10.13": "Головна сторінка проєкту переписується як <strong>маршрут, а не музей</strong>.",
   "p10.14": "Реліз: мітка версії в історії, опубліковані продукт і вітрина, а також три посилання, зібрані\n        в одному місці.",
   "p10.15": "<strong>Доказ.</strong> Свіжий асистент, який ніколи не бачив цього проєкту, отримує лише папку\n        передачі й головну сторінку — і завдання зробити невелику функцію. Кожне місце, де він\n        спотикається, це діра — і закривають її документацією, ніколи не новою функцією.",
-  "p10.16": "<strong>★ Випускний one-shot.</strong> Одна робота, проведена крізь усі шари за один прохід —\n        доказ, що фази були тренажером, а не ритуалом.",
+  "p10.16": "<strong>Випускний one-shot.</strong> Одна робота, проведена крізь усі шари за один прохід —\n        доказ, що фази були тренажером, а не ритуалом.",
   "p10.17": "Людина, якої тут ніколи не було, відкриває проєкт, запускає його і додає функцію, не поставивши\n      тобі жодного питання. Ніщо в передачі не дублює значення, яке живе в коді. Кожне посилання\n      відкривається.",
   "p10.18": "Щоб закрити фазу, введи <code class=\"cmd\">/dsf:check</code>. На цій фазі він додатково пропонує\n    мітку релізу (<code>v1.0</code>) поруч із міткою фази.",
   "p10.19": "Ця мітка означає: продукт передано і перевірено кимось іншим, ніж той, хто\n    його зробив. Нова робота відтепер починає новий цикл — для зміненого рішення бери\n    <code class=\"cmd\">/dsf:change</code>, а для нової функції — команди фаз. Вона не заїжджає\n    всередину передачі.",
@@ -4708,7 +4713,7 @@ Object.assign(I18N.uk, {
   "s17": "перш ніж щось виправляти",
   "s18": "Запусти першу половину.",
   "s19": "Запусти другу половину.",
-  "s2": "🖐 твоє рішення",
+  "s2": "твоє рішення",
   "s20": "твої правила голосу і джерело текстів (<code>voice/voice.html</code>, <code>voice/microcopy.md</code>)",
   "s3": "Щоб сюди дійти",
   "s4": "Навіщо ця фаза",
@@ -5228,6 +5233,24 @@ Object.assign(I18N.uk, {
     return n;
   }
 
+  /* Icons are <use> references into the sprite at the top of <body>; SVG elements
+     need createElementNS, and setAttribute("class", …) rather than .className. */
+  var SVGNS = "http://www.w3.org/2000/svg";
+  function icon(name, cls) {
+    var svg = document.createElementNS(SVGNS, "svg");
+    svg.setAttribute("class", "i" + (cls ? " " + cls : ""));
+    svg.setAttribute("aria-hidden", "true");
+    svg.setAttribute("focusable", "false");
+    var use = document.createElementNS(SVGNS, "use");
+    use.setAttribute("href", "#i-" + name);
+    svg.appendChild(use);
+    return svg;
+  }
+  function setIcon(host, name) {
+    var u = host && host.querySelector("use");
+    if (u) u.setAttribute("href", "#i-" + name);
+  }
+
   function num(phase) {
     if (typeof phase.number === "number") return phase.number;
     if (typeof phase.id === "number") return phase.id;
@@ -5433,6 +5456,20 @@ Object.assign(I18N.uk, {
     button.addEventListener("click", function () { copyText(body.textContent, button); });
   });
 
+  /* Every Copy button becomes icon + label once, here: the label is the only thing
+     the locale and the copied-state feedback ever write, so the mark survives both. */
+  Array.prototype.forEach.call(document.querySelectorAll(".copy"), function (b) {
+    if (b.querySelector(".i")) return;
+    b.textContent = "";
+    b.appendChild(icon("copy", "i-sm"));
+    b.appendChild(el("span", "lbl", "Copy"));
+  });
+
+  function setCopyLabel(button, text) {
+    var l = button.querySelector(".lbl");
+    if (l) l.textContent = text; else button.textContent = text;
+  }
+
   /* Rail check/status chip copies exactly whatever renderRail() last put in
      the chip — no template, so the click handler just reads the live text. */
   (function () {
@@ -5464,10 +5501,12 @@ Object.assign(I18N.uk, {
 
   function copyText(text, button) {
     function ok() {
-      button.textContent = t.copied;
+      setCopyLabel(button, t.copied);
+      setIcon(button, "check");
       button.classList.add("done");
       setTimeout(function () {
-        button.textContent = t.copy;
+        setCopyLabel(button, t.copy);
+        setIcon(button, "copy");
         button.classList.remove("done");
       }, 1400);
     }
@@ -5609,7 +5648,7 @@ Object.assign(I18N.uk, {
     var checkCmd = document.querySelector("[data-rail-check-cmd]");
     var checkCaption = document.querySelector("[data-rail-check-caption]");
     if (checkCmd && checkCaption) {
-      if (railKey === "how" || railKey === "product") {
+      if (railKey === "how") {
         checkCmd.textContent = "/dsf:status";
         checkCaption.textContent = t.railStatusCaption;
       } else {
@@ -5658,7 +5697,9 @@ Object.assign(I18N.uk, {
     list.innerHTML = "";
     (phase.artifacts || []).forEach(function (a) {
       var li = el("li", a.exists ? "has" : "missing");
-      li.appendChild(el("span", "glyph", a.exists ? "✓" : "○"));
+      var glyph = el("span", "glyph");
+      glyph.appendChild(icon(a.exists ? "circle-check" : "circle-dashed"));
+      li.appendChild(glyph);
 
       var body = document.createElement("div");
       var pathNode;
@@ -5667,6 +5708,9 @@ Object.assign(I18N.uk, {
         pathNode.className = "path";
         pathNode.href = a.path;
         pathNode.textContent = a.path;
+        /* the moment a path stops being text and becomes an openable file */
+        pathNode.appendChild(document.createTextNode(" "));
+        pathNode.appendChild(icon("arrow-up-right", "i-sm"));
       } else {
         pathNode = el("span", "path", a.path);
       }
@@ -5683,54 +5727,6 @@ Object.assign(I18N.uk, {
       var label = (lang !== "en" && ART_UK[a.path]) ? ART_UK[a.path] : (a.label || "");
       body.appendChild(el("span", "desc", label));
       li.appendChild(body);
-      list.appendChild(li);
-    });
-  }
-
-  /* --------------------------------------------------------- product now */
-
-  /* Every door into the product being designed, in the order a newcomer would
-     open them. The rows are resolved against the phases' own artifacts, so a
-     door opens by itself the moment its phase marks the file real; a path this
-     data block does not carry is not a door in this pipeline and is skipped. */
-  var HUB_PATHS = [
-    "wireframes/index.html",
-    "ui/kit.html",
-    "design-system/docs/index.html",
-    "handoff/index.html"
-  ];
-
-  function artifactByPath(path) {
-    var found = null;
-    phases.forEach(function (p) {
-      (p.artifacts || []).forEach(function (a) {
-        if (!found && a.path === path) found = a;
-      });
-    });
-    return found;
-  }
-
-  function renderHub() {
-    var list = document.querySelector("[data-hub]");
-    if (!list) return;
-    list.innerHTML = "";
-    HUB_PATHS.forEach(function (path) {
-      var a = artifactByPath(path);
-      if (!a) return;
-      var open = !!(a.exists && a.link);
-      var li = el("li", open ? "has" : "missing");
-      var row = document.createElement(open ? "a" : "div");
-      row.className = "hub-row";
-      if (open) row.setAttribute("href", a.path);
-      row.appendChild(el("span", "glyph", open ? "✓" : "○"));
-
-      var body = document.createElement("div");
-      var label = (t.hubRows && t.hubRows[path]) || a.label || path;
-      body.appendChild(el("span", "hub-label", label));
-      body.appendChild(el("span", "hub-path", a.path));
-      row.appendChild(body);
-
-      li.appendChild(row);
       list.appendChild(li);
     });
   }
@@ -5795,8 +5791,10 @@ Object.assign(I18N.uk, {
       if (close) {
         close.innerHTML = "";
         close.appendChild(el("span", "", t.markLabel));
-        close.appendChild(el("span", "tag-pill" + (phase.tagged ? " is-tagged" : ""),
-          (phase.tagged ? "✓ " : "") + (phase.tag || "")));
+        var pill = el("span", "tag-pill" + (phase.tagged ? " is-tagged" : ""));
+        pill.appendChild(icon(phase.tagged ? "check" : "tag", "i-sm"));
+        pill.appendChild(el("span", "", phase.tag || ""));
+        close.appendChild(pill);
         close.appendChild(el("span", "", phase.tagged ? t.markCreated : t.markPending));
       }
     });
@@ -5804,11 +5802,10 @@ Object.assign(I18N.uk, {
     phases.forEach(renderCriteria);
     phases.forEach(renderSteps);
     renderRail();
-    renderHub();
 
     promptBodies.forEach(fillPrompt);
     Array.prototype.forEach.call(document.querySelectorAll(".copy"), function (b) {
-      if (!b.classList.contains("done")) b.textContent = t.copy;
+      if (!b.classList.contains("done")) setCopyLabel(b, t.copy);
     });
 
     classifyFileCodes();
@@ -6217,9 +6214,7 @@ Object.assign(I18N.uk, {
   var toggle = document.getElementById("menu-toggle");
 
   function show(key, anchor) {
-    var targetId = (key === "how") ? "page-how"
-                 : (key === "product") ? "page-product"
-                 : "page-" + key;
+    var targetId = (key === "how") ? "page-how" : "page-" + key;
     var found = false;
     Array.prototype.forEach.call(pages, function (pg) {
       var match = (pg.id === targetId);
@@ -6241,10 +6236,9 @@ Object.assign(I18N.uk, {
     /* the view is settled before any scrolling: a sub-anchor lives in the
        Guide, and scrollIntoView on a hidden node goes nowhere */
     if (fullBox) exitFullFrame();
-    /* "how" and "product" are pages, not phases: no Guide/Result, no rail */
-    if (key !== "how" && key !== "product") setPhaseView(key, pendingView);
+    /* "how" is a page, not a phase: no Guide/Result, no rail */
+    if (key !== "how") setPhaseView(key, pendingView);
     else document.body.classList.remove("result-open");
-    document.body.classList.toggle("hub-open", key === "product");
     pendingView = null;
 
     if (anchor) {
@@ -6261,7 +6255,6 @@ Object.assign(I18N.uk, {
   function fromHash() {
     var h = (location.hash || "").replace(/^#/, "");
     if (!h || h === "how") return ["how", null, null];
-    if (h === "product") return ["product", null, null];
     var m = h.match(/^phase-(\d+)(?:-([a-z]+))?(?:\/(guide|result))?$/);
     return m ? [m[1], m[2] || null, m[3] || null] : ["how", null, null];
   }

@@ -80,7 +80,7 @@ Four mechanisms keep the model honest:
 
 ## Quick start
 
-1. Copy the [`template/`](template/) folder into a new repo (or use this repo as a GitHub template).
+1. Click **Use this template** on GitHub (or `git clone` this repo) — the repo root IS the working template.
 2. Open it in Claude Code.
 3. Run `/dsf:init` — it sets up the toolbox (with fallbacks for every tool), git and the home page.
 4. Open `pipeline.html` in a browser and keep it open — it is your project's home page.
@@ -110,16 +110,16 @@ Cross-cutting: `/dsf:status` (where am I, what to type next), `/dsf:critique` (d
 
 ## How it works
 
-- **[FRAMEWORK.md](FRAMEWORK.md)** — the full framework description.
-- **`template/.design/memory/constitution.md`** — the engine rules every command obeys.
-- **`template/.design/memory/phases.md`** — the canonical phase table: commands, checklists, tags, artifact paths.
-- **`template/.design/memory/toolbox.md`** — recommended tools (Playwright MCP, Refero MCP, impeccable, brainstorming skill, image generation) with a fallback for each; nothing is a hard dependency.
-- **`template/.design/prompts/`** — the fallbacks themselves: `document.md`, `extract.md`, `critique.md`, `audit.md`, `brief-interrogation.md`.
-- **`template/.design/templates/`** — skeletons for the core artifacts (16 files; each command names the template its step starts from).
-- **`template/.design/checklists/`** — objective done-criteria per phase.
-- **`template/.design/checklists/results/`** — where `/dsf:check` writes its verdict, one file per phase.
-- **`template/.design/progress/`** — append-only step ledgers, one file per phase: what ran, when, which files it touched.
-- **`template/.design/decisions.md`** — append-only log of every gate answer, "keep it" and resolved contradiction.
+- **[docs/FRAMEWORK.md](docs/FRAMEWORK.md)** — the full framework description.
+- **`.design/memory/constitution.md`** — the engine rules every command obeys.
+- **`.design/memory/phases.md`** — the canonical phase table: commands, checklists, tags, artifact paths.
+- **`.design/memory/toolbox.md`** — recommended tools (Playwright MCP, Refero MCP, impeccable, brainstorming skill, image generation) with a fallback for each; nothing is a hard dependency.
+- **`.design/prompts/`** — the fallbacks themselves: `document.md`, `extract.md`, `critique.md`, `audit.md`, `brief-interrogation.md`.
+- **`.design/templates/`** — skeletons for the core artifacts (16 files; each command names the template its step starts from).
+- **`.design/checklists/`** — objective done-criteria per phase.
+- **`.design/checklists/results/`** — where `/dsf:check` writes its verdict, one file per phase.
+- **`.design/progress/`** — append-only step ledgers, one file per phase: what ran, when, which files it touched.
+- **`.design/decisions.md`** — append-only log of every gate answer, "keep it" and resolved contradiction.
 - **`template/pipeline.html`** — the project's home page: a self-contained dashboard of all phases and artifacts. Commands update its JSON data block, never its markup.
 
 The framework automates execution, not judgment: direction choices, defect priorities and "keep it" decisions always stop and wait for the designer.
