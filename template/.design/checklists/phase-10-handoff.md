@@ -1,7 +1,9 @@
-# Phase 9 — Handoff · done criteria
+# Phase 10 — Handoff · done criteria
 
 Gate for `/dsf:handoff`. Every item is verifiable by opening a file in this repo.
-`/dsf:check` runs this list before sign-off.
+This file is a **read-only reference document** — nobody ticks the boxes. `/dsf:check 10`
+verifies each item against the files, writes `.design/checklists/results/phase-10.md`, and
+creates the `phase-10-handoff` tag and the release tag `v1.0` on a full pass.
 
 Handoff is **onboarding a new developer into the repo**, not archiving. Success has one
 test: someone who was not here clones the repo, gets it running, and adds a feature with
@@ -48,7 +50,9 @@ no verbal explanation. Second rule: **document what exists, introduce nothing ne
 
 ## Release
 
-- [ ] A git tag marks the release (for example `v1.0`)
+- [ ] The release is ready to tag: nothing uncommitted, the version named in `README.md`
+      matches what is deployed — the `v1.0` tag itself is created by `/dsf:check 10` on the
+      full pass, alongside `phase-10-handoff`
 - [ ] The product and the design-system showcase are deployed (or the recorded hosting
       fallback from `.design/memory/toolbox.md` is in place)
 - [ ] `handoff/README.md` carries the three links: product, showcase, repo
@@ -67,8 +71,8 @@ no verbal explanation. Second rule: **document what exists, introduce nothing ne
 - [ ] A job from `people/jtbd.md` that has no screen yet was driven through every layer in
       a single prompt: voice → components and patterns → tokens (color, geometry,
       responsive, motion) → a finished screen
-- [ ] The result lives in `design-system/examples/one-shot/` with all its states, adaptive
-      behavior and micro-interactions
+- [ ] The result lives in `design-system/examples/one-shot/index.html` with all its states,
+      adaptive behavior and micro-interactions
 - [ ] It introduced no styles outside the system; anything missing went to
       `design-system/backlog.md`
 
@@ -76,5 +80,10 @@ no verbal explanation. Second rule: **document what exists, introduce nothing ne
 
 - [ ] `CLAUDE.md` → **Handoff** block points at `handoff/`, the map, the a11y checklist,
       the release tag and the live URLs
-- [ ] `pipeline.html` regenerated and shows all nine phases done
-- [ ] Phase committed and tagged `phase-9-handoff`
+- [ ] No `[?]` survives in the signed-off handoff package or in `DESIGN.md` — every question
+      is either answered or moved to `handoff/onboarding-gaps.md` as a named debt
+      <!-- check: grep -rnF '[?]' handoff/ DESIGN.md | grep -v onboarding-gaps → expect 0 -->
+- [ ] `handoff/index.html` opens standalone and links the spec, the map and the a11y checklist
+- [ ] `pipeline.html` data block regenerated: all eleven phases 0–10 `done`, every artifact
+      present, the release links live
+- [ ] Phase committed; pushed if hosting is `active`

@@ -1,11 +1,13 @@
 # Phase 4 — Wireframes · done criteria
 
 Gate for `/dsf:wireframes`. Every item is verifiable by opening a file in this repo.
-`/dsf:check` runs this list before sign-off.
+This file is a **read-only reference document** — nobody ticks the boxes. `/dsf:check 4`
+verifies each item against the files, writes `.design/checklists/results/phase-4.md`, and
+creates the `phase-4-wireframes` tag on a full pass.
 
 These files are not sketches. They are the first layer of the product's code: the same
 files get copy in phase 5, visual language in phase 5–6, tokens in phase 6, responsive
-behavior and motion in phase 8. Nothing here is redrawn later.
+behavior in phase 8 and motion in phase 9. Nothing here is redrawn later.
 
 ## Plan
 
@@ -29,11 +31,15 @@ behavior and motion in phase 8. Nothing here is redrawn later.
       real headings — not a stack of `div`s
 - [ ] Copy is real product copy from this domain; no lorem ipsum, no "Heading 1",
       no "Lorem", no placeholder brackets
+      <!-- check: grep -rniE "lorem|ipsum|dolor sit|heading 1|placeholder" wireframes/*.html → expect 0 -->
 - [ ] Grey only — no color, no custom fonts, no icons, no shadows anywhere in
       `wireframes/*.html`
+      <!-- check: grep -rniE "#[0-9a-f]{3}([0-9a-f]{3})?\b|rgba?\(|box-shadow" wireframes/*.html → expect 0 -->
 
 ## Navigation and linking
 
+- [ ] `wireframes/index.html` is the navigator entry point — the page a human opens first,
+      listing every screen and every state page as a real link
 - [ ] A tree navigator panel is present and identical on every page: section → screen →
       its states, indented, each node a real link, current node marked, grey
 - [ ] The navigator's structure matches `_screens.md` and `ia/sitemap.md`
@@ -57,4 +63,6 @@ behavior and motion in phase 8. Nothing here is redrawn later.
 - [ ] `CLAUDE.md` → **Wireframes** block records where screens live, the naming convention
       and the state-page rule
 - [ ] `README.md` → Wireframes section links into `wireframes/`
-- [ ] `pipeline.html` regenerated; phase committed and tagged `phase-4-wireframes`
+- [ ] `pipeline.html` data block regenerated — phase 4 artifacts marked present, the navigator
+      `wireframes/index.html` linked
+- [ ] Phase committed; pushed if hosting is `active`

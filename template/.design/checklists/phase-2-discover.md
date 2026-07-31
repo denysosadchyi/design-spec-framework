@@ -1,7 +1,9 @@
 # Phase 2 — Discover · done criteria
 
-Gate for `/dsf:research` + `/dsf:users`. Every item is verifiable by opening a file
-in this repo. `/dsf:check` runs this list before sign-off.
+Gate for `/dsf:research` + `/dsf:users`. Every item is verifiable by opening a file in this
+repo. This file is a **read-only reference document** — nobody ticks the boxes. `/dsf:check 2`
+verifies each item against the files, writes `.design/checklists/results/phase-2.md`, and
+creates the `phase-2-discover` tag on a full pass.
 
 ## Research
 
@@ -47,4 +49,6 @@ in this repo. `/dsf:check` runs this list before sign-off.
 - [ ] `people/personas.html` opens standalone in a browser
 - [ ] `CLAUDE.md` → **People** block names the primary persona and the main job
 - [ ] `README.md` → Research and People sections link to the HTML pages
-- [ ] `pipeline.html` regenerated; phase committed and tagged `phase-2-discover`
+- [ ] `pipeline.html` data block regenerated — phase 2 artifacts marked present, `context`
+      carries the benchmark dimension, the primary persona and the main job
+- [ ] Phase committed; pushed if hosting is `active`

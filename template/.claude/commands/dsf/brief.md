@@ -15,7 +15,11 @@ The brief is the only artifact the whole pipeline reads on every later prompt. I
 
 Read `.design/memory/constitution.md` and `.design/memory/toolbox.md`. From `toolbox.md` note whether the **brainstorming** skill is active, and honor every fallback rule recorded there.
 
+Also read `.design/progress/phase-1.md` — this command's own ledger. Before step 1, report what you will skip, redo or resume based on it, then proceed only after stating that.
+
 ## Steps
+
+After completing each numbered step and each HUMAN GATE, append the ledger line to `.design/progress/phase-1.md` and update the `steps` object in the pipeline-data block (current → done).
 
 ### 1. Take the seed
 
@@ -25,7 +29,7 @@ The user's idea may arrive as one sentence or as `$ARGUMENTS`. Accept it as a se
 
 **If the brainstorming skill is active** (`obra/superpowers`): invoke it now. Run it question-first and honor its approval step — nothing is written before the user approves.
 
-**Otherwise use the built-in interrogation.** Ask in small batches (3–5 questions), one area at a time, and feed each answer forward instead of restating it. Never answer a question on the user's behalf; if they say "you decide", record the answer as `[?]` plus your explicit hypothesis, and move on.
+**Otherwise use the built-in interrogation** in `.design/prompts/brief-interrogation.md` — read it and run it as written. Ask in small batches (3–5 questions), one area at a time, and feed each answer forward instead of restating it. Never answer a question on the user's behalf; if they say "you decide", record the answer as `[?]` plus your explicit hypothesis, and move on.
 
 Cover five areas, and do not leave an area until it is answered concretely:
 
@@ -41,7 +45,7 @@ Also capture, briefly: product name, one-line pitch, and any anti-goals ("this i
 
 Present the assembled brief in chat as a short structured block: name, pitch, audience, problem, platform, constraints, success criteria, open questions marked `[?]`.
 
-**HUMAN GATE — brief approval.** Stop. Do not create files, folders, or commits until the user approves or corrects. Corrections restart at step 2 for the affected area only.
+**HUMAN GATE — brief approval.** Stop. Do not create files, folders, or commits until the user approves or corrects. Corrections restart at step 2 for the affected area only. Once approved, append the answer to `.design/decisions.md` (constitution rule 7 — every gate leaves a trace) — this is the first entry in the project's decision log.
 
 ### 4. Write the living docs
 
@@ -60,38 +64,40 @@ Create the folder structure exactly as the framework defines it — no invented 
 research/           research.md, research.html, screens/
 people/             personas.md, jtbd.md, personas.html
 ia/                 sitemap.md, flows.md, ia.html
-wireframes/         _screens.md, _conventions.md, *.html
-voice/              voice.md, microcopy.md
+wireframes/         _screens.md, _conventions.md, index.html, *.html
+voice/              voice.md, microcopy.md, voice.html
 concept/            references.md, concept.md, directions.html, concept.html
-ui/                 inventory.md, shell.html, kit.html
-design-system/      tokens.css, components/, patterns/, docs/, index.css
+ui/                 inventory.md, tokens-audit.md, shell.html, kit.html
+design-system/      tokens.css, components/, patterns/, docs/, examples/, index.css
 visuals/            generated imagery + prompts
-handoff/            spec/, map.md, a11y.md, onboarding-gaps.md
+responsive/         width-audit.md, width-audit.html
+animations/         motion-inventory.md, motion-inventory.html
+handoff/            spec/, map.md, a11y.md, onboarding-gaps.md, index.html
 ```
 
 Folders are created empty with `.gitkeep`. Do not pre-create the artifact files themselves — their absence is what `pipeline.html` reads as "not done yet".
 
-### 6. Run the phase checklist
+### 6. Name the project in `pipeline.html`
+
+`pipeline.html` ships with the placeholder `{{PRODUCT_NAME}}`. Replace **every** occurrence with the approved product name from step 3 — in the `<title>`, in the page heading, and in the `product` field of the `<script id="pipeline-data">` JSON block. After this step the placeholder must not appear anywhere in the file.
+
+### 7. Run the phase checklist
 
 Run `.design/checklists/phase-1-brief.md`. Report pass/fail per item. The hard items: every one of the five areas answered or explicitly `[?]`, platform decided, success criteria observable.
 
-### 7. Regenerate `pipeline.html`
+### 8. Update `pipeline.html`
 
-Re-derive status from artifact presence plus checklist results. Phase 1 becomes `done`, phase 2 `unlocked`.
+Edit **only** the `<script id="pipeline-data">` JSON block: phase 1 status, its artifact entries and their links, phase 2 unlocked, and the `steps` object. Fill the `context` keys this phase owns — `product` (the approved name) and `oneLiner` (the one-sentence pitch); leave the other context keys as they are. Do not touch the markup, CSS or scripts around the block — the page renders itself from that JSON.
 
-### 8. Commit
+### 9. Commit
 
 `feat: phase 1 — product brief and repo scaffolding`. Push **only** if `toolbox.md` says GitHub hosting is active.
 
-### 9. Sign-off
+### 10. Sign-off
 
-Report the brief in three lines, list the open `[?]` items that phase 2 should try to close, and name the next command — `/dsf:research`.
+Report the brief in three lines, list the open `[?]` items that phase 2 should try to close, and point the human back at their own project page: **open `pipeline.html` — it now carries the product name and shows phase 2 unlocked.** That page is the home of this project; every later phase adds links to it.
 
-Then suggest, and run on approval:
-
-```
-git tag phase-1-brief
-```
+Then say: run `/dsf:check` to close the phase. It verifies the checklist against the files and creates the phase tag `phase-1-brief`. Do not create the tag yourself. The next command after that is `/dsf:research`.
 
 ## Recovery prompts
 
@@ -118,5 +124,11 @@ explicitly, and ask me the question.
 ```
 The scaffolding invented folders. Match the framework structure exactly:
 research/, people/, ia/, wireframes/, voice/, concept/, ui/, design-system/,
-visuals/, handoff/.
+visuals/, responsive/, animations/, handoff/.
+```
+
+```
+pipeline.html still contains {{PRODUCT_NAME}}. Replace every occurrence with the
+approved product name — title, heading, and the product field of the
+pipeline-data JSON block.
 ```

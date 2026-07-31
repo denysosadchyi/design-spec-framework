@@ -1,7 +1,9 @@
 # Phase 6 — Build · done criteria
 
 Gate for `/dsf:build`. Every item is verifiable by opening a file in this repo.
-`/dsf:check` runs this list before sign-off.
+This file is a **read-only reference document** — nobody ticks the boxes. `/dsf:check 6`
+verifies each item against the files, writes `.design/checklists/results/phase-6.md`, and
+creates the `phase-6-build` tag on a full pass.
 
 The rule of this phase: **a screen is a composition of the kit, not a drawing**. The visual
 language is documented from working code, the component inventory is read out of the
@@ -47,7 +49,9 @@ place — the same `wireframes/` files, never copies.
 
 - [ ] `design-system/components/` has one file per component from the inventory
 - [ ] No hex value, raw pixel value or font stack appears inside a component class
+      <!-- check: grep -rniE "#[0-9a-f]{3}([0-9a-f]{3})?\b|rgba?\(|[0-9]+px" design-system/components/ → expect 0 -->
 - [ ] No component reads a primitive **color** directly — color goes through semantic tokens
+      <!-- check: grep -rn "var(--color-" design-system/components/ → expect 0 (primitive colors are --color-*, semantic roles are not) -->
 - [ ] `ui/shell.html` holds the shared chrome markup (header, tab bar) used by every screen
 - [ ] `ui/kit.html` is a showcase of every inventory component in every state, using real
       strings from `voice/microcopy.md`
@@ -70,6 +74,7 @@ place — the same `wireframes/` files, never copies.
 - [ ] Every screen and state page in `wireframes/` is updated **in place** and loads the
       token and component stylesheets
 - [ ] No screen has its own `<style>` block or inline styling
+      <!-- check: grep -rniE "<style|style=\"" wireframes/*.html → expect 0 -->
 - [ ] Every block on every screen comes from a kit class
 - [ ] Structure and copy are unchanged from phases 4–5
 - [ ] Rollout was grouped by role, the first group reviewed by the human in a browser,
@@ -99,4 +104,5 @@ place — the same `wireframes/` files, never copies.
 - [ ] `CLAUDE.md` → "keep it" destination is updated: changes now go into the token or the
       component, never the screen
 - [ ] `README.md` → UI section links to `ui/kit.html`
-- [ ] `pipeline.html` regenerated; phase committed and tagged `phase-6-build`
+- [ ] `pipeline.html` data block regenerated — phase 6 artifacts marked present
+- [ ] Phase committed; pushed if hosting is `active`

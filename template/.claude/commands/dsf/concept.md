@@ -20,43 +20,56 @@ This phase *finds* the language; documenting it as a design system is `/dsf:buil
 | `wireframes/*.html` with state pages | `/dsf:wireframes` |
 | `voice/voice.md`, `voice/microcopy.md` | `/dsf:voice` |
 | `people/personas.md`, `people/jtbd.md` | `/dsf:users` |
-| `research/research.md` (with the trust benchmark named) | `/dsf:research` |
+| `research/research.md` (with the benchmark dimension named) | `/dsf:research` |
 
 Read `.design/memory/constitution.md` and `.design/memory/toolbox.md` first. This phase
-leans on optional tools — use whatever the toolbox records as installed, and the recorded
+leans on optional tools — use whatever the toolbox records as `active`, and the recorded
 fallback otherwise:
 
 | Purpose | Recommended | Fallback |
 |---|---|---|
 | Visual references | Refero MCP | web search + competitor screenshots into `research/screens/` |
-| Design quality laws | `impeccable` skill | built-in slop-avoidance rules in step 3 |
+| Design quality laws | `impeccable` skill | the built-in prompts `.design/prompts/critique.md` and `.design/prompts/audit.md`, plus the slop-avoidance rules in step 3 |
 | Imagery | real photos by content theme (Unsplash) | any real photo source, recorded |
 | Icons | one single-style icon set | any single-style set, recorded in `concept/concept.md` |
 
+Also read `.design/progress/phase-5.md` — this command's own ledger (shared with
+`/dsf:voice`). Before step 1, report what you will skip, redo or resume based on it, then
+proceed only after stating that.
+
 ---
+
+After completing each numbered step and each HUMAN GATE, append the ledger line to
+`.design/progress/phase-5.md` and update the `steps` object in the pipeline-data block
+(current → done).
 
 ## Step 1 — References
 
-`research/research.md` already names the benchmark this product is measured against. Do not
-run a new competitor search — look for their **visual** language.
+`research/research.md` already names the benchmark dimension this product is measured
+against. Do not run a new competitor search — look for their **visual** language.
 
 Using Refero MCP (fallback: web search plus screenshots saved into `research/screens/`), find:
 - 3–4 **styles** matching a query built from the product's own positioning and audience;
-- 2–3 **screens** matching the specific device the product needs to get right (the trust
-  signal, the primary card, the decisive moment), on the target platform.
+- 2–3 **screens** matching the specific device the product needs to get right — whatever
+  signal `research/research.md` named as the benchmark dimension, the primary card, the
+  decisive moment — on the target platform.
 
 Pull the full data for the two or three strongest. **Copy none of them whole.** Choose one as
 the base and borrow 1–2 concrete devices from the others — not "the general feel", but a
 device: the card radius, where the badge sits, how much colour appears on one screen.
 
 For each source record: name, link, which device is taken, and **which anxiety of the persona
-it relieves**. Save to `concept/references.md`.
+it relieves**. Save to `concept/references.md` — start from `.design/templates/references.md`
+and keep its sections and columns.
 
 ## Step 2 — Taste, then attributes
 
 > **HUMAN GATE — recorded taste.** Ask the human for this before writing anything. Taste is
 > data, and it lives in the file, not in their head. Do not invent it, do not infer it from
-> the research, do not proceed without it.
+> the research, do not proceed without it. Append the answer to `.design/decisions.md`
+> (constitution rule 7 — every gate leaves a trace).
+
+Start `concept/concept.md` from `.design/templates/concept.md` and keep its sections.
 
 Ask for and record in `concept/concept.md`, section "Designer's taste", two lists:
 - **Likes** — 2–3 **named products**, not adjectives, each with what exactly is liked about it;
@@ -74,9 +87,10 @@ invention. Save to `concept/concept.md`, section "Attributes".
 
 ## Step 3 — Three directions to choose from
 
-Load the `impeccable` skill if the toolbox records it as installed, and execute every visual
+Load the `impeccable` skill if the toolbox records it as active, and execute every visual
 decision from here on under its laws — colour strategy, slop-pattern bans, the slop test.
-If it is not installed, apply these built-in rules instead:
+If it is not active, run `.design/prompts/critique.md` over each direction and apply these
+built-in rules as well:
 - no decorative gradient where a flat surface works; no glow, no drop shadow as decoration;
 - colour is a strategy, not a palette: one accent carries meaning, neutrals carry the surface;
 - no centered-everything hero layout, no generic rounded-card-grid default;
@@ -102,7 +116,9 @@ its own language:
 
 > **HUMAN GATE — direction choice.** Stop here. The human opens `concept/directions.html` in
 > a browser and names the chosen direction in the next prompt (number and name). You never
-> pick the direction.
+> pick the direction. Append the choice — number, name and the reason if one was given — to
+> `.design/decisions.md` (constitution rule 7 — every gate leaves a trace); every visual decision after this
+> is measured against it.
 
 ## Step 4 — The test stand
 
@@ -120,7 +136,8 @@ from the chosen one — the test stand of the language:
 - **icons:** one set in the direction's style, with a coverage plan — navigation, metadata,
   badges, buttons, states;
 - **3 live components of this product:** the primary action button, the primary object card
-  with its trust signal, a form field.
+  carrying whatever signal `research/research.md` named as the benchmark dimension, and a
+  form field.
 
 Every decision is annotated with its attribute. Contrast: WCAG AA, with the ratio recorded.
 Keep the two rejected directions written down in `concept/concept.md` — they can be returned to.
@@ -140,7 +157,7 @@ Read `concept/concept.html` and the main wireframe screen together with its stat
   computed immediately and added to the table.
 
 Update those files in place — never make copies. Then run `/impeccable critique` on the
-pages (fallback: re-run the built-in rules from step 3 as a checklist) and fix what it finds.
+pages (fallback: `.design/prompts/critique.md`) and fix what it finds.
 
 > **HUMAN GATE.** The human opens all four states in a browser and reviews before the language
 > moves to a second screen.
@@ -164,11 +181,15 @@ concept/concept.md (if the edit contradicts an existing attribute, change the at
 itself), and propagate it to the second screen and every repeat of the component.
 ```
 
+Every "keep it" is a decision: append it to `.design/decisions.md` — what was shown, the
+verbatim answer, and what the rule became.
+
 ## Step 6 — The second, contrasting screen
 
 Read `concept/concept.html` and the finished main screen — that is the reference. Apply the
 same language to a **second screen with a different density**, together with its state pages:
-the same colours, radii, icons, photography by content theme, the same trust signal.
+the same colours, radii, icons, photography by content theme, and the same treatment of the
+benchmark-dimension signal.
 
 - invent no new decisions here — transfer only;
 - every repeat of a component on the page gets identical values;
@@ -194,7 +215,7 @@ table with columns **file · element · what is wrong · how to fix**, looking f
 - an icon from outside the chosen set.
 
 Run `/impeccable audit` as well (accessibility, contrast, performance) and merge its findings
-into the table. If `impeccable` is not installed, run the built-in rules from step 3 plus a
+into the table. If `impeccable` is not active, run `.design/prompts/audit.md` instead, plus a
 contrast pass over every text/background pair.
 
 > **HUMAN GATE — defect prioritization.** Output the table only, fix nothing. The human
@@ -212,11 +233,18 @@ Then walk the ordered table and fix everything — the pages and `concept/concep
    the photography rule, and that edits are made at the source and rolled out.
 3. Update `README.md` — a Concept section linking `directions.html`, `concept.html` and the
    two styled screens.
-4. Regenerate `pipeline.html`; `directions.html` and `concept.html` must be live links.
+4. Update `pipeline.html` — edit **only** the `<script id="pipeline-data">` JSON block: the
+   phase 5 artifact entries for concept, with `directions.html` and `concept.html` as live
+   links, and the `steps` object. Fill the context key this phase owns — `chosenDirection`
+   (number and name); leave the other context keys as they are. Do not touch the markup,
+   CSS or scripts around the block.
 5. Commit. Push according to `.design/memory/toolbox.md`.
 
-> **HUMAN GATE — phase sign-off.** After the checklist passes, ask the human to confirm, then
-> suggest tagging the commit `phase-5-concept`.
+> **HUMAN GATE — phase sign-off.** After the checklist passes, ask the human to confirm.
+
+Do not create a git tag. Phase 5 is now complete (`/dsf:voice` + `/dsf:concept`): run
+`/dsf:check` to close the phase — it verifies the checklist and creates the phase tag
+`phase-5-language`. The next command after that is `/dsf:build`.
 
 ---
 

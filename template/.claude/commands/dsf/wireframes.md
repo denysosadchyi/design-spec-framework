@@ -19,10 +19,17 @@ Required artifacts. If one is missing, stop and name the command that produces i
 | `CLAUDE.md` with the brief | `/dsf:brief` |
 
 Read `.design/memory/constitution.md` and `.design/memory/toolbox.md` before you start.
-Use the recommended tool where its status is installed, the recorded fallback otherwise.
+Use the recommended tool where the toolbox records it as `active`, the recorded fallback otherwise.
 Read the artifacts above; never re-ask what is already written in the repo.
 
+Also read `.design/progress/phase-4.md` — this command's own ledger. Before step 1, report what
+you will skip, redo or resume based on it, then proceed only after stating that.
+
 ---
+
+After completing each numbered step and each HUMAN GATE, append the ledger line to
+`.design/progress/phase-4.md` and update the `steps` object in the pipeline-data block
+(current → done).
 
 ## Step 1 — Screen × state table
 
@@ -39,12 +46,14 @@ Build the table: rows = screens, columns = the four states. `✓` where the stat
 `—` where the scenario does not produce it. Do not mark success everywhere by reflex — only
 where there is a distinct "it worked" screen.
 
-Never take a screen without a job and a place in a flow. Save to `wireframes/_screens.md`.
+Never take a screen without a job and a place in a flow. Save to `wireframes/_screens.md` —
+start from `.design/templates/wireframes-screens.md` and keep its sections and columns.
 This table is the work order for every later step.
 
 ## Step 2 — `wireframes/_conventions.md` (the contract)
 
-Write the rules once, before any screen. Later steps and later phases read this file.
+Write the rules once, before any screen. Later steps and later phases read this file. Start
+from `.design/templates/wireframes-conventions.md` and keep its sections.
 
 - **Fidelity:** structure, hierarchy and zones only. Grey. No colour, type, brand, shadows,
   icons or imagery.
@@ -83,7 +92,11 @@ Add a navigator panel to the sample screen, identical on every wireframe page af
 - a tree: section → screen → its states, indented so nesting is visible;
 - every node is a link to its own page; the current page is marked;
 - structure comes from `_screens.md` and `ia/sitemap.md` — invent nothing;
-- grey, like the rest of the wireframe.
+- grey, like the rest of the wireframe;
+- at the very top of the panel, one quiet service link: `← Pipeline`, pointing to
+  `../pipeline.html`. It bridges the product world back to the process home page. It is part
+  of the navigator (a workbench tool), not of the product's own navigation — `/dsf:handoff`
+  strips it from the release build.
 
 Every screen created from now on gets the same panel, so the whole structure is reachable
 from any page.
@@ -104,6 +117,8 @@ same screen so they open side by side. No colour, no decoration.
 
 > **HUMAN GATE — sample sign-off.** Present the sample screen and its state pages and stop.
 > The human opens them in a browser before anything is rolled out. Do not fan out to save time.
+> Append their answer to `.design/decisions.md` (constitution rule 7 — every gate leaves a trace) — the
+> approved sample is the contract every other screen is built against.
 
 ## Step 6 — The rest of the main flow
 
@@ -150,6 +165,20 @@ Give every subagent, in its task:
 Leave no sitemap screen without a wireframe. When all agents finish, verify the set is
 coherent — zones, naming, navigation — and report mismatches as a table.
 
+Then build the navigator index page **`wireframes/index.html`** — the entrance to the whole
+set, and the link `pipeline.html` points at:
+
+- the same tree as the panel on every screen: section → screen → its states, indented,
+  every node a real link to its own page;
+- one line per screen: the job it closes, quoted from `people/jtbd.md`;
+- the states a screen does **not** have are shown as struck-through or greyed text, not
+  omitted — the table in `_screens.md` decides which;
+- generated from `wireframes/_screens.md` and `ia/sitemap.md`, never hand-listed, so it
+  cannot drift from the panel;
+- same grey fidelity as the wireframes — this page is structure, not design.
+
+Every screen file must be reachable from this page in one click.
+
 ## Step 9 — Critique → prioritize → fix
 
 Review every `wireframes/*.html` against `_conventions.md`, `ia/sitemap.md` and
@@ -160,7 +189,8 @@ Review every `wireframes/*.html` against `_conventions.md`, `ia/sitemap.md` and
 - **missing states** — not every state marked in `_screens.md` has a page;
 - **dead end** — a state with no exit (empty without a way to widen, error without retry);
 - **zone without a primary action** — unclear what to do next;
-- **screen not on the map** — absent from `ia/sitemap.md` and `ia/flows.md`.
+- **screen not on the map** — absent from `ia/sitemap.md` and `ia/flows.md`;
+- **unreachable screen** — a page that `wireframes/index.html` and the panel do not link to.
 
 > **HUMAN GATE — defect prioritization.** Output the table only. Change nothing yet. The
 > human reviews it and orders the work.
@@ -175,15 +205,21 @@ what was wrong and what was fixed in `wireframes/_critique.md`.
 2. Update `CLAUDE.md` — append the Wireframes context block: where screens live, which is
    the main screen, the naming rule, that the tree navigator reaches every screen and state,
    and that later phases edit these same files rather than redrawing them.
-3. Update `README.md` — a Wireframes section: two or three sentences and a link into the
-   navigator.
-4. Regenerate `pipeline.html` from artifact presence plus checklist results; the wireframe
-   navigator must be a live link.
+3. Update `README.md` — a Wireframes section: two or three sentences and a link to
+   `wireframes/index.html`.
+4. Update `pipeline.html` — edit **only** the `<script id="pipeline-data">` JSON block:
+   phase 4 status, its artifact entries, `wireframes/index.html` as the live navigator
+   link, and the `steps` object. Leave the `context` object as it is; this phase fills none of its keys. Do not
+   touch the markup, CSS or scripts around the block.
 5. Commit. Push according to `.design/memory/toolbox.md` (never push if the toolbox records
    push as manual).
 
 > **HUMAN GATE — phase sign-off.** After the checklist passes, ask the human to confirm the
-> phase is done, then suggest tagging the commit `phase-4-wireframes`.
+> phase is done.
+
+Do not create a git tag. Tell the human to run `/dsf:check` to close the phase — it verifies
+the checklist against the files and creates the phase tag `phase-4-wireframes`. The next
+commands after that are `/dsf:voice` and `/dsf:concept`.
 
 ---
 
@@ -227,4 +263,11 @@ the base page as the success state.
 ```
 You linked only the happy path. Take every fork in ia/flows.md both ways and link the state
 transitions too: loading → success, error → retry, empty → filled.
+```
+
+```
+wireframes/index.html is missing or does not match the panel. Generate it from
+wireframes/_screens.md and ia/sitemap.md: the same tree as the navigator panel, every screen
+and state a link, the job printed next to each screen, states the table does not mark shown
+as unavailable rather than omitted.
 ```

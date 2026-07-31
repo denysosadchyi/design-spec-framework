@@ -1,7 +1,9 @@
 # Phase 5 — Language · done criteria
 
-Gate for `/dsf:voice` + `/dsf:concept`. Every item is verifiable by opening a file in
-this repo. `/dsf:check` runs this list before sign-off.
+Gate for `/dsf:voice` + `/dsf:concept`. Every item is verifiable by opening a file in this
+repo. This file is a **read-only reference document** — nobody ticks the boxes. `/dsf:check 5`
+verifies each item against the files, writes `.design/checklists/results/phase-5.md`, and
+creates the `phase-5-language` tag on a full pass.
 
 Voice is rules, not mood. Concept is derived from data **and** from the human's recorded
 taste — never from the model's default and never cloned from one reference.
@@ -108,9 +110,13 @@ taste — never from the model's default and never cloned from one reference.
 
 ## Docs
 
+- [ ] `voice/voice.html` opens standalone in a browser: the principles, the dictionary, the
+      banned list and a before/after table — the showable artifact of this phase
 - [ ] `CLAUDE.md` → **Voice** block points at `voice/voice.md` and names
       `voice/microcopy.md` as the single source of copy truth
 - [ ] `CLAUDE.md` → **Concept** block records the chosen direction, the recorded taste,
       the icon set and the image source
 - [ ] `README.md` → Voice and Concept sections link to the pages
-- [ ] `pipeline.html` regenerated; phase committed and tagged `phase-5-language`
+- [ ] `pipeline.html` data block regenerated — phase 5 artifacts marked present,
+      `context.chosenDirection` filled
+- [ ] Phase committed; pushed if hosting is `active`

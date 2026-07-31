@@ -1,5 +1,5 @@
 ---
-description: Phase 5a — give the product one voice: copy inventory, voice principles, dictionary, microcopy rules, then rewrite every screen.
+description: Phase 5a — give the product one voice: keyed copy inventory, voice principles, dictionary, microcopy rules, rewrite every screen, and render voice/voice.html.
 ---
 
 # /dsf:voice
@@ -23,17 +23,41 @@ action, a success does not celebrate.
 | `research/research.md` | `/dsf:research` |
 
 Read `.design/memory/constitution.md` and `.design/memory/toolbox.md` first. Honor the
-recorded fallbacks — if a browser/fetch tool is not installed, use the fallback noted there
+recorded fallbacks — if a browser/fetch tool is not `active`, use the fallback noted there
 rather than skipping the data.
 
+Also read `.design/progress/phase-5.md` — this command's own ledger (shared with
+`/dsf:concept`). Before step 1, report what you will skip, redo or resume based on it, then
+proceed only after stating that.
+
 ---
+
+After completing each numbered step and each HUMAN GATE, append the ledger line to
+`.design/progress/phase-5.md` and update the `steps` object in the pipeline-data block
+(current → done).
 
 ## Step 1 — Copy inventory
 
 Write nothing new until the existing copy is visible in one place.
 
+Start from `.design/templates/microcopy.md` and keep its sections and columns.
+
 Read every `wireframes/*.html`. Collect all interface copy into one table with columns:
-**screen · zone · string · string type** (heading, button, field label, state message).
+**key · screen · zone · string · string type** (heading, button, field label, state message).
+
+**The key scheme is `<screen>.<zone>.<element>`** — lowercase latin, dots as separators,
+no spaces: `listings.filters.submit`, `listings.empty.body`, `request.form.error-phone`.
+
+- The screen segment is the file name of the base page without `.html`; a state page uses
+  the base screen plus the state as the zone (`listings.empty.title`).
+- **A key is stable across rewrites.** It names the slot, never the wording — renaming a key
+  because the text changed defeats its purpose. The string changes; the key does not.
+- One string, one key. If the same key would be needed on two screens, the string belongs to
+  a shared zone (the shell, a component) — key it there and reference it.
+- Keys are referenced downstream: phase 10's behavior spec points at `microcopy.md` keys
+  instead of quoting UI strings, so a key that moves breaks the handoff.
+
+Every row gets a key in this step, before any rewriting.
 
 Then mark — do not rewrite — where screens say the same thing differently:
 - the same object under different names across screens;
@@ -49,6 +73,8 @@ Save the table to `voice/microcopy.md`. For now it is only a transcript of what 
 the end of this phase it becomes the source of truth every product string is checked against.
 
 ## Step 2 — Voice principles
+
+Start `voice/voice.md` from `.design/templates/voice.md` and keep its sections.
 
 Read `research/research.md`, `people/personas.md`, `people/jtbd.md` and `CLAUDE.md`.
 Formulate **3–5 principles** — the rules by which the product speaks. Each principle carries:
@@ -124,7 +150,8 @@ pages (`-empty`, `-error`, `-loading`). Rewrite the **product copy** on those pa
 In `voice/microcopy.md`, update the rows for those pages: add **before** and **after** columns.
 
 > **HUMAN GATE — sample sign-off.** Show the before/after table and stop. The human reviews
-> the change of register before the rest of the screens are rewritten.
+> the change of register before the rest of the screens are rewritten. Append their answer to
+> `.design/decisions.md` (constitution rule 7 — every gate leaves a trace).
 
 ## Step 6 — Fan-out to every screen
 
@@ -162,19 +189,49 @@ Then walk the ordered table and fix everything — the screens and `voice/microc
 together, so the table stays the source of truth. No string exists on a screen and not in
 the table.
 
-## Step 8 — Close the phase
+## Step 8 — `voice/voice.html`
+
+The contract has to be **viewable**, not only readable in Markdown: this is the page a
+client, a writer or a new developer opens to hear the product. Build `voice/voice.html`
+from the finished `voice/voice.md` and `voice/microcopy.md` — a single self-contained page,
+same dark, quiet styling as `research.html` and `personas.html`, no CDN dependencies.
+
+Four blocks:
+
+1. **Principles** — one card per principle: the rule as the heading, then the **example**
+   and the **counter-example** side by side as a pair, visibly opposed (written this way /
+   never this way), with the source line printed underneath. A principle without its pair
+   on the page is not shippable.
+2. **Dictionary** — the chosen term, the rejected variants struck through, and the one-line
+   reason.
+3. **Banned** — what we never write, each entry with its before/after example.
+4. **Microcopy, before and after** — a table with columns **key · screen · before · after**,
+   drawn from `voice/microcopy.md`. This is the evidence that the register actually changed;
+   keep the strongest rows first rather than dumping every row of the file.
+
+The page is generated from the two Markdown files, never hand-written beside them — if they
+disagree, the Markdown wins and the page is regenerated.
+
+## Step 9 — Close the phase
 
 1. Run the phase checklist in `.design/checklists/phase-5-language.md`; report each criterion as
    pass / fail with the file that proves it, and fix fails before continuing.
 2. Update `CLAUDE.md` — the Voice context block: `voice/voice.md` is the contract for any
-   product string, `voice/microcopy.md` is the source of truth, new copy is written from the
-   rules and never from mood, user-generated content is out of scope.
-3. Update `README.md` — a Voice section with links to both files.
-4. Regenerate `pipeline.html`.
+   product string, `voice/microcopy.md` is the source of truth keyed as
+   `<screen>.<zone>.<element>`, new copy is written from the rules and never from mood,
+   user-generated content is out of scope.
+3. Update `README.md` — a Voice section with links to both files and to `voice/voice.html`.
+4. Update `pipeline.html` — edit **only** the `<script id="pipeline-data">` JSON block: the
+   phase 5 artifact entries for voice, `voice/voice.html` as a live link, and the `steps`
+   object. Leave the `context` object as it is; this phase fills none of its keys. Do not
+   touch the markup, CSS or scripts around the block.
 5. Commit. Push according to `.design/memory/toolbox.md`.
 
-> **HUMAN GATE — phase sign-off.** After the checklist passes, ask the human to confirm,
-> then suggest tagging the commit `phase-5-voice`.
+> **HUMAN GATE — phase sign-off.** After the checklist passes, ask the human to confirm.
+
+Do not create a git tag. Phase 5 also contains `/dsf:concept`; once both are done, run
+`/dsf:check` — it verifies the checklist and creates the single phase tag `phase-5-language`.
+The next command is `/dsf:concept`.
 
 ---
 
@@ -218,4 +275,16 @@ this phase changes text only. Appearance and markup changes belong to the later 
 ```
 You rewrote user-generated content — that copy belongs to the user, not to us. Restore it.
 We rewrite product copy only: screen headings, filters, buttons, state messages.
+```
+
+```
+You renamed a microcopy key because its text changed. A key names the slot, not the wording
+— restore the original key and change only the string. Keys are referenced by the handoff
+spec and must survive every rewrite.
+```
+
+```
+voice/voice.html is missing or out of date. Regenerate it from voice/voice.md and
+voice/microcopy.md: principles with their example/counter-example pairs and sources, the
+dictionary, the banned list, and the before/after microcopy table.
 ```

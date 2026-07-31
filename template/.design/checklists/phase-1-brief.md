@@ -1,7 +1,9 @@
 # Phase 1 — Brief · done criteria
 
-Gate for `/dsf:brief`. Every item is verifiable by opening a file in this repo.
-`/dsf:check` runs this list before sign-off.
+Gate for `/dsf:brief`. Every item is verifiable by opening a file in this repo. This file is a
+**read-only reference document** — nobody ticks the boxes. `/dsf:check 1` verifies each item
+against the files, writes `.design/checklists/results/phase-1.md`, and creates the
+`phase-1-brief` tag on a full pass.
 
 ## Brief
 
@@ -16,14 +18,17 @@ Gate for `/dsf:brief`. Every item is verifiable by opening a file in this repo.
 
 ## Repo
 
-- [ ] Folder scaffolding exists for the pipeline: `research/`, `people/`, `ia/`,
-      `wireframes/`, `voice/`, `concept/`, `ui/`, `design-system/`, `visuals/`, `handoff/`
+- [ ] Folder scaffolding exists for the pipeline, exactly the twelve folders named in
+      `.design/memory/phases.md`: `research/`, `people/`, `ia/`, `wireframes/`, `voice/`,
+      `concept/`, `ui/`, `design-system/`, `visuals/`, `responsive/`, `animations/`, `handoff/`
+      — no folder missing and none invented
 - [ ] `README.md` → **Brief** section is filled in and matches `CLAUDE.md`
-- [ ] `pipeline.html` renders, shows phase 1 as done and later phases as locked, and opens
-      standalone in a browser
+- [ ] `pipeline.html` renders standalone in a browser and shows phase 1 `in progress` with its
+      artifacts present; `context.product` and `context.oneLiner` are filled from the brief
 - [ ] `.design/memory/toolbox.md` has no `[?]` in the Status column — `/dsf:init` has run
-- [ ] Repo is under git with a first commit; the phase is tagged `phase-1-brief`
-- [ ] Remote (or the recorded hosting fallback from `toolbox.md`) is set up and pushed
+- [ ] Repo is under git with the brief committed
+- [ ] Pushed if `toolbox.md` records hosting as `active`; otherwise the local-only fallback is
+      recorded and nothing was pushed
 
 ## Honesty
 

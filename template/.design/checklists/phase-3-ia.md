@@ -1,7 +1,9 @@
 # Phase 3 — Structure · done criteria
 
 Gate for `/dsf:ia`. Every item is verifiable by opening a file in this repo.
-`/dsf:check` runs this list before sign-off.
+This file is a **read-only reference document** — nobody ticks the boxes. `/dsf:check 3`
+verifies each item against the files, writes `.design/checklists/results/phase-3.md`, and
+creates the `phase-3-ia` tag on a full pass.
 
 ## Entities and sitemap
 
@@ -50,4 +52,5 @@ Gate for `/dsf:ia`. Every item is verifiable by opening a file in this repo.
       Mermaid diagrams and the coverage matrix visible
 - [ ] `CLAUDE.md` → **Structure** block records the main flow and the navigation model
 - [ ] `README.md` → Structure section links to `ia/ia.html`
-- [ ] `pipeline.html` regenerated; phase committed and tagged `phase-3-ia`
+- [ ] `pipeline.html` data block regenerated — phase 3 artifacts marked present
+- [ ] Phase committed; pushed if hosting is `active`

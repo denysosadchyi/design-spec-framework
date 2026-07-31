@@ -1,7 +1,9 @@
 # Phase 7 — System · done criteria
 
 Gate for `/dsf:system`. Every item is verifiable by opening a file in this repo.
-`/dsf:check` runs this list before sign-off.
+This file is a **read-only reference document** — nobody ticks the boxes. `/dsf:check 7`
+verifies each item against the files, writes `.design/checklists/results/phase-7.md`, and
+creates the `phase-7-system` tag on a full pass.
 
 The design system becomes a product with its own users — you tomorrow, a developer, the
 agent. Its main feature is a live showcase that cannot lie, because it runs the same CSS
@@ -72,4 +74,6 @@ the product runs.
 - [ ] `README.md` → Design system section carries that link
 - [ ] `CLAUDE.md` → **System** block records the contribution rules, showcase location and
       the backlog
-- [ ] `pipeline.html` regenerated; phase committed and tagged `phase-7-system`
+- [ ] `pipeline.html` data block regenerated — phase 7 artifacts marked present, the showcase
+      `design-system/docs/index.html` linked
+- [ ] Phase committed; pushed if hosting is `active`

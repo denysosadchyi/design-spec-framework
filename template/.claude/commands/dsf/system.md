@@ -1,5 +1,5 @@
 ---
-description: Phase 7 — System. Turn the kit into a design system others can use: single entry point, live showcase docs, component states in both themes, patterns, contribution rules, new-screen self-sufficiency test, deployed showcase.
+description: Phase 7 — System. Turn the kit into a design system others can use: single entry point, live showcase docs (sample page first), component states in both themes, patterns, contribution rules, new-screen test walked keyboard-only in the dark theme, deployed showcase.
 ---
 
 # /dsf:system — Phase 7 · System
@@ -27,22 +27,25 @@ This phase is not cleanup. It is a new visible artifact — showcase, documentat
 
 1. `.design/memory/constitution.md` — the engine rules bind every step.
 2. `.design/memory/toolbox.md` — branch accordingly:
-   - `impeccable` skill → `/impeccable audit`, `/impeccable critique`. Not installed → `.design/templates/audit.md`, `.design/templates/critique.md`.
+   - `impeccable` skill active → `/impeccable audit`, `/impeccable critique`. Otherwise → the built-in fallback prompts `.design/prompts/audit.md` and `.design/prompts/critique.md`.
    - Hosting → GitHub Pages for the showcase; fallback: the recorded git host + local static server, with the URL/path written into `README.md` either way.
 3. `CLAUDE.md`.
+4. `.design/progress/phase-7.md` — this command's own ledger. Before step 1, report what you will skip, redo or resume based on it, then proceed only after stating that.
 
 ---
 
 ## Steps
 
+After completing each numbered step and each HUMAN GATE, append the ledger line to `.design/progress/phase-7.md` and update the `steps` object in the pipeline-data block (current → done).
+
 ### 1. Structure: one package, one entry point
 
-Consolidate everything the system owns under `design-system/`:
+Give the system one front door. `/dsf:build` already created `tokens.css` and `components/` inside `design-system/` — **nothing is relocated in this step.** `ui/shell.html` and `ui/kit.html` stay in `ui/`: they are the product's shell and the working kit page, not part of the package, and every later phase expects them at those paths.
 
-- `tokens.css` and `components/` live in `design-system/`. Anything still sitting at the repo root or under `ui/` is **moved, not copied** — after this step there is exactly one copy of each file, and git remembers where it was.
-- Add `patterns/`, `docs/`, `examples/` — empty for now.
+- Add `patterns/`, `docs/`, `examples/` under `design-system/` — empty for now.
 - Create `design-system/index.css` importing `tokens.css` and `components/index.css` — **a single entry point** for everything that consumes the system.
 - The product now consumes the system as a package: every `wireframes/*.html`, `ui/shell.html` and `ui/kit.html` links `design-system/index.css` instead of the individual files.
+- If a stray stylesheet is genuinely sitting somewhere it does not belong (a leftover at the repo root), move it in and fix the imports — but do not go looking for files to relocate.
 
 **The look must not change.** Any visual difference is a wiring defect — fix the import, not the screen.
 
@@ -58,6 +61,12 @@ One HTML page per component in `design-system/docs/`, plus `docs/index.html` col
 - **Rule and anti-rule** — one example of correct use, one example of when to reach for a different component instead.
 
 Components on these pages are **not screenshots and not copied code** — they are the live thing, rendered by the same `design-system/index.css` the product links. **That is what makes the showcase unable to lie.**
+
+**Sample first, then fan out.** Build **one** component page — take the most-used component, not the simplest — and stop.
+
+> **HUMAN GATE — docs sample.** Present the single page and wait. The human reviews the depth of the anatomy, the wording of "when to use", and whether the rule/anti-rule pair is genuinely useful. Only after they approve does the rest of the set get built. Twenty pages produced against an unreviewed pattern means twenty pages to redo; this is the constitution's "never produce forty things at once" applied to documentation.
+
+With the sample approved, fan the remaining components out to parallel subagents — one per component (or per small group), each given the approved page as the reference and the four-part structure as the contract. Then assemble `docs/index.html` from the finished set.
 
 Also build `docs/why.html` — "why the system looks like this": the visual language from `concept.md` and `references.md`, and where it came from. This is the answer to a new developer's first question.
 
@@ -105,6 +114,8 @@ Keep an honest log: everything that was missing — a component that does not ex
 
 The screen stays in `design-system/examples/` as proof that a whole screen can be built from the system without writing styles.
 
+**Then verify it, do not assert it.** Open the new example screen and **walk it keyboard-only in the dark theme**: `Tab` through every interactive element from the top, `Shift+Tab` back, activate with `Enter` and `Space`. The focus ring must be visible on **every** stop — including the ones nobody thinks about: the theme toggle, links inside cards, the close control of anything dismissible, and the first element after a skipped region. Dark theme is deliberate: a focus colour that works on white routinely disappears on a dark surface, and this is the cheapest moment to find that out. Record the walk-through result — every stop reached and visible, or the exact stops that failed — and fix failures in the component and its state tokens, never on the example screen.
+
 ### 7. Defect table, gate, fix, deploy
 
 Check the system and the product together. Table with columns *file · element · what is wrong · how to fix*. Look for:
@@ -115,11 +126,12 @@ Check the system and the product together. Table with columns *file · element �
 - **a pattern that grew its own styles** instead of composing components;
 - **a component or token without a `docs/` page**;
 - a pattern claimed on fewer than three real screens;
-- a semantic state token without a source comment or without an AA contrast check.
+- a semantic state token without a source comment or without an AA contrast check;
+- a focus stop with no visible ring in the dark theme, found by the keyboard walk in step 6.
 
-Run `/impeccable audit` (fallback: `.design/templates/audit.md`) across the system and merge its findings into the table.
+Run `/impeccable audit` (fallback: `.design/prompts/audit.md`) across the system and merge its findings into the table.
 
-> **HUMAN GATE.** Deliver the table only — no fixes yet. The user prioritizes.
+> **HUMAN GATE.** Deliver the table only — no fixes yet. The user prioritizes. Append their priorities to `.design/decisions.md` (constitution rule 7 — every gate leaves a trace).
 
 Then fix everything, and deploy `design-system/docs/` per `toolbox.md`: **GitHub Pages** so the showcase is a live page at a link (fallback: the recorded host or a local static server). Record the URL in `README.md`.
 
@@ -127,15 +139,15 @@ Then fix everything, and deploy `design-system/docs/` per `toolbox.md`: **GitHub
 
 ## Phase checklist
 
-Run `.design/checklists/phase-7-system.md` and report each criterion pass/fail. Do not sign off with a failing criterion — fix it or record an explicit exception in `CLAUDE.md`.
+Verify against `.design/checklists/phase-7-system.md` (or run `/dsf:check 7`); do not proceed with a failing criterion — fix it or record an explicit exception in `.design/decisions.md`.
 
 ## Close the phase
 
-1. Update `CLAUDE.md` — "Design system" + "Contributing to the system" sections, the updated "keep it" routing, the showcase URL.
-2. Update `README.md` — "Design system" section: entry point, showcase link, `backlog.md`, `examples/`.
-3. Regenerate `pipeline.html`: phase 7 status, showcase link, `docs/why.html` link.
+1. Update `CLAUDE.md` — fill the **System** block under *Context blocks* (contribution rules, showcase location and URL, patterns, backlog) and update the "keep it" routing.
+2. Update `README.md` — "Design system" section: entry point, showcase link, `design-system/backlog.md`, `design-system/examples/`.
+3. Update `pipeline.html` — edit **only** the `<script id="pipeline-data">` JSON block: phase 7 status, its artifact entries, the showcase link, the `docs/why.html` link, and the `steps` object. Leave the `context` object as it is; this phase fills none of its keys. Do not touch the markup, CSS or scripts around the block.
 4. Commit (push per `toolbox.md`).
-5. On user sign-off, tag: `phase-7-system`.
+5. Do not create a git tag. Tell the human to run `/dsf:check` to close the phase — it verifies the checklist and creates the phase tag `phase-7-system`. The next command after that is `/dsf:responsive` (phase 8).
 
 ## Outputs
 
@@ -197,4 +209,21 @@ design-system/backlog.md as an order for the system, not as an exception on the 
 A new component appeared on a screen without entering the system first. Move it into
 design-system/components/, give it a docs page and states in both themes, then rebuild the
 screen from the system.
+```
+
+```
+You built all the docs pages at once against an unreviewed pattern. Go back to one page —
+the most-used component — and show me only that. The rest are built from it after I approve.
+```
+
+```
+You moved ui/shell.html or ui/kit.html into design-system/. Put them back: the shell and the
+kit page live in ui/, and later phases read them there. This step adds an entry point, it
+does not relocate files.
+```
+
+```
+Walk the example screen keyboard-only in the dark theme and report every Tab stop: is the
+focus ring visible on each one, including the theme toggle and links inside cards? Name the
+stops that failed and fix them in the component and its state tokens, not on the screen.
 ```

@@ -15,7 +15,11 @@ Personas are a **synthesis of research, not an act of authorship**. At every ste
 
 Read `.design/memory/constitution.md`, `.design/memory/toolbox.md`, the brief in `CLAUDE.md`, and `research/research.md` in full. Honor the fallback rules in `toolbox.md` — they apply again in step 6.
 
+Also read `.design/progress/phase-2.md` — this command's own ledger (shared with `/dsf:research`). Before step 1, report what you will skip, redo or resume based on it, then proceed only after stating that.
+
 ## Steps
+
+After completing each numbered step and each HUMAN GATE, append the ledger line to `.design/progress/phase-2.md` and update the `steps` object in the pipeline-data block (current → done).
 
 ### 1. Inventory what the research actually says about people
 
@@ -25,7 +29,7 @@ Then, separately and honestly, list what we **do not** know about people. Where 
 
 ### 2. Personas — 2 to 4, every block sourced
 
-From those observations build 2–4 personas. For each:
+Start from `.design/templates/personas.md`; keep its sections. From those observations build 2–4 personas. For each:
 
 - **context** — who they are and what situation they arrive from;
 - **jobs** — what they are trying to get done;
@@ -39,9 +43,19 @@ Every block links back to `research/research.md` (source or screenshot). Where t
 
 Mark one **primary**, the rest secondary, and justify the choice. Save to `people/personas.md`.
 
+> **Honesty check before you present them.** Honest personas almost always keep a few `[?]` —
+> a set where every block is confidently sourced usually means the gaps were filled by
+> plausible writing. Count the `[?]` marks out loud. If there are none, go back and find the
+> claims you could not defend in front of the client.
+
+> **HUMAN GATE — personas.** Stop. Present the personas, the primary choice and the `[?]`
+> marks, and do not derive jobs until the human confirms or corrects them. Everything after
+> this — jobs, the matrix, the MVP core, the whole IA phase — is built on top of these people;
+> a wrong persona confirmed late is the most expensive correction in the pipeline.
+
 ### 3. Jobs — "when / I want / so that"
 
-From `people/personas.md` and `research/research.md`, write jobs in the form **"When [situation], I want [motivation], so that [outcome]"**.
+Start from `.design/templates/jtbd.md`; keep its sections. From `people/personas.md` and `research/research.md`, write jobs in the form **"When [situation], I want [motivation], so that [outcome]"**.
 
 Hierarchy:
 - 1 **main job** of the product;
@@ -62,11 +76,11 @@ Add two more columns:
 
 Below the matrix, the conclusion: **three jobs for the MVP core** (important to the primary persona *and* not covered by the market) and the **feature candidates to cut** (features that close no job).
 
-**HUMAN GATE — MVP core.** Present the three core jobs and the cut list. Stop. The user owns this scope decision. Append the matrix to `people/jtbd.md`.
+**HUMAN GATE — MVP core.** Present the three core jobs and the cut list. Stop. The user owns this scope decision. Append the matrix to `people/jtbd.md`, and append their answer — the three jobs kept and what was cut — to `.design/decisions.md` (constitution rule 7 — every gate leaves a trace).
 
 ### 5. Critique pass — confirmed / hypothesis / invented
 
-Audit your own output. If the `impeccable` skill is active per `toolbox.md`, run its critique on these files as well; otherwise run this pass alone.
+Audit your own output. If the `impeccable` skill is active per `toolbox.md`, run its critique on these files as well; otherwise run the built-in critique prompt in `.design/prompts/critique.md` over them.
 
 1. Walk every statement in `personas.md` and `jtbd.md` and classify it: **confirmed by research / hypothesis / invented**. Output as a table.
 2. Extract the dangerous subset: statements that **drive design decisions** but rest on `[?]` or on invented material. This is the list that matters.
@@ -92,20 +106,16 @@ Run `.design/checklists/phase-2-discover.md`. Hard items: personas differ by beh
 
 ### 9. Living docs, dashboard, commit
 
-- `CLAUDE.md` — append a short block: primary persona (2–3 lines), main job, top-3 MVP jobs. This is what phase 3 reads on every prompt.
+- `CLAUDE.md` — fill the **People** block under *Context blocks*: primary persona (2–3 lines), main job, top-3 MVP jobs. This is what phase 3 reads on every prompt.
 - `README.md` — a **People** section: what lives in `personas.md` and `jtbd.md`.
-- Regenerate `pipeline.html`; link `personas.html`.
+- `pipeline.html` — edit **only** the `<script id="pipeline-data">` JSON block: the phase 2 artifact entries for people, the link to `personas.html`, and the `steps` object. Fill the context keys this phase owns — `primaryPersona` (one short line) and `mainJob` (the main job statement); leave the other context keys as they are. Do not touch the markup, CSS or scripts around the block.
 - Commit: `feat: phase 2b — personas, JTBD, coverage matrix`. Push **only** if `toolbox.md` says GitHub hosting is active.
 
 ### 10. Sign-off
 
-Report the primary persona, the main job, the three MVP jobs, and any `[?]` still standing under a design-critical claim. Next command: `/dsf:ia`.
+Report the primary persona, the main job, the three MVP jobs, and any `[?]` still standing under a design-critical claim.
 
-Then suggest, and run on approval:
-
-```
-git tag phase-2-users
-```
+Do not create a git tag. Phase 2 is now complete (`/dsf:research` + `/dsf:users`): run `/dsf:check` to close the phase — it verifies the checklist and creates the phase tag `phase-2-discover`. The next command after that is `/dsf:ia`.
 
 ## Recovery prompts
 

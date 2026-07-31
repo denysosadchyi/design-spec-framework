@@ -21,10 +21,13 @@ produced yet, say which command produces them and stop.
 
 - `.design/memory/constitution.md` — especially rule 4 (the cycle), rule 5 (the fix lives at
   the source and where the source currently is), rule 6 (new enters the system first).
-- `.design/memory/toolbox.md` — `impeccable` row decides whether the quality pass is
-  `/impeccable critique` and `/impeccable audit` or the built-in prompts in
-  `.design/templates/`; the browser row decides whether screens are opened with Playwright
-  MCP or by the human.
+- `.design/memory/toolbox.md` — the `impeccable` row decides whether the quality pass is
+  `/impeccable critique` and `/impeccable audit` (row `active`) or the built-in prompts
+  `.design/prompts/critique.md` and `.design/prompts/audit.md` (row `fallback` or `[?]`); the
+  browser row decides whether screens are opened with Playwright MCP or by the human. The three
+  status values are defined in `toolbox.md` — use them, do not invent a fourth.
+- `.design/memory/phases.md` — which phase owns the scope, and the canonical path of its
+  artifacts. Findings are filed against a phase, so name the phase before you start.
 - The written contracts the scope must obey — whichever exist: `wireframes/_conventions.md`,
   `voice/voice.md` + `microcopy.md`, `DESIGN.md`, `design-system/tokens.css`,
   `responsive/width-audit.md`, `animations/motion-inventory.md`.
@@ -45,10 +48,12 @@ finding.
 
 ### 2 — Collect findings
 
-Run the toolbox's quality pass (`/impeccable critique`, plus `/impeccable audit` for a
-whole-phase scope) and the built-in checks below. For a scope wider than a few files, fan
-out to subagents grouped by role, each with the same contract. Subagents **return findings,
-not fixes**.
+Run the toolbox's quality pass and the built-in checks below. With the `impeccable` row
+`active` that means `/impeccable critique`, plus `/impeccable audit` for a whole-phase scope;
+otherwise run `.design/prompts/critique.md` and, for a whole-phase scope,
+`.design/prompts/audit.md` — same cycle, same table, and the artifact records which of the two
+was used. For a scope wider than a few files, fan out to subagents grouped by role, each with
+the same contract. Subagents **return findings, not fixes**.
 
 Built-in checks, applied to whatever exists in scope:
 
@@ -112,14 +117,40 @@ does not rediscover it.
 
 ### 6 — Record and commit
 
-- Write the table and its outcome into the scope's critique artifact — `_critique.md` for
-  wireframes, the phase's critique section otherwise. A defect table that lives only in chat
-  did not happen.
+A defect table that lives only in chat did not happen. It goes to exactly one of two places:
+
+- **The owning phase has a critique artifact** → write it there. Today that is
+  `wireframes/_critique.md` for phase 4. Append, never overwrite: an earlier round's table stays
+  readable underneath.
+- **It does not** → append to `.design/critique-log.md`, the canonical home for every critique
+  that has no phase file of its own. **The template does not ship this file — it is created
+  here, on first use**, with the heading `# Critique log` and nothing else above the first
+  section. It stays separate from `.design/decisions.md`, which holds gate answers only. Add
+  one dated section per run:
+
+  ```md
+  ## 2026-07-31 · scope: design-system/components/
+
+  Source of truth for this scope: `design-system/components/`
+  Quality pass: `/impeccable critique` (toolbox: impeccable = active)
+
+  | Where | What is wrong | How to fix | Outcome |
+  |---|---|---|---|
+  | … | … | … | fixed / deferred → backlog.md / dropped by the human |
+  ```
+
+  The **Outcome** column is what makes the log worth keeping — a row with no outcome is an
+  unfinished cycle.
+
+Then:
+
 - Anything deferred goes to `design-system/backlog.md` (system gaps) or
   `handoff/onboarding-gaps.md` (documentation gaps) — never to nowhere.
-- If a "keep it" was said, write the rule into `CLAUDE.md` and route it to the current
-  source.
-- Update `CLAUDE.md` / `README.md` only if a rule changed. Regenerate `pipeline.html`.
-- Commit; push if the toolbox records a remote.
+- If a "keep it" was said, write the rule into `CLAUDE.md` and route it to the current source.
+- Update `CLAUDE.md` / `README.md` only if a rule changed. Refresh `pipeline.html` by running
+  `/dsf:status` — only its `<script type="application/json" id="pipeline-data">` block changes,
+  and the `context` values are left alone.
+- Commit; push if `toolbox.md` records hosting as `active`.
 
-No tag. If this critique closed a phase, run `/dsf:check` and tag there.
+No tag. Tags are created by `/dsf:check` alone. If this critique closed a phase, run
+`/dsf:check <phase>` and sign off there.

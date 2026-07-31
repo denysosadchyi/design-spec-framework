@@ -5,12 +5,13 @@
 This repo **is** the design file. Research, structure, screens, copy, visual language, the
 design system and the handoff all live here as files. No Figma required.
 
-**→ [Pipeline dashboard](./pipeline.html)** — current phase, artifacts, and links to every
-viewable page.
+**→ [Open the pipeline page](./pipeline.html)** — this is your home: current phase, every
+step and prompt to type, success criteria, and links to every viewable page. **Start here**,
+then type `/dsf:init` in Claude Code.
 
-Built with [design-spec-framework](https://github.com/) — spec-driven development for
-product design. Work is driven by `/dsf:*` commands in Claude Code; the rules live in
-`.design/memory/constitution.md`.
+Built with [design-spec-framework](https://github.com/denysosadchyi/design-spec-framework) —
+spec-driven development for product design. Work is driven by `/dsf:*` commands in Claude
+Code; the rules live in `.design/memory/constitution.md`.
 
 ---
 
@@ -37,12 +38,12 @@ product design. Work is driven by `/dsf:*` commands in Claude Code; the rules li
 ## Wireframes
 
 <!-- phase 4 · grey screens with all states -->
-`[?]` → `wireframes/`
+`[?]` → `wireframes/index.html`
 
 ## Voice
 
 <!-- phase 5 · voice principles and the copy source of truth -->
-`[?]` → `voice/voice.md`
+`[?]` → `voice/voice.html`, `voice/microcopy.md`
 
 ## Concept
 
@@ -51,23 +52,28 @@ product design. Work is driven by `/dsf:*` commands in Claude Code; the rules li
 
 ## UI
 
-<!-- phase 6 · tokens, components, kit showcase -->
-`[?]` → `ui/kit.html`
+<!-- phase 6 · token audit, tokens, components, kit showcase -->
+`[?]` → `ui/kit.html`, `ui/tokens-audit.md`
 
 ## Design system
 
 <!-- phase 7 · the system as a product, with live docs -->
 `[?]` → `design-system/docs/index.html`
 
-## Adapt
+## Responsive
 
-<!-- phase 8 · responsive behavior and motion -->
-`[?]` → `responsive/width-audit.md`, `animations/motion-inventory.md`
+<!-- phase 8 · behavior-based breakpoints, adaptive shell and components, split-view -->
+`[?]` → `responsive/width-audit.html`
+
+## Motion
+
+<!-- phase 9 · motion tokens, the three jobs, reduced-motion -->
+`[?]` → `animations/motion-inventory.html`
 
 ## Handoff
 
-<!-- phase 9 · spec, map, a11y, release -->
-`[?]` → `handoff/`
+<!-- phase 10 · spec, map, a11y, release -->
+`[?]` → `handoff/index.html`
 
 ---
 
@@ -75,14 +81,15 @@ product design. Work is driven by `/dsf:*` commands in Claude Code; the rules li
 
 | Path | What lives there |
 |---|---|
-| `.design/` | Constitution, toolbox, templates, phase checklists |
+| `.design/` | Constitution, phase table, toolbox, fallback prompts, artifact templates, phase checklists, `checklists/results/` (the `/dsf:check` verdicts), `progress/` (the append-only step ledgers), decision log |
 | `.claude/commands/dsf/` | The `/dsf:*` commands |
 | `CLAUDE.md` | Agent context — brief plus a block per phase |
-| `pipeline.html` | Status dashboard |
+| `pipeline.html` | The project's home page — phases, artifacts, links, status |
 | `research/` · `people/` | Phase 2 |
 | `ia/` | Phase 3 |
 | `wireframes/` | Phase 4 — the screens, layered by every later phase |
 | `voice/` · `concept/` | Phase 5 |
 | `ui/` · `design-system/` · `visuals/` | Phases 6–7 |
-| `responsive/` · `animations/` | Phase 8 |
-| `handoff/` | Phase 9 |
+| `responsive/` | Phase 8 |
+| `animations/` | Phase 9 |
+| `handoff/` | Phase 10 |

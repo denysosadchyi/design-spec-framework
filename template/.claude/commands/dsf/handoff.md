@@ -1,5 +1,5 @@
 ---
-description: "Phase 9 — hand the product over as onboarding, not an archive: fresh-eyes gap audit, behavior spec that references code, layer map, a11y checklist, README as a route, release, fresh-subagent test, and the graduation one-shot."
+description: "Phase 10 — hand the product over as onboarding, not an archive: fresh-eyes gap audit, behavior spec that references code, layer map, a11y checklist, README as a route, release, fresh-subagent test, and the graduation one-shot."
 ---
 
 # /dsf:handoff — Handoff
@@ -20,7 +20,8 @@ Two iron rules for this phase:
   reason to build.
 - **Reference, never duplicate.** Instead of "button: background `#2E6E5C`, radius 12px" —
   "button: component `button`, state `disabled` while the form is invalid; text from
-  `microcopy.md`, key `form.submit`". A duplicate is stale the moment someone fixes the
+  `voice/microcopy.md`, key `request.form.submit`" (the key scheme is
+  `<screen>.<zone>.<element>`, set in `/dsf:voice`). A duplicate is stale the moment someone fixes the
   button; a reference stays true. The showcase shows appearance; the spec documents
   **behavior** — the thing no screenshot transfers.
 
@@ -31,7 +32,7 @@ Two iron rules for this phase:
 | Required | Produced by | If missing |
 |---|---|---|
 | Full design system: `tokens.css`, `components/`, `patterns/`, `docs/`, `index.css` | `/dsf:build`, `/dsf:system` | run those first |
-| Adaptive + motion layers | `/dsf:responsive`, `/dsf:motion` | run those first |
+| Adaptive layer (phase 8) + motion layer (phase 9) | `/dsf:responsive`, `/dsf:motion` | run those first, and close phase 9 with `/dsf:check 9` |
 | `ia/flows.md`, `wireframes/*.html` with state pages | `/dsf:ia`, `/dsf:wireframes` | run those first |
 | `voice/voice.md`, `voice/microcopy.md` | `/dsf:voice` | run `/dsf:voice` first |
 | `people/jtbd.md` (for the graduation one-shot) | `/dsf:users` | run `/dsf:users` first |
@@ -39,17 +40,25 @@ Two iron rules for this phase:
 
 **Read before acting:** `.design/memory/constitution.md` (rule 3 — data or `[?]`; rule 6 —
 new enters the system first; rule 8 — living docs) and `.design/memory/toolbox.md`. Hosting
-row decides where the release is deployed: GitHub Pages if installed, the recorded fallback
+row decides where the release is deployed: GitHub Pages if active, the recorded fallback
 otherwise — a local static server plus a note in `handoff/README.md` saying so.
+
+Also read `.design/progress/phase-10.md` — this command's own ledger. Before step 1, report
+what you will skip, redo or resume based on it, then proceed only after stating that.
 
 ---
 
 ## Steps
 
+After completing each numbered step and each HUMAN GATE, append the ledger line to
+`.design/progress/phase-10.md` and update the `steps` object in the pipeline-data block
+(current → done).
+
 ### 1 — Fresh-eyes audit
 
 Walk the repo **as a new developer who has never seen this project**, from `README.md` down
-into the code, and write `handoff/onboarding-gaps.md`: everything that is unclear without a
+into the code, and write `handoff/onboarding-gaps.md` — start from
+`.design/templates/onboarding-gaps.md` and keep its sections: everything that is unclear without a
 verbal explanation — where the entry point is, how to assemble a screen, where tokens come
 from, what a given folder means.
 
@@ -61,7 +70,8 @@ component and a pattern".
 every item becomes something the documentation must close. Everything below is driven by it.
 
 > **HUMAN GATE — gap list.** Present the list. The human confirms it before documentation
-> starts, and can add gaps they know about.
+> starts, and can add gaps they know about. Append their answer to `.design/decisions.md`
+> (constitution rule 7 — every gate leaves a trace).
 
 ### 2 — Behavior spec
 
@@ -78,9 +88,10 @@ a literal UI string into the spec, replace it with a pointer.
 
 ### 3 — Layer map
 
-Write `handoff/map.md`: one row is one chain — **screen → component → token → microcopy
-key**. For every key screen: which system components stand on it, which tokens they read,
-where their copy comes from.
+Write `handoff/map.md` — start from `.design/templates/handoff-map.md` and keep its sections
+and columns: one row is one chain — **screen → component → token → microcopy key**. For every
+key screen: which system components stand on it, which tokens they read, where their copy
+comes from (the `<screen>.<zone>.<element>` key, never the string itself).
 
 Put `voice/voice.md` and `voice/microcopy.md` explicitly into the handoff package. A
 developer needs to know not only which words exist, but how the product sounds when the
@@ -92,16 +103,19 @@ from the table, the map is not done.
 
 ### 4 — A11y checklist
 
-Write `handoff/a11y.md`, consolidating what phases 6–8 already built. Introduce nothing new:
+Write `handoff/a11y.md` — start from `.design/templates/a11y.md` and keep its sections —
+consolidating what phases 6–9 already built. Introduce nothing new:
 
-- `focus-visible` on every interactive component, in **both themes**;
-- contrast of every foreground/background pair at WCAG AA;
-- breakpoints in `rem`, so they respond to the user's font size;
+- `focus-visible` on every interactive component, in **both themes** (the keyboard walk-through
+  from `/dsf:system`);
+- contrast of every foreground/background pair at WCAG AA, in both themes;
+- breakpoints in `rem`, so they respond to the user's font size (the doubled-root-size check
+  from `/dsf:responsive` in phase 8, with the widths recorded in `DESIGN.md`);
 - `prefers-reduced-motion` honored globally.
 
 For each item: **where it is in the code** (file and selector) and **how to verify it**
 (keyboard tab-through, contrast checker, doubling the root font size, turning the system
-setting on).
+setting on) — the same verification that was actually run in the phase that built it.
 
 This is not a work plan. It is proof that accessibility is already built into the system,
 and a map of where. If a hole turns up in the consolidation, do **not** build a feature
@@ -121,11 +135,16 @@ for each question. A route, not a museum.
 
 ### 6 — Package the release
 
-- Tag the product version in git (e.g. `v1.0`).
+- Strip workbench chrome from the shipped screens: remove the `← Pipeline` service link from
+  every wireframe navigator panel (it bridges to the process home page and does not belong in
+  the release; git keeps it for the working copy).
 - Deploy the product and the showcase (GitHub Pages, or the toolbox's fallback).
 - Collect three links in `handoff/README.md`: repository, live showcase, live product.
-- Render `handoff/handoff.html` — the human-facing onboarding route, linking the spec, map,
-  a11y checklist and the three release links.
+- Render **`handoff/index.html`** — the human-facing onboarding route, linking the spec, map,
+  a11y checklist and the three release links. This is the page `pipeline.html` points at for
+  phase 10; nothing else in the repo is called the handoff page.
+- **Create no tag here.** The release tag `v1.0` and the phase tag `phase-10-handoff` are both
+  created by `/dsf:check` after the human signs the phase off.
 - Add a **"Handoff"** section to `CLAUDE.md` describing where everything lives, for the next
   session.
 
@@ -147,7 +166,8 @@ done. This mirrors the system test of `/dsf:system`, where a new screen was asse
 from the system alone.
 
 > **HUMAN GATE — handoff sign-off.** Present the subagent's stumble list and what you closed
-> in documentation. The human confirms the handoff is ready.
+> in documentation. The human confirms the handoff is ready. Append their answer to
+> `.design/decisions.md` (constitution rule 7 — every gate leaves a trace).
 
 ### ★ Graduation one-shot
 
@@ -157,14 +177,17 @@ whole stack** — the way it will be done in real work once the training wheels 
 Take a job from `people/jtbd.md` that the product does not cover yet, and drive it through
 every layer at once, in this order:
 
-1. **Language** — `voice.md` and `microcopy.md` produce the copy first;
+1. **Language** — `voice/voice.md` and `voice/microcopy.md` produce the copy first, keyed
+   `<screen>.<zone>.<element>` like every other string;
 2. **Components and patterns** — assembled from the design system only; a gap goes to
    `design-system/backlog.md`, it is not hand-drawn around;
 3. **Tokens** — color, geometry, breakpoints, motion;
 4. **Output** — a finished screen with all states, adaptivity at three widths, and
    micro-interactions.
 
-Put the result in `examples/one-shot/` and write a short retrospective next to it: which
+Put the result in `design-system/examples/one-shot/` as `index.html` — beside the new-screen
+example from `/dsf:system`, because both are proofs about the same system — and write a short
+retrospective next to it: which
 layers held, where the system was missing something, what the single pass revealed that the
 layer-by-layer path did not.
 
@@ -175,52 +198,85 @@ consciously, and at the end you do all of them in one move.
 
 ## Phase checklist
 
-Verify against `.design/checklists/phase-9-handoff.md` (or run `/dsf:check`):
+Verify against `.design/checklists/phase-10-handoff.md` (or run `/dsf:check 10`):
 
 - [ ] `handoff/onboarding-gaps.md` — a newcomer's list of confusions; product questions, not syntax
 - [ ] `handoff/spec/` — flows, states, edge cases, validation; **references components and `microcopy` keys, duplicates no code**
-- [ ] `handoff/map.md` — screen → component → token → microcopy key; `voice.md` and `microcopy.md` in the package
+- [ ] `handoff/map.md` — screen → component → token → microcopy key; `voice/voice.md` and `voice/microcopy.md` in the package
 - [ ] `handoff/a11y.md` — focus, contrast, `rem` breakpoints, reduced-motion consolidated; code location and verification per item; nothing new introduced
 - [ ] `README.md` is a living index — two or three sentences and a link per section, no retelling
-- [ ] Release: git tag, product and showcase deployed, three links in `handoff/README.md`
+- [ ] Release: product and showcase deployed, three links in `handoff/README.md`
 - [ ] A clean clone comes up with no verbal explanation
 - [ ] Fresh-subagent test passed; every stumble closed with documentation, not a feature
-- [ ] `examples/one-shot/` — a new feature assembled in one pass, with states, adaptivity and micro-interactions, plus a retrospective
-- [ ] `CLAUDE.md` has a "Handoff" section; `handoff/handoff.html` linked from `pipeline.html`
+- [ ] `design-system/examples/one-shot/` — a new feature assembled in one pass, with states, adaptivity and micro-interactions, plus a retrospective
+- [ ] `CLAUDE.md` has a "Handoff" section; `handoff/index.html` linked from `pipeline.html`
 
 ## Close the phase
 
-1. `CLAUDE.md` — the **Handoff** context block: package contents, release tag, live URLs,
-   the standing rule that new work starts a new cycle and does not ride inside handoff.
+1. `CLAUDE.md` — the **Handoff** context block: package contents, live URLs, the standing
+   rule that new work starts a new cycle and does not ride inside handoff.
 2. `README.md` — already rewritten in step 5; verify every link resolves.
-3. Regenerate `pipeline.html` — all nine phases, with the three release links surfaced at the
-   top.
+3. Update `pipeline.html` — edit **only** the `<script id="pipeline-data">` JSON block: all
+   eleven phases resolved, the phase 10 artifact entries, `handoff/index.html` as a live link,
+   the three release links in the fields the block provides for them, and the `steps`
+   object. Leave the
+   `context` object as it is; this phase fills none of its keys. Do not touch the markup,
+   CSS or scripts around the block.
 4. Commit. Push if the toolbox records a remote.
 
-> **HUMAN GATE — release sign-off.** Checklist passes, the human confirms, then tag `v1.0`
-> (and `phase-9-handoff` for pipeline consistency).
+> **HUMAN GATE — release sign-off.** Checklist passes and the human confirms the release.
+
+Do not create a git tag. Run `/dsf:check 10` to close the phase — it verifies the checklist
+and creates both the phase tag `phase-10-handoff` and the release tag `v1.0`.
 
 ---
 
 ## Recovery prompts
 
-- **Handoff started building.** "Check whether anything in this phase added a new feature,
-  state or component instead of documenting an existing one. Revert it and record each case
-  as debt in `handoff/onboarding-gaps.md`."
-- **Documentation duplicates code.** "Walk `handoff/` and replace every rewritten style or
-  literal string with a reference: design-system component, token, `microcopy.md` key. The
-  document's truth must not depend on whether someone edited the CSS."
-- **Untested package.** "Run the fresh-eyes test: give a context-free subagent only
-  `handoff/` and `README.md` and have it build a small feature. Report every point where it
-  stumbled or invented, before fixing anything."
-- **Museum README.** "The README retells files instead of pointing at them. Cut every
-  section to two or three sentences and a link, and confirm that each question a newcomer
-  has maps to exactly one destination."
-- **Map that does not answer.** "Pick three tokens and trace, using `map.md` alone, every
-  screen that changes if I edit them. Where the trace breaks, the map is incomplete — fix
-  the map."
-- **A11y hole found.** "Do not fix it here. Add it to `handoff/onboarding-gaps.md` as debt,
-  with the code location and how it was found, and note in `a11y.md` that the item is open."
-- **Clean-clone failure.** "Clone the repo into a fresh folder and bring it up using only
-  `README.md`. List every step that required knowledge not in the repo, then close those
-  steps in the README."
+Copy-paste when something went the usual wrong way.
+
+**Handoff started building.**
+```
+Check whether anything in this phase added a new feature, state or component instead of
+documenting an existing one. Revert it and record each case as debt in
+handoff/onboarding-gaps.md.
+```
+
+**Documentation duplicates code.**
+```
+Walk handoff/ and replace every rewritten style or literal string with a reference: the
+design-system component, the token, the voice/microcopy.md key. The document's truth must not
+depend on whether someone edited the CSS.
+```
+
+**Untested package.**
+```
+Run the fresh-eyes test: give a context-free subagent only handoff/ and README.md and have it
+build a small feature. Report every point where it stumbled or invented, before fixing
+anything.
+```
+
+**Museum README.**
+```
+The README retells files instead of pointing at them. Cut every section to two or three
+sentences and a link, and confirm that each question a newcomer has maps to exactly one
+destination.
+```
+
+**Map that does not answer.**
+```
+Pick three tokens and trace, using handoff/map.md alone, every screen that changes if I edit
+them. Where the trace breaks, the map is incomplete — fix the map.
+```
+
+**A11y hole found.**
+```
+Do not fix it here. Add it to handoff/onboarding-gaps.md as debt, with the code location and
+how it was found, and note in handoff/a11y.md that the item is open.
+```
+
+**Clean-clone failure.**
+```
+Clone the repo into a fresh folder and bring it up using only README.md. List every step that
+required knowledge not in the repo, then close those steps in the README.
+```

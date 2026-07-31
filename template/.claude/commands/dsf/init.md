@@ -1,120 +1,254 @@
 ---
-description: Phase 0 — verify the toolbox, record every tool choice and its fallback, set up hosting, render pipeline.html, first commit.
+description: Phase 0 — verify the toolbox, record every tool choice and its fallback, set up hosting, render pipeline.html, first commit, and hand the designer their project home page.
+argument-hint: (no arguments)
 ---
 
 # Phase 0 — Init
 
-You are setting up a design-spec repo. Nothing about the product is discussed here — only the tools the pipeline will run on and the scaffolding of the dashboard. The user must never be asked to run a terminal command; you run everything.
+You are setting up a design-spec repo. Nothing about the product is discussed here — only the
+tools the pipeline will run on and the scaffolding of the dashboard. The user must never be
+asked to run a terminal command; you run everything.
 
 ## Prerequisites
 
-- This repo was created from the design-spec-framework template: `.design/memory/constitution.md`, `.design/templates/`, `.design/checklists/` must exist. If they do not, stop and tell the user this command must run inside a repo created from the template.
+- This repo was created from the design-spec-framework template: `.design/memory/constitution.md`,
+  `.design/memory/phases.md`, `.design/prompts/`, `.design/templates/`, `.design/checklists/`,
+  `.design/progress/` and `pipeline.html` must exist. If they do not, stop and tell the user this command must run
+  inside a repo created from the template.
 - `git` available. If the folder is not a git repo, `git init` it yourself.
-- If `.design/memory/toolbox.md` already exists, this is a re-run: read it, show the current state, and ask whether to revise choices or exit.
+- If `.design/memory/toolbox.md` has no `[?]` left in its Status column, this is a re-run: read
+  it, show the current state, and ask whether to revise choices or exit.
 
 ## Load context
 
-Read `.design/memory/constitution.md` in full and obey it for the rest of this command — in particular **prompts, not commands**, **human gates**, and **living docs**.
+Read in full and obey for the rest of this command:
+
+- `.design/memory/constitution.md` — in particular **prompts, not commands**, **human gates**,
+  **living docs**.
+- `.design/memory/phases.md` — the canonical phase table, the canonical artifact paths, the tag
+  scheme and the `pipeline-data` contract. Do not restate it here and do not invent a second
+  list of phases.
+- `.design/memory/toolbox.md` — the rows you are about to fill in, and the status vocabulary
+  (`active` / `fallback` / `[?]`) defined there. Use those three words and no others.
+
+## Step ledger — start it before step 1
+
+This command records its own steps like every phase command does, so do the scaffolding first:
+
+- `.design/progress/` ships with the template, holding `README.md`. If the folder or the README
+  is missing, create it now from the contract in `phases.md` (**Step ledgers**) — an empty
+  `.design/progress/` is a broken template, not a fresh project.
+- Create `.design/progress/phase-0.md` with the header `# Phase 0 · Init — step ledger`.
+- After **each** numbered step below finishes — and immediately after the gate in step 2
+  resolves — append one line:
+  `- init.<step> · <step name> · YYYY-MM-DD HH:MM · files: <paths touched> [· gate: <verbatim short answer>]`.
+  Append-only: never rewrite a line, and on a re-run of this command append again rather than
+  editing what is there.
+- On a re-run, read `phase-0.md` before step 1 and say which steps you are about to redo. Step 2
+  is a human gate; a re-run does not inherit its answer.
 
 ## Steps
 
 ### 1. Detect what is already available
 
-Without asking the user anything yet, check the environment for each toolbox entry and note detected / missing:
+Without asking the user anything yet, walk the **Tools** table in `.design/memory/toolbox.md`
+row by row and establish, with evidence, whether each recommended tool is present here:
 
-| Purpose | Recommended | How to detect | Fallback |
-|---|---|---|---|
-| Browser & screenshots | Playwright MCP | Playwright MCP tools present in this session | WebFetch-only research + screenshots the user supplies manually |
-| Visual references | Refero MCP | Refero MCP tools present | Web search + competitor screenshots |
-| Design quality laws | `impeccable` skill (`critique` / `audit` / `document` / `extract`) | skill listed as available | Built-in critique & documentation prompts in `.design/templates/` |
-| Structured brief | `obra/superpowers` **brainstorming** skill | skill listed as available | Built-in question-first interrogation in `/dsf:brief` |
-| Imagery | Gemini API image generation | image-gen script or `GEMINI_API_KEY` / `GOOGLE_API_KEY` reachable | Unsplash, picked by content theme |
-| Icons | Solar icon set (one style, whole project) | — (a choice, not a detection) | Any single-style set, recorded in `DESIGN.md` |
-| Hosting | GitHub + GitHub Pages | `gh auth status` succeeds | Any git host + local static server |
+| Row | Detection |
+|---|---|
+| Browser & screenshots | Playwright MCP tools present in this session |
+| Visual references | Refero MCP tools present in this session |
+| Design quality laws | `impeccable` skill listed as available |
+| Structured brief | `obra/superpowers` brainstorming skill listed as available |
+| Imagery | image-gen script present, or `GEMINI_API_KEY` / `GOOGLE_API_KEY` reachable |
+| Icons | not detectable — a choice, so ask it as one |
+| Hosting | `gh auth status` succeeds |
 
-### 2. Propose the toolbox — HUMAN GATE
+Record the evidence for each row as you go. A row you did not actually test is `[?]`, never
+`active`. The **Install source** column of `toolbox.md` tells you where each tool comes from if
+the user wants it installed — read it now, so you can answer "how would you get it" in the same
+breath as "you don't have it".
 
-Present one table: purpose, recommended tool, detected yes/no, what changes in the pipeline if it is declined. Then ask the user, in a single question, which of the missing tools to install and which to skip.
+### 2. Toolbox and hosting review — HUMAN GATE
 
-**HUMAN GATE — toolbox.** Stop here. Do not install, do not write `toolbox.md`, do not proceed until the user answers.
+One gate for this whole phase. Present a single table — purpose · recommended tool · detected
+yes/no · install source · what changes in the pipeline if it stays on `fallback` — and ask, in
+one message, for all of the following at once:
 
-A refusal is a legitimate answer and costs nothing later — every downstream command reads `toolbox.md` and switches to the fallback automatically. Never argue a tool a second time.
+1. which missing tools to install and which to leave on `fallback`;
+2. the icon set choice (Solar, or another single-style set);
+3. whether hosting is GitHub + Pages or the local fallback;
+4. if GitHub: the repo name, and public or private.
+
+**HUMAN GATE — toolbox and hosting.** Stop here. Install nothing, create no repo, write no
+`toolbox.md`, until the user answers. Publishing work and installing software are both in this
+answer, which is why it is a gate and why it is only one.
+
+A refusal is a legitimate answer and costs nothing later — every downstream command reads
+`toolbox.md` and switches to the fallback automatically. Never argue a tool a second time.
 
 ### 3. Install what was approved
 
-Install only what the user approved, one at a time, reporting the outcome of each. If an install fails, do not retry silently: record the tool as **unavailable → fallback** and say so.
+Install only what the user approved, one at a time, using the **Install source** column,
+reporting the outcome of each. If an install fails, do not retry silently: set that row to
+`fallback`, write the reason into **Notes**, and say so.
 
 ### 4. Write `.design/memory/toolbox.md`
 
-One row per purpose:
+Fill the Status column of the existing table — `active` / `fallback`, never `[?]` once this
+command has run. Then:
 
-```md
-| Purpose | Chosen | Status | Fallback in force |
-|---|---|---|---|
-| Browser & screenshots | Playwright MCP | active | — |
-| Visual references | — (declined) | fallback | web search + manual screenshots |
-```
-
-Below the table add a `## Rules for later phases` section stating explicitly, in words, what each fallback means operationally (e.g. "no browser: research screenshots are user-supplied; a screen with no image is marked `[no screenshot]`, never described from memory"). Later commands read this section, so it must be actionable, not decorative.
+- **Rules for later phases** — one line per `fallback` row saying in words what later phases
+  must do instead. For example: "no browser: research screenshots are user-supplied; a screen
+  with no image is marked `[no screenshot]`, never described from memory." Later commands act
+  on this text, so it must be operational, not decorative.
+- **Notes** — the reason each `fallback` row is on fallback, plus keys, endpoints, MCP server
+  names, the chosen icon set and style, and the Pages URL once it exists.
 
 ### 5. Hosting
 
-If GitHub was approved: create the repo (ask the user for name and public/private — **HUMAN GATE**, since this can publish work), push, enable GitHub Pages from the default branch root, and record the Pages URL in `toolbox.md` and `README.md`.
+If GitHub was chosen in the gate: create the repo with the name and visibility the user gave,
+push, enable GitHub Pages from the default branch root, and record the Pages URL in
+`toolbox.md` and `README.md`. Do not re-ask anything — the answer came in step 2.
 
-If declined or unavailable: record the fallback — commits stay local, `pipeline.html` and every `*.html` artifact are viewed through a local static server that you start on request. Do not push anywhere.
+If the fallback was chosen or the setup fails: record it — commits stay local, `pipeline.html`
+and every `*.html` artifact are viewed through a local static server you start on request. Do
+not push anywhere.
 
-### 6. Render the initial `pipeline.html`
+### 6. Reset the two state stores: `.design/progress/` and the dashboard data block
 
-Build it at the repo root from `.design/templates/pipeline.html`:
+The project keeps its progress in two places and both start empty here.
 
-- 9 phases as a rail (0 init, 1 brief, 2 discover, 3 structure, 4 wireframes, 5 language, 6 build, 7 system, 8 adapt, 9 handoff) with per-phase gate criteria;
-- under each phase, its artifact checklist with existence marks (`✓` / `—`); every HTML artifact is an `<a href>` even before it exists (dead link now, live later);
-- status is **derived** at render time from artifact presence plus checklist results — never store status in a state file;
-- the template version this project started from, at the foot of the page.
+**The ledgers.** Confirm `.design/progress/` exists with its `README.md` and the phase-0 ledger
+you started above. Create no other ledger file: `phase-1.md` … `phase-10.md` are created by the
+commands that run those phases, and an empty ledger for a phase nobody has opened is noise
+pretending to be state.
 
-Right now everything except phase 0 is `locked`.
+**The dashboard.** `pipeline.html` already exists at the repo root: markup, styling and renderer all ship with the
+template. There is **no** `.design/templates/pipeline.html` and you do not create one. Your job
+is exactly one block:
+
+```html
+<script type="application/json" id="pipeline-data"> … </script>
+```
+
+Rewrite that block, and nothing else in the file, to the starting state (the contract is in
+`.design/memory/phases.md`):
+
+- `phases` — all eleven phases from the canonical table, in order, with `id`, `number`, `name`,
+  `commands`, `tag` and the full `artifacts` list at the canonical paths;
+- phase 0 `status: "in-progress"`, phases 1–10 `status: "locked"`, every phase `tagged: false`;
+- every artifact `exists: false`; `link: true` only on the HTML artifacts a human opens;
+- `criteria` on every phase — `total` from the per-phase item counts in `phases.md`,
+  `passed: []`, `failed: []`, `checkedAt: ""`. Nothing is verified yet;
+- `steps` on every phase — `total` from the per-command step counts in `phases.md` (the sum of
+  both commands for phases 2 and 5: 19 and 17), `done: []`, `current: ""`. This is the
+  starting state — phase 0's own `init.*` ids are folded in at step 8, from the ledger, once
+  the rest of this command has actually run;
+- `context` — every value the empty string: `product`, `oneLiner`, `benchmarkDimension`,
+  `primaryPersona`, `mainJob`, `chosenDirection`. Empty means "not known yet". You know none of
+  them here — phase 0 does not discuss the product.
+
+**`{{PRODUCT_NAME}}`.** The template ships this placeholder in the title and the header. If the
+user has already named the product, substitute it everywhere it appears — in the markup and in
+`context.product` — in one pass. If they have not, leave the placeholder alone and say in your
+sign-off, in one sentence, that `/dsf:brief` will fill in the product name once the brief names
+it. Never substitute a guess, and never invent a name to make the header look finished.
+
+Status is derived from files at every render. Do not hard-code a status anywhere, do not create
+a state file, and do not touch the renderer below the data block.
 
 ### 7. Run the phase checklist
 
-Run `.design/checklists/phase-0-init.md` and report pass/fail per item. Fix what you can; anything you cannot fix goes to the user as an explicit blocker.
+Run `.design/checklists/phase-0-init.md` against the actual files and report pass/fail per item.
+The checklist is a read-only reference document — you never tick anything in it. Fix what you
+can; anything you cannot fix goes to the user as an explicit blocker.
+
+The phase is formally gated by `/dsf:check 0`, which writes the verdict file
+`.design/checklists/results/phase-0.md` and creates the `phase-0-init` tag on a full pass. This
+command creates no tag.
 
 ### 8. Living docs and commit
 
-- `CLAUDE.md`: add a **Toolbox** section — one line per active tool and per fallback in force. This is the section every later command consults.
-- `README.md`: add the repo index skeleton and, if hosting is live, the `pipeline.html` URL.
-- Commit: `chore: phase 0 — toolbox and pipeline scaffolding`.
-- Push **only** if `toolbox.md` says GitHub hosting is active.
+- `CLAUDE.md`: fill the **Toolbox** section — one line per `active` tool, one per `fallback` in
+  force. This is the section every later command consults.
+- `README.md`: the repo index skeleton and, if hosting is active, the `pipeline.html` URL.
+- `pipeline.html`: bring phase 0's `steps` in line with `.design/progress/phase-0.md` — the
+  `init.*` ids you have written lines for into `done`, `current` set to `"init.9"` while step 9
+  runs and `""` when it is finished. Ledger first, JSON after; the JSON never claims a step the
+  ledger has no line for.
+- Commit: `chore: phase 0 — toolbox and pipeline scaffolding` (the ledger and
+  `.design/progress/README.md` go in the same commit).
+- Push **only** if `toolbox.md` records hosting as `active`.
 
-### 9. Sign-off
+### 9. Hand over the project home page
 
-Report: active tools, fallbacks in force, hosting URL or the local-server fallback, and the single next action — `/dsf:brief`.
+This is the point of the whole command. The person you are handing to is a designer, not a
+programmer, and everything they need from here lives on one page. Close with these three things,
+in plain words, in this order:
 
-Then suggest, and run on approval:
+**(a) The link.** Give the direct address of their project page:
 
-```
-git tag phase-0-init
-```
+- hosting `active` → the GitHub Pages URL of `pipeline.html`
+  (`https://<user>.github.io/<repo>/pipeline.html`) — the real one, not a template of one;
+- hosting on `fallback` → the local file path (`<repo>/pipeline.html`) plus one sentence on how
+  to open it: double-click the file, or ask me to start a local preview server and I will hand
+  you a `localhost` address.
+
+**(b) What the page is.** Say it exactly like this, in your own sentence structure but with
+nothing dropped:
+
+> This page is your home. It shows where you are, what to do next, and every prompt you need to
+> type. You never need a terminal — anything that has to be run, I run.
+
+**(c) The first move.** Name it as one action: open the page, read the **How this works**
+section, then type `/dsf:brief`.
+
+Also report, briefly and above all that: which tools are `active`, which are on `fallback`, and
+the hosting outcome. No next-step menu, no options list — one link, one explanation, one move.
 
 ## Recovery prompts
 
-Use these on yourself when this phase drifts; offer them to the user verbatim when they see the drift first.
+Use these on yourself when this phase drifts; offer them to the user verbatim when they see the
+drift first.
 
 ```
-You recorded a tool as available without evidence. Show the detection result
-for each row of toolbox.md or mark it unavailable.
-```
-
-```
-You skipped the fallback column. For every declined tool, write in words what
-later phases must do instead.
+You recorded a tool as active without evidence. Show the detection result for
+each row of toolbox.md, or set the row to fallback.
 ```
 
 ```
-You pushed without checking hosting. Read toolbox.md: if GitHub is not active,
+You left rows on [?] after init ran. [?] means "not yet checked" — check them,
+or record why they cannot be checked and set them to fallback.
+```
+
+```
+You skipped the fallback wording. For every fallback row, write into "Rules for
+later phases" what later phases must do instead, in operational words.
+```
+
+```
+You pushed without checking hosting. Read toolbox.md: if hosting is not active,
 commits stay local.
 ```
 
 ```
-pipeline.html hard-codes a status. Derive every status from artifact presence
-plus checklist results, and re-render.
+You edited pipeline.html outside the pipeline-data block, or created a second
+pipeline template. Restore the shipped file and rewrite only the JSON block.
+```
+
+```
+You hard-coded a status in the dashboard. Every status is derived from artifact
+presence plus the results file plus the tag — re-derive and rewrite the block.
+```
+
+```
+You ended without giving the designer their page. Repeat the close: the link,
+what the page is, and the first move.
+```
+
+```
+Nothing landed in .design/progress/phase-0.md. Append the line for every step
+you actually ran — id, step name, date and time, files touched, and the gate
+answer in my own words — then make the dashboard's steps object match it.
 ```

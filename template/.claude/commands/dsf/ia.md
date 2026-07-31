@@ -15,7 +15,11 @@ Every screen must serve a job. The **map** is derived from jobs; the **flows** w
 
 Read `.design/memory/constitution.md`, `.design/memory/toolbox.md`, and in full: `people/personas.md`, `people/jtbd.md`, `research/research.md`, and the brief in `CLAUDE.md`.
 
+Also read `.design/progress/phase-3.md` — this command's own ledger. Before step 1, report what you will skip, redo or resume based on it, then proceed only after stating that.
+
 ## Steps
+
+After completing each numbered step and each HUMAN GATE, append the ledger line to `.design/progress/phase-3.md` and update the `steps` object in the pipeline-data block (current → done).
 
 ### 1. Entity inventory — objects before screens
 
@@ -29,7 +33,7 @@ For each entity:
 
 An entity with no job goes into a **Questionable** section, not the main list. An object you are merely assuming gets `[?]`. Do not invent objects the jobs do not demand, and do not propose screens or navigation here.
 
-Save as the **Entities** section of `ia/sitemap.md`.
+Save as the **Entities** section of `ia/sitemap.md` — start that file from `.design/templates/sitemap.md` and keep its sections.
 
 ### 2. Sitemap derived from jobs, not from a menu
 
@@ -45,6 +49,8 @@ Rules:
 
 Keep depth minimal for now; levels get added deliberately in step 3. Append as the **Screens** section of `ia/sitemap.md`.
 
+**HUMAN GATE — sitemap.** Stop. Present the tree with the job printed next to every screen and every `[ORPHAN]` visible. The human confirms, cuts or adds screens **before** the navigation model is layered on and before a single flow is drawn. Append their answer to `.design/decisions.md` (constitution rule 7 — every gate leaves a trace). Every flow, every wireframe file and every later phase is built on this tree; changing it after the flows exist means redrawing them.
+
 ### 3. Navigation model and tap-depth budget
 
 The tree exists — do not invent a new one. Give it a movement model.
@@ -57,7 +63,7 @@ Append as the **Navigation** section of `ia/sitemap.md`, including the tap count
 
 ### 4. User flows in Mermaid
 
-Write `ia/flows.md`: `flowchart TD` diagrams, each under a heading naming its job.
+Write `ia/flows.md` — start from `.design/templates/flows.md` and keep its sections: `flowchart TD` diagrams, each under a heading naming its job.
 
 - the **main job** flow, complete;
 - flows for **2–3 key related jobs** from `jtbd.md`.
@@ -105,11 +111,13 @@ After the matrix, two explicit defect lists:
 
 Both are defects, not "fine". For every orphan give a resolution: delete the screen, add a screen, attach it to an existing one, or push it to the backlog. Target: no empty row and no empty column.
 
+**A first-pass coverage matrix with zero orphans is suspicious.** Real structures leak: a screen kept out of habit, a social or emotional job nobody gave a place to. A clean first matrix usually means the ticks were placed to make it clean. Read the matrix again row by row and column by column, out loud, naming the job for each screen and the screen for each job — and only then report zero.
+
 Append as the **Traceability** section of `ia/sitemap.md`.
 
 ### 6. IA critique — four defect classes
 
-Audit `ia/sitemap.md` and `ia/flows.md`. If the `impeccable` skill is active per `toolbox.md`, run its critique here too. Produce one table with columns **where / what / how to fix**, covering:
+Audit `ia/sitemap.md` and `ia/flows.md`. If the `impeccable` skill is active per `toolbox.md`, run its critique here too; otherwise run the built-in critique prompt in `.design/prompts/critique.md`. Produce one table with columns **where / what / how to fix**, covering:
 
 1. **DEAD ENDS** — flows where a person gets stuck with no exit: a "no" branch leading nowhere, an error or empty state with no way forward.
 2. **MISSING STATES** — a happy path with no empty, error or loading.
@@ -137,21 +145,17 @@ Run `.design/checklists/phase-3-ia.md`. Hard items: every screen annotated with 
 
 ### 9. Living docs, dashboard, commit
 
-- `CLAUDE.md` — append: the top-level sitemap, the main flow, the global navigation, and the tap depth to the main job.
+- `CLAUDE.md` — fill the **Structure** block under *Context blocks*: the top-level sitemap, the main flow, the global navigation, and the tap depth to the main job.
 - `README.md` — a **Structure** section: what lives in `sitemap.md` and `flows.md`.
 - If building the IA exposed a data gap, extend `research/research.md` — it stays a living file.
-- Regenerate `pipeline.html`; link `ia.html`.
+- `pipeline.html` — edit **only** the `<script id="pipeline-data">` JSON block: phase 3 status, its artifact entries, the link to `ia.html`, and the `steps` object. Leave the `context` object as it is; this phase fills none of its keys. Do not touch the markup, CSS or scripts around the block.
 - Commit: `feat: phase 3 — entities, sitemap, navigation, flows, traceability`. Push **only** if `toolbox.md` says GitHub hosting is active.
 
 ### 10. Sign-off
 
-Report the top-level structure, the tap depth to the main job, the number of flows, and any orphan left deliberately open. Next command: `/dsf:wireframes`.
+Report the top-level structure, the tap depth to the main job, the number of flows, and any orphan left deliberately open.
 
-Then suggest, and run on approval:
-
-```
-git tag phase-3-ia
-```
+Do not create a git tag. Run `/dsf:check` to close the phase — it verifies the checklist and creates the phase tag `phase-3-ia`. The next command after that is `/dsf:wireframes`.
 
 ## Recovery prompts
 

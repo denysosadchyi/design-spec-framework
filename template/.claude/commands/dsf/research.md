@@ -19,7 +19,11 @@ From `toolbox.md`:
 - **Browser active** → open competitor products yourself and capture screenshots into `research/screens/`.
 - **Browser fallback** → work from web fetch only; label every screen you could not capture as `[no screenshot]` and ask the user for the ones that matter most. Never describe an interface you have not seen.
 
+Also read `.design/progress/phase-2.md` — this command's own ledger (shared with `/dsf:users`). Before step 1, report what you will skip, redo or resume based on it, then proceed only after stating that.
+
 ## Steps
+
+After completing each numbered step and each HUMAN GATE, append the ledger line to `.design/progress/phase-2.md` and update the `steps` object in the pipeline-data block (current → done).
 
 ### 1. Competitor sets — three groups
 
@@ -56,7 +60,7 @@ Below the table, three lists: **three shared market patterns**, **three real dif
 
 The matrix will surface one dimension where every competitor is weak or where the whole market converges. That dimension is the benchmark subject.
 
-**HUMAN GATE — benchmark dimension.** Propose the dimension with the evidence from the matrix that points to it. Stop and let the user confirm or substitute.
+**HUMAN GATE — benchmark dimension.** Propose the dimension with the evidence from the matrix that points to it. Stop and let the user confirm or substitute. Append their answer to `.design/decisions.md` (constitution rule 7 — every gate leaves a trace) — phase 5 reads this dimension back.
 
 Then:
 
@@ -74,11 +78,11 @@ Name **five principled UX patterns, not five variations of one approach**. Two p
 
 Then, grounded in `CLAUDE.md`: which pattern fits this context best with three reasons; which is second under a named condition; which is disqualified and why.
 
-**HUMAN GATE — pattern choice.** Present the recommendation. Stop. The user picks.
+**HUMAN GATE — pattern choice.** Present the recommendation. Stop. The user picks. Append their answer to `.design/decisions.md`.
 
 ### 5. Assemble `research/research.md`
 
-Four sections, nothing else:
+Start from `.design/templates/research.md`; keep its sections and column sets — fill them, do not restructure them. Four sections, nothing else:
 
 - **COMPETITORS** — the matrix, plus the three shared patterns and three differences.
 - **BENCHMARK** — criteria, scoring table, the three mechanics for the MVP, the one that will not work.
@@ -97,20 +101,16 @@ Run `.design/checklists/phase-2-discover.md`. Report pass/fail per item. Hard it
 
 ### 8. Living docs, dashboard, commit
 
-- `CLAUDE.md` — append a short **Market** block: chosen interaction pattern, the three MVP mechanics, the top three open questions. Keep it to what later phases need to read on every prompt.
+- `CLAUDE.md` — fill the **Research** block under *Context blocks*: chosen interaction pattern, the three MVP mechanics, the benchmark dimension, the top three open questions. Keep it to what later phases need to read on every prompt.
 - `README.md` — a **Research** section: what lives in `research.md`, `research.html`, `research/screens/`.
-- Regenerate `pipeline.html` from artifact presence plus checklist results; link `research.html`.
+- `pipeline.html` — edit **only** the `<script id="pipeline-data">` JSON block: the phase 2 artifact entries for research, the link to `research.html`, and the `steps` object. Fill the context key this phase owns — `benchmarkDimension` (the dimension confirmed at the benchmark gate); leave the other context keys as they are. Do not touch the markup, CSS or scripts around the block.
 - Commit: `feat: phase 2a — market research, benchmark, patterns`. Push **only** if `toolbox.md` says GitHub hosting is active.
 
 ### 9. Sign-off
 
-Report the chosen pattern, the benchmark verdict, and the open questions phase 2b should carry. Next command: `/dsf:users`.
+Report the chosen pattern, the benchmark verdict, and the open questions phase 2b should carry. Next command: `/dsf:users` — phase 2 is half done.
 
-Then suggest, and run on approval:
-
-```
-git tag phase-2-research
-```
+Do not create a git tag. Phase 2 closes only after `/dsf:users`; then run `/dsf:check`, which verifies the checklist and creates the single phase tag `phase-2-discover`.
 
 ## Recovery prompts
 

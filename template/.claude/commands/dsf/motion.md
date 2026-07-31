@@ -1,8 +1,8 @@
 ---
-description: "Phase 8b — add motion as a system layer: motion tokens, an inventory where every movement does one of three jobs, micro-interactions in components, tone-matched state transitions, transform/opacity budget and reduced-motion."
+description: "Phase 9 — Motion: add motion as a system layer: motion tokens, an inventory where every movement does one of three jobs, micro-interactions in components, tone-matched state transitions, transform/opacity budget and reduced-motion."
 ---
 
-# /dsf:motion — Adapt · motion
+# /dsf:motion — Motion
 
 Motion is a **layer of the system**, not cosmetics on top. The easy way to "bring a product
 to life" is to scatter effects: cards bounce in sequence, icons spin, pages slide
@@ -28,7 +28,7 @@ semantic tokens with no use and patterns with fewer than three screens.
 | Required | Produced by | If missing |
 |---|---|---|
 | `design-system/tokens.css`, `components/` with states (hover, active, focus-visible, disabled) | `/dsf:build` + `/dsf:system` | run those first |
-| Adaptive layer: breakpoint tokens, `split-view` pattern | `/dsf:responsive` | run `/dsf:responsive` first |
+| Adaptive layer: breakpoint tokens, `split-view` pattern (phase 8, signed off) | `/dsf:responsive` | run `/dsf:responsive` first, and close it with `/dsf:check 8` |
 | `voice/voice.md`, `voice/microcopy.md` | `/dsf:voice` | run `/dsf:voice` first |
 | `ia/flows.md`, `wireframes/*.html` with state pages | `/dsf:ia`, `/dsf:wireframes` | run those first |
 | `DESIGN.md`, `design-system/docs/` | `/dsf:build`, `/dsf:system` | run those first |
@@ -38,12 +38,21 @@ have no states, stop: `/dsf:system` comes before this command.
 
 **Read before acting:** `.design/memory/constitution.md` (rule 5 — the fix lives at the
 source; rule 6 — new enters the system first) and `.design/memory/toolbox.md`. Live motion
-review needs a browser: Playwright MCP if installed, the human's own browser otherwise —
-motion is only visible in motion, never in code.
+review needs a browser: Playwright MCP if active, the human's own browser otherwise —
+motion is only visible in motion, never in code. Where `impeccable` is not active, the
+critique and audit passes below run the built-in fallback prompts
+`.design/prompts/critique.md` and `.design/prompts/audit.md`.
+
+Also read `.design/progress/phase-9.md` — this command's own ledger. Before step 1, report
+what you will skip, redo or resume based on it, then proceed only after stating that.
 
 ---
 
 ## Steps
+
+After completing each numbered step and each HUMAN GATE, append the ledger line to
+`.design/progress/phase-9.md` and update the `steps` object in the pipeline-data block
+(current → done).
 
 ### 1 — Motion tokens
 
@@ -67,15 +76,17 @@ without one of them is not added.
 ### 2 — Motion inventory
 
 Read `ia/flows.md` and every `wireframes/*.html` including the state pages. Write
-`animations/motion-inventory.md`: columns `moment (screen, action) · which of the three jobs
-this movement does · which component owns it`.
+`animations/motion-inventory.md` — start from `.design/templates/motion-inventory.md` and
+keep its sections and columns: `moment (screen, action) · which of the three jobs this
+movement does · which component owns it`.
 
 A moment with no named job **does not enter the table** — there will be no motion there.
 
 Animate nothing in this step. Render `animations/motion-inventory.html` from the table.
 
 > **HUMAN GATE — inventory sign-off.** Present the table. The human decides which moments
-> are worth it before any motion is written.
+> are worth it before any motion is written. Append their decision to `.design/decisions.md`
+> (constitution rule 7 — every gate leaves a trace).
 
 ### 3 — Component micro-interactions
 
@@ -131,8 +142,8 @@ screens **in a live browser** and watches the motion run: does every animation d
 the inventory named, do identical moments share a duration, does reduced-motion actually
 take effect.
 
-Also run `/impeccable critique` focused on motion if installed. Subagents return findings,
-not fixes.
+Also run `/impeccable critique` focused on motion (fallback: `.design/prompts/critique.md`).
+Subagents return findings, not fixes.
 
 > **HUMAN GATE — the human watches too.** Motion is only visible in motion. The human opens
 > the screens before prioritizing.
@@ -149,9 +160,10 @@ Merge into ONE table: `component or screen · what is wrong · how to fix`. Hunt
 | Missing reduced-motion | movement that survives the system's "reduce motion" |
 | Tone mismatch | a calm error with a bouncy animation |
 
-Also run `/impeccable audit` if installed.
+Also run `/impeccable audit` (fallback: `.design/prompts/audit.md`).
 
-> **HUMAN GATE — prioritization.** Table only. The human orders it. Then fix.
+> **HUMAN GATE — prioritization.** Table only. The human orders it. Then fix. Append their
+> priorities to `.design/decisions.md`.
 
 Fix at the source: tempo → the `--dur-*` token; micro-interaction behavior → the component.
 Never in a screen — an animation in a wireframe is debt, because the same button will then
@@ -161,7 +173,7 @@ move differently in different places.
 
 ## Phase checklist
 
-Verify against `.design/checklists/phase-8-adapt.md` (or run `/dsf:check`):
+Verify against `.design/checklists/phase-9-motion.md` (or run `/dsf:check 9`):
 
 - [ ] `tokens.css` — three durations, `--ease-*` curves, `--move-*` distances; moderate values
 - [ ] `DESIGN.md` has a "Motion" section with the three jobs and the "no job, no motion" rule
@@ -176,36 +188,63 @@ Verify against `.design/checklists/phase-8-adapt.md` (or run `/dsf:check`):
 
 ## Close the phase
 
-1. `CLAUDE.md` — update the **Adapt** context block: motion token names and roles, the three
+1. `CLAUDE.md` — update the **Motion** context block: motion token names and roles, the three
    jobs rule, where micro-interactions live, the reduced-motion policy.
-2. `README.md` — a "Motion" section: two or three sentences and links to
+2. `README.md` — the **Motion** section: two or three sentences and links to
    `animations/motion-inventory.md` and the `DESIGN.md` motion sections.
-3. Regenerate `pipeline.html` — phase 8 complete, links to the inventory and the docs pages
-   showing live micro-interactions.
+3. Update `pipeline.html` — edit **only** the `<script id="pipeline-data">` JSON block:
+   phase 9 status, its artifact entries, `animations/motion-inventory.html` plus the
+   docs pages showing live micro-interactions as live links, and the `steps` object. Leave
+   the `context` object as it is; this phase fills none of its keys. Do not touch the
+   markup, CSS or scripts around the block.
 4. Commit naming the phase. Push if the toolbox records a remote.
 
-> **HUMAN GATE — phase sign-off.** Checklist passes, the human confirms, then tag
-> `phase-8-motion`.
+> **HUMAN GATE — phase sign-off.** Checklist passes and the human confirms.
+
+Do not create a git tag. Run `/dsf:check 9` to close the phase — it verifies the checklist
+and creates the phase tag `phase-9-motion`. The next command after that is `/dsf:handoff`
+(phase 10).
 
 ---
 
 ## Recovery prompts
 
-- **Confetti.** "Go through every animation in the product and name which of the three jobs
-  it does — connect, status, or answer. Anything with no answer, remove. Give me the list
-  before deleting."
-- **Ignored reduced-motion.** "Add a global `prefers-reduced-motion: reduce` block that
-  drives every duration to near zero and removes travel. Then list the moments where motion
-  still survives the setting."
-- **Layout animation.** "Find every animation and transition touching `width`, `height`,
-  `top`, `left` or `margin` and convert them to `transform`. Same appearance, cheap
-  mechanics. Report which components changed."
-- **Duration drift.** "Group every animation by role (hover, press, appearance, state
-  change) and show the durations used in each group. Any group with more than one value gets
-  collapsed onto the right `--dur-*` token."
-- **Tone mismatch.** "Compare each state transition against the tone in `voice.md` and the
-  text in `microcopy.md`. List the moments where the movement contradicts the words, and fix
-  the movement, not the words."
-- **Motion in a screen.** "Find every duration, transition or keyframe written inside
-  `wireframes/*.html` and move it into the owning component through motion tokens. Screens
-  hold no motion."
+Copy-paste when something went the usual wrong way.
+
+**Confetti.**
+```
+Go through every animation in the product and name which of the three jobs it does — connect,
+status, or answer. Anything with no answer, remove. Give me the list before deleting.
+```
+
+**Ignored reduced-motion.**
+```
+Add a global prefers-reduced-motion: reduce block that drives every duration to near zero and
+removes travel. Then list the moments where motion still survives the setting.
+```
+
+**Layout animation.**
+```
+Find every animation and transition touching width, height, top, left or margin and convert
+them to transform. Same appearance, cheap mechanics. Report which components changed.
+```
+
+**Duration drift.**
+```
+Group every animation by role (hover, press, appearance, state change) and show the durations
+used in each group. Any group with more than one value gets collapsed onto the right --dur-*
+token.
+```
+
+**Tone mismatch.**
+```
+Compare each state transition against the tone in voice/voice.md and the text in
+voice/microcopy.md. List the moments where the movement contradicts the words, and fix the
+movement, not the words.
+```
+
+**Motion in a screen.**
+```
+Find every duration, transition or keyframe written inside wireframes/*.html and move it into
+the owning component through motion tokens. Screens hold no motion.
+```
