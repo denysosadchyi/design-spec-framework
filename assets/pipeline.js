@@ -457,17 +457,30 @@
     });
   }
 
-  function renderRail() {
-    Array.prototype.forEach.call(document.querySelectorAll("[data-rail]"), function (p) {
-      p.hidden = (p.getAttribute("data-rail") !== railKey);
-    });
+  /* The rail is permanent — it never disappears, it swaps its body with the
+     view. Guide: this phase's criteria. Result: this phase's artifacts. The
+     card, and therefore the whole workspace grid, keeps its width either way,
+     so switching a segment never moves the content column. */
+  function railIsResult() {
+    return railKey !== "how" && views[railKey] === "result";
+  }
 
-    /* Permanent check/status chip: /dsf:check N on a phase view, /dsf:status
-       on the "how this works" view. Command text is never translated. */
+  function renderRail() {
+    var onResult = railIsResult();
+
+    Array.prototype.forEach.call(document.querySelectorAll("[data-rail]"), function (p) {
+      p.hidden = onResult || (p.getAttribute("data-rail") !== railKey);
+    });
+    var artPanel = document.querySelector("[data-rail-artifacts]");
+    if (artPanel) artPanel.hidden = !onResult;
+
+    /* Permanent check/status chip: /dsf:check N belongs to the Guide, where the
+       criteria it verifies are; the Result view and the "how this works" page
+       both offer /dsf:status. Command text is never translated. */
     var checkCmd = document.querySelector("[data-rail-check-cmd]");
     var checkCaption = document.querySelector("[data-rail-check-caption]");
     if (checkCmd && checkCaption) {
-      if (railKey === "how") {
+      if (railKey === "how" || onResult) {
         checkCmd.textContent = "/dsf:status";
         checkCaption.textContent = t.railStatusCaption;
       } else {
@@ -479,11 +492,21 @@
     var titleEl = document.querySelector("[data-rail-title]");
     var countEl = document.querySelector("[data-rail-count]");
     var metaEl  = document.querySelector("[data-rail-meta]");
-    if (titleEl) titleEl.textContent = t.critTitle;
-    if (!countEl || !metaEl) return;
+    var iconEl  = document.querySelector("[data-rail-icon]");
 
     var phase = null;
     phases.forEach(function (p) { if (String(num(p)) === railKey) phase = p; });
+
+    if (onResult) {
+      if (titleEl) titleEl.textContent = t.artifactsTitle;
+      if (iconEl) setIcon(iconEl, "file-text");
+      renderRailArtifacts(phase, countEl, metaEl);
+      return;
+    }
+
+    if (titleEl) titleEl.textContent = t.critTitle;
+    if (iconEl) setIcon(iconEl, "list-checks");
+    if (!countEl || !metaEl) return;
 
     metaEl.textContent = "";
     if (!phase) {
@@ -508,9 +531,38 @@
     }
   }
 
+  /* The Result view's rail body: the phase's artifacts, counted in the header
+     the criteria counter otherwise owns, and built by the very same row
+     builder the Guide's Artifacts section uses. A phase that has produced
+     nothing shows one quiet line instead of a list of ten missing files —
+     the card, and the layout around it, stay exactly where they were. */
+  function renderRailArtifacts(phase, countEl, metaEl) {
+    var panel = document.querySelector("[data-rail-artifacts]");
+    if (!panel) return;
+    var list = panel.querySelector("[data-rail-artifact-list]");
+    var empty = panel.querySelector("[data-rail-artifacts-empty]");
+
+    var arts = (phase && phase.artifacts) || [];
+    var have = 0;
+    arts.forEach(function (a) { if (a.exists) have++; });
+
+    if (countEl) countEl.textContent = have + "/" + arts.length;
+    if (metaEl) metaEl.textContent = "";
+
+    if (empty) {
+      empty.textContent = t.artifactsEmpty;
+      empty.hidden = (have > 0);
+    }
+    if (list) {
+      list.hidden = !have;
+      if (have) buildArtifactList(list, phase);
+      else list.innerHTML = "";
+    }
+  }
+
   /* One artifact row per artifact: the tick, the path (a link once the file is
      real), when it appears if it is not there yet, and the label. Used by the
-     Guide's own artifact section and, unchanged, by the Result view's list. */
+     Guide's own artifact section and, unchanged, by the Result view's rail. */
   function buildArtifactList(list, phase) {
     if (!list) return;
     list.innerHTML = "";
@@ -604,7 +656,6 @@
       if (unlock) unlock.hidden = (status !== "locked");
 
       buildArtifactList(document.querySelector('[data-artifacts="' + id + '"]'), phase);
-      buildArtifactList(document.querySelector('[data-result-links="' + id + '"]'), phase);
 
       var close = document.querySelector('[data-close="' + id + '"]');
       if (close) {
@@ -781,13 +832,8 @@
     progress.hidden = true;
     panel.appendChild(progress);
 
-    var links = el("div", "result-links");
-    links.appendChild(el("h3", "", ""));
-    var ul = el("ul", "artifacts");
-    ul.setAttribute("data-result-links", id);
-    links.appendChild(ul);
-    panel.appendChild(links);
-
+    /* No artifact list here on purpose: the rail beside this panel carries it,
+       and the same list twice on one screen is noise, not a result. */
     article.appendChild(panel);
     return panel;
   }
@@ -922,17 +968,11 @@
       progressEl.textContent = parts.join(" · ");
     }
 
-    /* A list of ten files that are all still missing is noise, not a result. */
-    panel.querySelector(".result-links").hidden = !anyArtifact;
-
     if (!anyArtifact && !factRows.length && !toolRows.length && !work.steps && !work.crit) {
       empty.hidden = false;
       empty.className = "result-empty is-center";
       empty.firstChild.textContent = t.resultEmpty;
     }
-
-    panel.querySelector(".result-links h3").textContent = stripTags(dict("s10"));
-    buildArtifactList(panel.querySelector('[data-result-links="' + id + '"]'), phase);
   }
 
   /* How far the phase has actually walked, straight off its own ledgers. */
@@ -991,12 +1031,6 @@
     });
   }
 
-  function stripTags(s) {
-    var d = document.createElement("div");
-    d.innerHTML = String(s || "");
-    return d.textContent;
-  }
-
   /* Fullscreen means "take over the workspace", not the browser's own mode:
      the collapsed rail stays reachable beside the page being reviewed. */
   var fullBox = null;
@@ -1042,9 +1076,12 @@
     var guide = article.querySelector('[data-view="guide"]');
     if (guide) guide.hidden = (view === "result");
 
-    /* the criteria rail is part of the Guide: the Result view is a bare stage */
     if (view === "result") document.body.classList.add("result-open");
     else document.body.classList.remove("result-open");
+
+    /* The rail stays and swaps its body with the view: criteria in the Guide,
+       artifacts in the Result. It is re-rendered after views[id] is settled. */
+    if (String(id) === railKey) renderRail();
 
     var segs = article.querySelector('[data-segs="' + id + '"]');
     if (segs) {

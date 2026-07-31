@@ -93,7 +93,13 @@
   * { box-sizing: border-box; }
   /* Root type step, one point down from the browser default (16px). Every
      size on this page is rem-based, so the whole scale rides along with it. */
-  html { -webkit-text-size-adjust: 100%; font-size: 15px; }
+  /* The scrollbar gutter is always reserved: a short page (an empty Result) and
+     a long one (any Guide) must lay out on the same width, or every switch
+     between the two shifts the whole grid sideways by the scrollbar. */
+  html {
+    -webkit-text-size-adjust: 100%; font-size: 15px;
+    scrollbar-gutter: stable;
+  }
 
   body {
     margin: 0;
@@ -324,7 +330,12 @@
      and the rail, not in the whole pane (see the rail-beside query below). */
   #workspace { position: relative; min-width: 0; }
 
-  main { max-width: 800px; margin: 0 auto; padding: 40px 40px 40px; min-width: 0; }
+  /* width: 100% is load-bearing. In the wide grid the auto margins would
+     otherwise shrink-to-fit the column around whatever is inside it, so a
+     short page (an empty Result) would sit narrower — and therefore further
+     right — than a long one (any Guide). The column is the column: same box
+     in both views, whatever it happens to hold. */
+  main { width: 100%; max-width: 800px; margin: 0 auto; padding: 40px 40px 40px; min-width: 0; }
   .page[hidden] { display: none; }
   .page-head { margin-bottom: 40px; }
 
@@ -621,6 +632,15 @@
   .rail-body { padding: 8px 16px 16px; }
   .rail-panel[hidden], ol.crit[hidden] { display: none; }
 
+  /* Result view of the rail: the same artifact rows the Guide's own Artifacts
+     section renders, one notch tighter to sit inside a 400px card. */
+  [data-rail-artifacts] ul.artifacts { margin-top: 0; border-top: 0; }
+  [data-rail-artifacts] ul.artifacts[hidden] { display: none; }
+  [data-rail-artifacts] ul.artifacts li { padding: 10px 0; }
+  [data-rail-artifacts] ul.artifacts li:last-child { border-bottom: 0; }
+  .rail-artifacts-empty { margin: 12px 0 4px; }
+  .rail-artifacts-empty[hidden] { display: none; }
+
   /* Permanent check/status chip, under the header/counter in every rail view. */
   .rail-check {
     padding: 12px 16px; border-bottom: 1px solid var(--line); background: var(--bg-inset);
@@ -734,13 +754,13 @@
 
   .phase-view[hidden], .result-view[hidden] { display: none; }
 
-  /* The Result view is a stage: the criteria rail belongs to the Guide, and
-     the content column takes the width the rail gives back. */
-  body.result-open #rail { display: none; }
+  /* The Result view is a stage, but the stage keeps its frame: the rail stays
+     put and swaps its body (criteria in the Guide, artifacts in the Result),
+     and main keeps exactly the same 800px column. Nothing about the workspace
+     grid changes between the two views, so switching never shifts the page. */
   /* Result is the artifact stage: guide copy and page meta stay out of it. */
   body.result-open .page-head .lede { display: none; }
   body.result-open .rule, body.result-open .colophon { display: none; }
-  body.result-open main { max-width: 1120px; }
 
   .result-empty, .result-facts {
     border: 1px solid var(--line); border-radius: var(--radius-lg);
@@ -750,7 +770,7 @@
      hidden case: an empty Result must be empty, not a row of blank chrome. */
   .result-empty[hidden], .result-facts[hidden],
   .result-tabs[hidden], .result-frame-box[hidden],
-  .result-tools[hidden], .result-links[hidden],
+  .result-tools[hidden],
   .result-progress[hidden] { display: none; }
   .result-empty p { max-width: var(--measure); color: var(--text-dim); margin: 0; }
 
@@ -858,9 +878,6 @@
     border-left: 1px solid var(--line);
   }
   body.frame-full .result-frame-box.is-full iframe { height: auto; flex: 1 1 auto; }
-
-  .result-links { margin-top: 32px; }
-  .result-links h3 { margin-top: 0; }
 
   /* ------------------------------------------------- the collapsed rail */
 

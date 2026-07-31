@@ -42,6 +42,9 @@ var RT = {
     critFailed:  function (n) { return n + " failed"; },
     critAll:     "eleven phases, one checklist each",
     critState:   { pass: "verified", fail: "failed", todo: "not resolved yet" },
+    /* the same rail, the Result view's body */
+    artifactsTitle: "Artifacts",
+    artifactsEmpty: "Artifacts will appear here as the phase runs.",
     stepState:   { done: "done", current: "in progress", todo: "not started" },
     railCheckCaption:  "Verifies this phase's criteria and closes them.",
     railStatusCaption: "Shows where you are and what to type next.",
@@ -89,6 +92,8 @@ var RT = {
     critFailed:  function (n) { return n + (n % 10 === 1 && n % 100 !== 11 ? " не пройшов" : " не пройшли"); },
     critAll:     "одинадцять фаз, у кожної свій чекліст",
     critState:   { pass: "перевірено", fail: "не пройшов", todo: "ще не вирішено" },
+    artifactsTitle: "Артефакти",
+    artifactsEmpty: "Артефакти з’являтимуться тут у міру виконання фази.",
     stepState:   { done: "виконано", current: "у процесі", todo: "ще не почато" },
     railCheckCaption:  "Перевіряє критерії цієї фази і закриває їх.",
     railStatusCaption: "Показує, де ти є і що вводити далі.",

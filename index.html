@@ -66,6 +66,7 @@
   <symbol id="i-circle-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /><path d="m9 12 2 2 4-4" /></symbol>
   <symbol id="i-circle-dashed" viewBox="0 0 24 24"><path d="M10.1 2.182a10 10 0 0 1 3.8 0" /><path d="M13.9 21.818a10 10 0 0 1-3.8 0" /><path d="M17.609 3.721a10 10 0 0 1 2.69 2.7" /><path d="M2.182 13.9a10 10 0 0 1 0-3.8" /><path d="M20.279 17.609a10 10 0 0 1-2.7 2.69" /><path d="M21.818 10.1a10 10 0 0 1 0 3.8" /><path d="M3.721 6.391a10 10 0 0 1 2.7-2.69" /><path d="M6.391 20.279a10 10 0 0 1-2.69-2.7" /></symbol>
   <symbol id="i-arrow-up-right" viewBox="0 0 24 24"><path d="M7 7h10v10" /><path d="M7 17 17 7" /></symbol>
+  <symbol id="i-file-text" viewBox="0 0 24 24"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z" /><path d="M14 2v4a2 2 0 0 0 2 2h4" /><path d="M10 9H8" /><path d="M16 13H8" /><path d="M16 17H8" /></symbol>
   <symbol id="i-list-checks" viewBox="0 0 24 24"><path d="M13 5h8" /><path d="M13 12h8" /><path d="M13 19h8" /><path d="m3 17 2 2 4-4" /><path d="m3 7 2 2 4-4" /></symbol>
   <symbol id="i-tag" viewBox="0 0 24 24"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z" /><circle cx="7.5" cy="7.5" r=".5" fill="currentColor" /></symbol>
 </svg>
@@ -2757,12 +2758,18 @@
      the markup: item N is the Nth `- [ ]` line of that phase's checklist in
      .design/checklists/. Only the tick state travels in the JSON data block
      (phases[].criteria). Never author a criterion here or there.
+
+     The rail is permanent: it never disappears, it swaps its body. The Guide
+     shows the criteria list for the phase in view; the Result shows the same
+     phase's artifacts (the [data-rail-artifacts] panel, filled by the same
+     builder the Guide's own artifact section uses). One card, one width, so
+     the content column never moves between the two views.
 -->
 <aside id="rail" aria-labelledby="rail-title-text">
   <div class="rail-card">
     <div class="rail-head">
       <div class="rail-title">
-        <span class="rail-label"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-list-checks"/></svg><span id="rail-title-text" data-rail-title>Success criteria</span></span>
+        <span class="rail-label"><svg class="i" aria-hidden="true" focusable="false" data-rail-icon><use href="#i-list-checks"/></svg><span id="rail-title-text" data-rail-title>Success criteria</span></span>
         <b class="rail-count" data-rail-count>0/0</b>
       </div>
       <div class="rail-meta" data-rail-meta></div>
@@ -2775,6 +2782,13 @@
       <p class="rail-check-caption" data-rail-check-caption></p>
     </div>
     <div class="rail-body">
+      <!-- Result view: the phase's artifacts, built by buildArtifactList().
+           Both lines are re-labelled from RT on every render and every locale
+           switch, so the English here is only the no-JavaScript fallback. -->
+      <div class="rail-panel" data-rail-artifacts hidden>
+        <ul class="artifacts" data-rail-artifact-list></ul>
+        <p class="rail-note rail-artifacts-empty" data-rail-artifacts-empty hidden>Artifacts will appear here as the phase runs.</p>
+      </div>
       <div class="rail-panel" data-rail="how">
         <p class="rail-note" data-i18n="cr.1">Every phase is closed against a written list of criteria, not an
         opinion. <code class="cmd">/dsf:check</code> verifies them one by one against the files and
