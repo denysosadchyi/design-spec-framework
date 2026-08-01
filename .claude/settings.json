@@ -3,6 +3,8 @@
   "permissions": {
     "allow": [
       "Read",
+      "Write",
+      "Edit",
       "Glob",
       "Grep",
       "WebFetch",
@@ -25,6 +27,7 @@
       "Bash(grep:*)",
       "Bash(mkdir:*)",
       "Bash(touch:*)",
+      "Bash(mv:*)",
       "Bash(python3 -m http.server:*)"
     ],
     "deny": [

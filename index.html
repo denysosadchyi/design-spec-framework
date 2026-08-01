@@ -143,16 +143,18 @@
   <header class="page-head">
     <div class="eyebrow" data-i18n="how.1">Start here</div>
     <h1 data-i18n="how.2">How this works</h1>
-    <p class="lede" data-i18n="how.3">You are about to design a product without opening a single design tool. This
-    page is the map. Read it once. It takes five minutes. Then use the left menu to walk the
-    phases in order.</p>
+    <p class="lede" data-i18n="how.3">This page is the state view of the pipeline: eleven phases, each one closed by a
+    verified checklist and a single git tag. Read it once. It takes five minutes. Then use the
+    left menu to walk the phases in order.</p>
   </header>
 
   <section class="block">
     <h2 data-i18n="how.4">This folder is the design file</h2>
-    <p data-i18n="how.5">There is no Figma file to keep in sync, no separate document holding the "real" decisions.
-    The research, the screens, the words on the buttons, the colours, the design system, the
-    handoff: all of it lives here as files, and this page is the front door to them.</p>
+    <p data-i18n="how.5">This repo is the source of truth: no second document holding the "real" decisions. The
+    research, the screens, the words on the buttons, the colours, the design system, the
+    handoff: all of it lives here as files, and this page is the front door to them. Figma is
+    not required, and not forbidden — if your team lives in Figma, the finished system can be
+    exported there through the Figma MCP at handoff.</p>
     <p data-i18n="how.6">The screens are built once and then <strong>layered</strong>. The plain grey page you will
     see in phase 4 is literally the same file that gets real copy in phase 5, colour and components
     in phase 6, wide-screen behaviour in phase 8 and motion in phase 9. Nothing is ever redrawn from
@@ -162,14 +164,16 @@
 
   <section class="block">
     <h2 data-i18n="how.7">Claude Code, and how you talk to it</h2>
-    <p data-i18n="how.8">Claude Code is an assistant that can read and write the files in this folder. You talk to it
-    by typing in a chat window, the same way you would message a colleague. <strong>You never open
-    a terminal, never install anything, never run anything yourself.</strong> If something needs to
-    be created, moved, published or screenshotted, you ask and it does it.</p>
-    <p data-i18n="how.9">A <strong>command</strong> here is simply a phrase you type into that chat. It starts with a
-    slash and looks like <code class="cmd">/dsf:brief</code>. That is not a terminal command and
-    there is nothing to memorise: every phase page below gives you the exact text to paste. After
-    you send it, the assistant starts asking you questions; answer them in plain language.</p>
+    <p data-i18n="how.8">Claude Code is an assistant that reads and writes the files in this folder. You talk to it by
+    typing in a chat window. <strong>Everything the pipeline runs — files, git, screenshots,
+    deploys — the assistant runs itself.</strong> That is a rule of the framework, not a
+    limitation: every step lands in the repo and in the phase's step ledger instead of in
+    somebody's shell history.</p>
+    <p data-i18n="how.9">A <strong>command</strong> here is a phrase you type into that chat. It starts with a slash and
+    looks like <code class="cmd">/dsf:brief</code> — a Claude Code slash command, which expands
+    into a full instruction file the assistant then follows. Every phase page below gives you the
+    exact text to paste. After you send it, the assistant starts asking you questions; answer them
+    in plain language.</p>
     <p data-i18n="how.10">Two you can use at any time: <code class="cmd">/dsf:status</code> tells you where you are,
     and <code class="cmd">/dsf:critique</code> followed by whatever you want reviewed (a screen, a
     folder, the whole product) runs a proper review pass on it.</p>
@@ -260,7 +264,9 @@
     open a new chat, and ask where you are: it reads the folder and tells you which phase you are in,
     what is finished, and the exact next thing to type. When you think a phase is done,
     <code class="cmd">/dsf:check</code> verifies it against the phase's written criteria and reports
-    pass or fail per item, with the file that proves each one.</p>
+    pass or fail per item, with the file that proves each one — many of those criteria carry an
+    executable assertion, so they are run, not judged. On a full pass, and only after you confirm,
+    it creates the phase's single git tag. Nothing else in the pipeline may tag.</p>
     <div class="prompt" data-prompt>
       <div class="prompt-head"><span class="plabel" data-i18n="s1">paste into the chat</span><button class="copy" type="button">Copy</button></div>
       <pre class="prompt-body">
@@ -286,8 +292,10 @@
     explains itself: it just starts by telling you what has to exist before you can begin. Every
     phase page lists its <strong>artifacts</strong>: the files that phase produces. Once a file is
     real it turns into a live link, so this page slowly becomes the index of the whole project.</p>
-    <p data-i18n="how.47">The page updates itself. Every command regenerates it at the end of its run, so what you see
-    here is the state of the folder, not somebody's notes about it.</p>
+    <p data-i18n="how.47">The page updates itself. Every command regenerates it at the end of its run, and status is
+    derived — from the artifacts on disk, the <code class="cmd">/dsf:check</code> verdicts and the
+    git tags — never declared. There is no state file to hand-edit, so what you see here is the
+    state of the folder, not somebody's notes about it.</p>
   </section>
 </article>
 
@@ -2890,22 +2898,24 @@
         <li data-crit="6"><i class="cm">6</i><span data-i18n="c4.6">Each screen has a base page plus one page per state from _screens.md</span></li>
         <li data-crit="7"><i class="cm">7</i><span data-i18n="c4.7">Markup is semantic, not a stack of divs</span></li>
         <li data-crit="8"><i class="cm">8</i><span data-i18n="c4.8">Copy is real product copy: no lorem ipsum, no placeholder brackets</span></li>
-        <li data-crit="9"><i class="cm">9</i><span data-i18n="c4.9">Grey only: no colour, no custom fonts, no icons, no shadows</span></li>
-        <li data-crit="10"><i class="cm">10</i><span data-i18n="c4.10">wireframes/index.html is the navigator: every screen and state as a real link</span></li>
-        <li data-crit="11"><i class="cm">11</i><span data-i18n="c4.11">A tree navigator panel is identical on every page, current node marked</span></li>
-        <li data-crit="12"><i class="cm">12</i><span data-i18n="c4.12">The navigator matches _screens.md and ia/sitemap.md</span></li>
-        <li data-crit="13"><i class="cm">13</i><span data-i18n="c4.13">Screens are linked along the main flow with real links</span></li>
-        <li data-crit="14"><i class="cm">14</i><span data-i18n="c4.14">State transitions are linked too: loading to success, error to retry, empty to filled</span></li>
-        <li data-crit="15"><i class="cm">15</i><span data-i18n="c4.15">Forks are navigable in both directions</span></li>
-        <li data-crit="16"><i class="cm">16</i><span data-i18n="c4.16">The empty and error pages each have a visible way out</span></li>
-        <li data-crit="17"><i class="cm">17</i><span data-i18n="c4.17">No dead ends anywhere in the set</span></li>
-        <li data-crit="18"><i class="cm">18</i><span data-i18n="c4.18">_critique.md records a defect table: screen, what is wrong, how to fix</span></li>
-        <li data-crit="19"><i class="cm">19</i><span data-i18n="c4.19">Dead ends and missing states were fixed first, and the fixes are in the files</span></li>
-        <li data-crit="20"><i class="cm">20</i><span data-i18n="c4.20">The set is consistent after fan-out: subagent output matches the sample</span></li>
-        <li data-crit="21"><i class="cm">21</i><span data-i18n="c4.21">CLAUDE.md Wireframes block records location, naming and the state-page rule</span></li>
-        <li data-crit="22"><i class="cm">22</i><span data-i18n="c4.22">README.md Wireframes section links into wireframes/</span></li>
-        <li data-crit="23"><i class="cm">23</i><span data-i18n="c4.23">index.html regenerated: phase 4 artifacts present, the navigator linked</span></li>
-        <li data-crit="24"><i class="cm">24</i><span data-i18n="c4.24">Phase committed, pushed if hosting is active</span></li>
+        <li data-crit="9"><i class="cm">9</i><span data-i18n="c4.9">wireframes.css exists as the one shared grey stylesheet, and every page links it</span></li>
+        <li data-crit="10"><i class="cm">10</i><span data-i18n="c4.10">Grey only: no colour, no custom fonts, no icons, no shadows</span></li>
+        <li data-crit="11"><i class="cm">11</i><span data-i18n="c4.11">wireframes.css is a neutral grey scale: every hex has equal R, G and B</span></li>
+        <li data-crit="12"><i class="cm">12</i><span data-i18n="c4.12">wireframes/index.html is the navigator: every screen and state as a real link</span></li>
+        <li data-crit="13"><i class="cm">13</i><span data-i18n="c4.13">A tree navigator panel is identical on every page, current node marked</span></li>
+        <li data-crit="14"><i class="cm">14</i><span data-i18n="c4.14">The navigator matches _screens.md and ia/sitemap.md</span></li>
+        <li data-crit="15"><i class="cm">15</i><span data-i18n="c4.15">Screens are linked along the main flow with real links</span></li>
+        <li data-crit="16"><i class="cm">16</i><span data-i18n="c4.16">State transitions are linked too: loading to success, error to retry, empty to filled</span></li>
+        <li data-crit="17"><i class="cm">17</i><span data-i18n="c4.17">Forks are navigable in both directions</span></li>
+        <li data-crit="18"><i class="cm">18</i><span data-i18n="c4.18">The empty and error pages each have a visible way out</span></li>
+        <li data-crit="19"><i class="cm">19</i><span data-i18n="c4.19">No dead ends anywhere in the set</span></li>
+        <li data-crit="20"><i class="cm">20</i><span data-i18n="c4.20">_critique.md records a defect table: screen, what is wrong, how to fix</span></li>
+        <li data-crit="21"><i class="cm">21</i><span data-i18n="c4.21">Dead ends and missing states were fixed first, and the fixes are in the files</span></li>
+        <li data-crit="22"><i class="cm">22</i><span data-i18n="c4.22">The set is consistent after fan-out: subagent output matches the sample</span></li>
+        <li data-crit="23"><i class="cm">23</i><span data-i18n="c4.23">CLAUDE.md Wireframes block records location, naming and the state-page rule</span></li>
+        <li data-crit="24"><i class="cm">24</i><span data-i18n="c4.24">README.md Wireframes section links into wireframes/</span></li>
+        <li data-crit="25"><i class="cm">25</i><span data-i18n="c4.25">index.html regenerated: phase 4 artifacts present, the navigator linked</span></li>
+        <li data-crit="26"><i class="cm">26</i><span data-i18n="c4.26">Phase committed, pushed if hosting is active</span></li>
       </ol>
       <ol class="crit" data-rail="5" hidden>
         <li data-crit="1"><i class="cm">1</i><span data-i18n="c5.1">microcopy.md starts as a full inventory: screen, zone, string, string type</span></li>
@@ -2960,46 +2970,47 @@
         <li data-crit="3"><i class="cm">3</i><span data-i18n="c6.3">Any decision contradicting the recorded taste is called out and decided</span></li>
         <li data-crit="4"><i class="cm">4</i><span data-i18n="c6.4">DESIGN.md has a Sources section</span></li>
         <li data-crit="5"><i class="cm">5</i><span data-i18n="c6.5">A pre-existing unrelated DESIGN.md was renamed out of the way, not overwritten</span></li>
-        <li data-crit="6"><i class="cm">6</i><span data-i18n="c6.6">inventory.md is read out of all the wireframes, state pages included</span></li>
-        <li data-crit="7"><i class="cm">7</i><span data-i18n="c6.7">Each entry records component, screens, states, whether it needs imagery</span></li>
-        <li data-crit="8"><i class="cm">8</i><span data-i18n="c6.8">Only blocks on two or more screens are in the table, one-offs listed apart</span></li>
-        <li data-crit="9"><i class="cm">9</i><span data-i18n="c6.9">Entries are grouped by role</span></li>
-        <li data-crit="10"><i class="cm">10</i><span data-i18n="c6.10">No textbook component appears without screen addresses</span></li>
-        <li data-crit="11"><i class="cm">11</i><span data-i18n="c6.11">tokens.css has exactly two levels: primitive and semantic</span></li>
-        <li data-crit="12"><i class="cm">12</i><span data-i18n="c6.12">Primitive holds every value used, with drift consolidated and marked in a comment</span></li>
-        <li data-crit="13"><i class="cm">13</i><span data-i18n="c6.13">Every semantic token resolves to a primitive and names the usages it grew from</span></li>
-        <li data-crit="14"><i class="cm">14</i><span data-i18n="c6.14">A colour used in one file and one class is not a semantic token</span></li>
-        <li data-crit="15"><i class="cm">15</i><span data-i18n="c6.15">Geometry has no semantic level: components read primitives directly</span></li>
-        <li data-crit="16"><i class="cm">16</i><span data-i18n="c6.16">No value in tokens.css was invented here, everything traces to the screens</span></li>
-        <li data-crit="17"><i class="cm">17</i><span data-i18n="c6.17">components/ has one file per component from the inventory</span></li>
-        <li data-crit="18"><i class="cm">18</i><span data-i18n="c6.18">No hex, raw pixel value or font stack inside a component class</span></li>
-        <li data-crit="19"><i class="cm">19</i><span data-i18n="c6.19">No component reads a primitive colour directly</span></li>
-        <li data-crit="20"><i class="cm">20</i><span data-i18n="c6.20">shell.html holds the shared chrome used by every screen</span></li>
-        <li data-crit="21"><i class="cm">21</i><span data-i18n="c6.21">kit.html showcases every component in every state, with real strings</span></li>
-        <li data-crit="22"><i class="cm">22</i><span data-i18n="c6.22">The kit reproduces the phase 5 language exactly</span></li>
-        <li data-crit="23"><i class="cm">23</i><span data-i18n="c6.23">The human reviewed the showcase before rollout</span></li>
-        <li data-crit="24"><i class="cm">24</i><span data-i18n="c6.24">visuals/ holds imagery in one colourway matched to the palette</span></li>
-        <li data-crit="25"><i class="cm">25</i><span data-i18n="c6.25">visuals/README.md records the generation prompt</span></li>
-        <li data-crit="26"><i class="cm">26</i><span data-i18n="c6.26">Stock placeholders are gone, every image is on theme</span></li>
-        <li data-crit="27"><i class="cm">27</i><span data-i18n="c6.27">The two styled screens moved onto the kit and look pixel-identical</span></li>
-        <li data-crit="28"><i class="cm">28</i><span data-i18n="c6.28">Every screen and state page is updated in place and loads the stylesheets</span></li>
-        <li data-crit="29"><i class="cm">29</i><span data-i18n="c6.29">No screen has its own style block or inline styling</span></li>
-        <li data-crit="30"><i class="cm">30</i><span data-i18n="c6.30">Every block on every screen comes from a kit class</span></li>
-        <li data-crit="31"><i class="cm">31</i><span data-i18n="c6.31">Structure and copy are unchanged from phases 4 and 5</span></li>
-        <li data-crit="32"><i class="cm">32</i><span data-i18n="c6.32">Rollout was grouped by role, the first group reviewed in a browser</span></li>
-        <li data-crit="33"><i class="cm">33</i><span data-i18n="c6.33">Missing details were added to the kit before being used on a screen</span></li>
-        <li data-crit="34"><i class="cm">34</i><span data-i18n="c6.34">Dark theme overrides semantic tokens only, no component file was touched</span></li>
-        <li data-crit="35"><i class="cm">35</i><span data-i18n="c6.35">Any component that needed touching was routed through a semantic token</span></li>
-        <li data-crit="36"><i class="cm">36</i><span data-i18n="c6.36">A theme toggle sits in the navigator panel, so it works from any screen</span></li>
-        <li data-crit="37"><i class="cm">37</i><span data-i18n="c6.37">Contrast for every semantic pair meets AA in both themes, noted in tokens.css</span></li>
-        <li data-crit="38"><i class="cm">38</i><span data-i18n="c6.38">Whether dark theme ships is recorded as a separate product decision</span></li>
-        <li data-crit="39"><i class="cm">39</i><span data-i18n="c6.39">A defect table was run and cleared</span></li>
-        <li data-crit="40"><i class="cm">40</i><span data-i18n="c6.40">The findings pass produced the table first, fixes came after prioritising</span></li>
-        <li data-crit="41"><i class="cm">41</i><span data-i18n="c6.41">CLAUDE.md Build block records tokens, components, shell, showcase, colourway</span></li>
-        <li data-crit="42"><i class="cm">42</i><span data-i18n="c6.42">CLAUDE.md keep-it destination now points at the token or the component</span></li>
-        <li data-crit="43"><i class="cm">43</i><span data-i18n="c6.43">README.md UI section links to ui/kit.html</span></li>
-        <li data-crit="44"><i class="cm">44</i><span data-i18n="c6.44">index.html regenerated: phase 6 artifacts present</span></li>
-        <li data-crit="45"><i class="cm">45</i><span data-i18n="c6.45">Phase committed, pushed if hosting is active</span></li>
+        <li data-crit="6"><i class="cm">6</i><span data-i18n="c6.6">DESIGN.md conforms to the open DESIGN.md spec: front matter plus required sections, in order</span></li>
+        <li data-crit="7"><i class="cm">7</i><span data-i18n="c6.7">inventory.md is read out of all the wireframes, state pages included</span></li>
+        <li data-crit="8"><i class="cm">8</i><span data-i18n="c6.8">Each entry records component, screens, states, whether it needs imagery</span></li>
+        <li data-crit="9"><i class="cm">9</i><span data-i18n="c6.9">Only blocks on two or more screens are in the table, one-offs listed apart</span></li>
+        <li data-crit="10"><i class="cm">10</i><span data-i18n="c6.10">Entries are grouped by role</span></li>
+        <li data-crit="11"><i class="cm">11</i><span data-i18n="c6.11">No textbook component appears without screen addresses</span></li>
+        <li data-crit="12"><i class="cm">12</i><span data-i18n="c6.12">tokens.css has exactly two levels: primitive and semantic</span></li>
+        <li data-crit="13"><i class="cm">13</i><span data-i18n="c6.13">Primitive holds every value used, with drift consolidated and marked in a comment</span></li>
+        <li data-crit="14"><i class="cm">14</i><span data-i18n="c6.14">Every semantic token resolves to a primitive and names the usages it grew from</span></li>
+        <li data-crit="15"><i class="cm">15</i><span data-i18n="c6.15">A colour used in one file and one class is not a semantic token</span></li>
+        <li data-crit="16"><i class="cm">16</i><span data-i18n="c6.16">Geometry has no semantic level: components read primitives directly</span></li>
+        <li data-crit="17"><i class="cm">17</i><span data-i18n="c6.17">No value in tokens.css was invented here, everything traces to the screens</span></li>
+        <li data-crit="18"><i class="cm">18</i><span data-i18n="c6.18">components/ has one file per component from the inventory</span></li>
+        <li data-crit="19"><i class="cm">19</i><span data-i18n="c6.19">No hex, raw pixel value or font stack inside a component class</span></li>
+        <li data-crit="20"><i class="cm">20</i><span data-i18n="c6.20">No component reads a primitive colour directly</span></li>
+        <li data-crit="21"><i class="cm">21</i><span data-i18n="c6.21">shell.html holds the shared chrome used by every screen</span></li>
+        <li data-crit="22"><i class="cm">22</i><span data-i18n="c6.22">kit.html showcases every component in every state, with real strings</span></li>
+        <li data-crit="23"><i class="cm">23</i><span data-i18n="c6.23">The kit reproduces the phase 5 language exactly</span></li>
+        <li data-crit="24"><i class="cm">24</i><span data-i18n="c6.24">The human reviewed the showcase before rollout</span></li>
+        <li data-crit="25"><i class="cm">25</i><span data-i18n="c6.25">visuals/ holds imagery in one colourway matched to the palette</span></li>
+        <li data-crit="26"><i class="cm">26</i><span data-i18n="c6.26">visuals/README.md records the generation prompt</span></li>
+        <li data-crit="27"><i class="cm">27</i><span data-i18n="c6.27">Stock placeholders are gone, every image is on theme</span></li>
+        <li data-crit="28"><i class="cm">28</i><span data-i18n="c6.28">The two styled screens moved onto the kit and look pixel-identical</span></li>
+        <li data-crit="29"><i class="cm">29</i><span data-i18n="c6.29">Every screen and state page is updated in place and loads the stylesheets</span></li>
+        <li data-crit="30"><i class="cm">30</i><span data-i18n="c6.30">No screen has its own style block or inline styling</span></li>
+        <li data-crit="31"><i class="cm">31</i><span data-i18n="c6.31">Every block on every screen comes from a kit class</span></li>
+        <li data-crit="32"><i class="cm">32</i><span data-i18n="c6.32">Structure and copy are unchanged from phases 4 and 5</span></li>
+        <li data-crit="33"><i class="cm">33</i><span data-i18n="c6.33">Rollout was grouped by role, the first group reviewed in a browser</span></li>
+        <li data-crit="34"><i class="cm">34</i><span data-i18n="c6.34">Missing details were added to the kit before being used on a screen</span></li>
+        <li data-crit="35"><i class="cm">35</i><span data-i18n="c6.35">Dark theme overrides semantic tokens only, no component file was touched</span></li>
+        <li data-crit="36"><i class="cm">36</i><span data-i18n="c6.36">Any component that needed touching was routed through a semantic token</span></li>
+        <li data-crit="37"><i class="cm">37</i><span data-i18n="c6.37">A theme toggle sits in the navigator panel, so it works from any screen</span></li>
+        <li data-crit="38"><i class="cm">38</i><span data-i18n="c6.38">Contrast for every semantic pair meets AA in both themes, noted in tokens.css</span></li>
+        <li data-crit="39"><i class="cm">39</i><span data-i18n="c6.39">Whether dark theme ships is recorded as a separate product decision</span></li>
+        <li data-crit="40"><i class="cm">40</i><span data-i18n="c6.40">A defect table was run and cleared</span></li>
+        <li data-crit="41"><i class="cm">41</i><span data-i18n="c6.41">The findings pass produced the table first, fixes came after prioritising</span></li>
+        <li data-crit="42"><i class="cm">42</i><span data-i18n="c6.42">CLAUDE.md Build block records tokens, components, shell, showcase, colourway</span></li>
+        <li data-crit="43"><i class="cm">43</i><span data-i18n="c6.43">CLAUDE.md keep-it destination now points at the token or the component</span></li>
+        <li data-crit="44"><i class="cm">44</i><span data-i18n="c6.44">README.md UI section links to ui/kit.html</span></li>
+        <li data-crit="45"><i class="cm">45</i><span data-i18n="c6.45">index.html regenerated: phase 6 artifacts present</span></li>
+        <li data-crit="46"><i class="cm">46</i><span data-i18n="c6.46">Phase committed, pushed if hosting is active</span></li>
       </ol>
       <ol class="crit" data-rail="7" hidden>
         <li data-crit="1"><i class="cm">1</i><span data-i18n="c7.1">design-system/ holds tokens, components, patterns, docs, examples and one index.css</span></li>
@@ -3215,7 +3226,7 @@
       "commands": ["/dsf:wireframes"],
       "tag": "phase-4-wireframes",
       "tagged": false,
-      "criteria": { "total": 24, "passed": [], "failed": [], "checkedAt": "" },
+      "criteria": { "total": 26, "passed": [], "failed": [], "checkedAt": "" },
       "steps": { "total": 10, "done": [], "current": "" },
       "artifacts": [
         { "path": "wireframes/_screens.md", "label": "Which states are real for which screen", "exists": false, "link": false },
@@ -3252,7 +3263,7 @@
       "commands": ["/dsf:build"],
       "tag": "phase-6-build",
       "tagged": false,
-      "criteria": { "total": 45, "passed": [], "failed": [], "checkedAt": "" },
+      "criteria": { "total": 46, "passed": [], "failed": [], "checkedAt": "" },
       "steps": { "total": 9, "done": [], "current": "" },
       "artifacts": [
         { "path": "DESIGN.md", "label": "The visual language, documented from the screens", "exists": false, "link": false },

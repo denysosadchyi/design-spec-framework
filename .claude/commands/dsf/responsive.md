@@ -78,6 +78,17 @@ Two points, not five. Never a device width (375 / 768 / 1440) — a breakpoint i
 decision, and tomorrow's device with a different width breaks a layout tuned to a hardware
 catalogue.
 
+**The literal in the media query is deliberate, not a defect.** CSS custom properties do not
+work inside `@media` conditions — `@media (min-width: var(--bp-desktop))` is invalid and
+silently does nothing; `@custom-media` is still a draft and ships in no browser. So the tokens
+`--bp-tablet` and `--bp-desktop` in `tokens.css` stay the **single source of truth**, and every
+media query repeats that value as a literal, **by design**. The rule is: every literal equals
+its token, exactly — the phase checklist asserts precisely that, by collecting the widths used
+across all media queries and expecting **exactly two distinct `rem` values**, matching the two
+tokens. Add a comment next to each token naming it as the source the literals copy. This is a
+documented duplication with a mechanical check behind it — do not report it as the phase 6
+"values bypassing variables" defect, and do not try to "fix" it by dropping the tokens.
+
 Update `DESIGN.md`: a short section explaining why these two points, citing the rows of
 `width-audit.md` that justify each. Invent no behavior that the audit did not name.
 
@@ -182,19 +193,13 @@ a wireframe is the signal that adaptation crawled the wrong way.
 
 ## Phase checklist
 
-Verify against `.design/checklists/phase-8-responsive.md` (or run `/dsf:check 8`):
+The canonical done-criteria live in `.design/checklists/phase-8-responsive.md` — run
+`/dsf:check 8`. Nothing here overrides that file; the three below are an **excerpt**, the
+signature items this phase fails on most often:
 
-- [ ] `responsive/width-audit.md` — every screen has one of three verdicts; new behavior named concretely
-- [ ] `--bp-tablet` / `--bp-desktop` in `tokens.css`, in `rem`, placed on behavior change, exactly two
-- [ ] Doubling the root font size moves the breakpoints; the observed widths are recorded in `DESIGN.md`
-- [ ] `DESIGN.md` justifies both points with references to the audit rows
-- [ ] `ui/shell.html` — tab bar becomes sidebar at desktop; one file; same items and states in both themes
-- [ ] Card, feed, list header adapt through grid tokens; **zero media queries in `wireframes/*.html`**
-- [ ] `docs/` shows adaptive components at three widths
-- [ ] `split-view` lives in `design-system/patterns/`, assembled from components, driven by the breakpoint
-- [ ] No horizontal scroll at any width; `--container-max` keeps line length readable
-- [ ] No action lost on desktop; empty / loading / error present at all widths, incl. "nothing selected"
-- [ ] `responsive/width-audit.html` renders and is linked from `index.html`
+- `--bp-tablet` / `--bp-desktop` in `tokens.css`, in `rem`, on behavior change, exactly two — and doubling the root font size moves them
+- **Zero media queries in `wireframes/*.html`** — adaptation lives in components, the shell and `design-system/patterns/split-view`
+- No horizontal scroll and no action lost at any width; every state present at all three, including "nothing selected"
 
 ## Close the phase
 

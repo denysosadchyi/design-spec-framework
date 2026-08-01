@@ -74,9 +74,9 @@ Also build `docs/why.html` — "why the system looks like this": the visual lang
 
 Components currently have a base look only. Give each of them four states: **hover, active, focus-visible, disabled**.
 
-- States go through **new semantic tokens** in `design-system/tokens.css` — `--bg-hover`, `--color-focus`, `--opacity-disabled` and whatever the components actually need.
+- States go through **new semantic tokens** in `design-system/tokens.css` — `--bg-hover`, `--focus`, `--opacity-disabled` and whatever the components actually need.
 - **Every state token gets a value in both themes at the same time**: in the light block and in `[data-theme="dark"]`. **A token with a value in only one theme is a defect** — in the other theme the focus ring goes invisible and the product cannot be used without a mouse.
-- `:focus-visible` shows a visible ring on keyboard navigation, `--color-focus` contrasting against its background at **WCAG AA in both themes**.
+- `:focus-visible` shows a visible ring on keyboard navigation, `--focus` contrasting against its background at **WCAG AA in both themes**.
 - `hover` and `active` change background, color or border only — they never move the element or change its size.
 - `disabled` mutes through `--opacity-disabled` and drops the pointer cursor; it is never hand-repainted.
 
@@ -185,7 +185,7 @@ to the component's docs page in both themes.
 ```
 
 ```
-I cannot see keyboard focus on <component>. Route it through --color-focus with :focus-visible,
+I cannot see keyboard focus on <component>. Route it through --focus with :focus-visible,
 check AA contrast against its background in both themes, and show the focus state on its docs page.
 ```
 

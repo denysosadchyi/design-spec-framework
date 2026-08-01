@@ -173,18 +173,13 @@ move differently in different places.
 
 ## Phase checklist
 
-Verify against `.design/checklists/phase-9-motion.md` (or run `/dsf:check 9`):
+The canonical done-criteria live in `.design/checklists/phase-9-motion.md` — run
+`/dsf:check 9`. Nothing here overrides that file; the three below are an **excerpt**, the
+signature items this phase fails on most often:
 
-- [ ] `tokens.css` — three durations, `--ease-*` curves, `--move-*` distances; moderate values
-- [ ] `DESIGN.md` has a "Motion" section with the three jobs and the "no job, no motion" rule
-- [ ] `animations/motion-inventory.md` — every moment names its job and its owning component
-- [ ] No animation exists without a row in the inventory
-- [ ] Micro-interactions (hover, press, focus, appearance) live in components, through tokens; no hand-written durations
-- [ ] Skeleton pulses on loading and fades out when content arrives
-- [ ] State transitions follow `voice.md`; error does not bounce; motion agrees with microcopy
-- [ ] Only `transform` / `opacity` animate anywhere in the product
-- [ ] Global `prefers-reduced-motion` verified with the system setting actually on
-- [ ] Identical moments share a duration; `animations/motion-inventory.html` linked from `index.html`
+- No animation exists without a row in `animations/motion-inventory.md` naming its job (connect / status / answer) and its owning component
+- Micro-interactions live in components, through `--dur-*` / `--ease-*` tokens — no hand-written duration anywhere, and none inside a screen
+- Only `transform` / `opacity` animate, and the global `prefers-reduced-motion` block was verified with the system setting actually on
 
 ## Close the phase
 

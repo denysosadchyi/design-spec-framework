@@ -7,7 +7,7 @@ after the human confirms.
 
 - [ ] `.design/memory/toolbox.md` — every row of the Tools table has a status of `active` or
       `fallback`; no `[?]` survives
-      <!-- check: grep -nF '`[?]` |' .design/memory/toolbox.md → expect 0 -->
+      <!-- check: awk '/^## Tools/,/^## Rules/' .design/memory/toolbox.md | grep -cF '`[?]`' → expect 0 · scoped to the Tools table on purpose: the **Status vocabulary** section defines `[?]` permanently and must never be counted -->
 - [ ] Every `active` row has its detection evidence recorded, and every `fallback` row has its
       reason, in **Notes**
 - [ ] **Rules for later phases** states, in operational words, what each `fallback` row means

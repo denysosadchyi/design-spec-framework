@@ -2,7 +2,7 @@
 
 **One-line pitch:** clone a template repo, run `/dsf:*` commands in Claude Code, and walk a product from a blank folder to a handoff-ready design system — the way spec-kit does it for code, but for design.
 
-A designer never touches a terminal command: every action is a prompt, the agent does the work. The repo itself is the design file. Figma is never required.
+Every action is a prompt; the agent does the work and the repo holds the result. The repo itself is the design file and the source of truth. Figma is not required, and not forbidden: a team that lives in Figma can export the finished system there through the Figma MCP at handoff.
 
 ---
 
@@ -50,7 +50,7 @@ my-product/                      ← created from the design-spec-framework temp
 │   ├── memory/toolbox.md        ← which tools are active vs. running on a fallback
 │   ├── prompts/                 ← the fallbacks themselves: document.md, extract.md,
 │   │                              critique.md, audit.md, brief-interrogation.md
-│   ├── templates/               ← skeletons for the core artifacts (16 files; each command
+│   ├── templates/               ← skeletons for the core artifacts (17 files; each command
 │   │                              names the template its step starts from)
 │   ├── checklists/              ← done-criteria per phase (gate checks)
 │   ├── checklists/results/      ← `/dsf:check` verdicts, one file per phase
@@ -124,7 +124,7 @@ Grey, semantic HTML, real domain copy, **every screen in its real states as sepa
 
 ### Phase 6 — Build · `/dsf:build`
 Tokens-first assembly:
-1. `DESIGN.md` documented **from the two approved screens** (via `/impeccable document`; fallback `.design/prompts/document.md`); `concept/concept.html` retires here — superseded by `ui/kit.html`, frozen or deleted, never a second source of visual truth.
+1. `DESIGN.md` documented **from the two approved screens** (via `/impeccable document`; fallback `.design/prompts/document.md`). It conforms to the open Google Labs DESIGN.md specification (Apache-2.0), so Stitch, Cursor or any other agent can consume it as-is; it is validated with `npx @google/design.md lint`. `concept/concept.html` retires here — superseded by `ui/kit.html`, frozen or deleted, never a second source of visual truth.
 2. Component inventory read out of the wireframes (≥2 occurrences = component).
 3. **Usage audit** `ui/tokens-audit.md` — every variable and raw value, where it is used, the role it plays; value drift, one variable serving several roles, values bypassing variables; role candidates with the usages that prove them. Human gate: **nothing is renamed before the designer reviews it.**
 4. `design-system/tokens.css` — primitive + semantic levels from day one (color goes through semantic roles; geometry reads primitives directly; **two roles = two tokens even if the value is identical today**), `components/*.css`, `ui/shell.html` (header + tab bar markup), `ui/kit.html` showcase — human gate on the showcase.

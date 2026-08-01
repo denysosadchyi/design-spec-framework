@@ -46,11 +46,21 @@ After completing each numbered step and each HUMAN GATE, append the ledger line 
 
 Document the language **from code**, not from memory. Run `/impeccable document` (fallback: `.design/prompts/document.md`) over the two approved styled screens together with their state pages. Output: product `DESIGN.md` at the repo root.
 
+**`DESIGN.md` follows the open DESIGN.md format** — <https://github.com/google-labs-code/design.md> (spec: `docs/spec.md`, status alpha) — so another agent or tool can read this design system with no explanation. The file name and location do not change. Its shape:
+
+- **YAML front matter** between `---` fences carrying the machine-readable tokens: `version`, `name`, `description`, then `colors`, `typography`, `spacing`, `rounded`, `components`, and `omitted` for anything deliberately absent. Cross-references use `{path.to.token}`. Every value in it is a value read out of the screens — front matter and prose never disagree.
+- **The prescribed `##` body sections, in the format's order**: `Overview`, `Colors`, `Typography`, `Layout`, `Elevation & Depth`, `Shapes`, `Components`, `Do's and Don'ts`. A section may be absent (name it under `omitted:` with a reason); the ones present keep that sequence.
+- **Our own material stays compliant**: per-decision provenance to `concept/concept.md` attributes goes in a `### Provenance` subsection inside each section it explains; `## Unattributed decisions`, `## Conflicts with recorded taste` and `## Sources` are extra `##` sections placed **after** `Do's and Don'ts`. The format preserves headings it does not know, so nothing here breaks it. Later phases append their sections the same way — `Motion` and `Motion budget` from `/dsf:motion`, the breakpoint section from `/dsf:responsive`.
+
+At this step `components:` is empty and declared under `omitted:` — the kit does not exist yet. Fill it after step 4, using **the same token names as the semantic roles in `design-system/tokens.css`**; two naming schemes for one system is the drift this whole phase exists to prevent.
+
+Optional verification, if the network is available: `npx @google/design.md lint DESIGN.md`. A warning about a missing section is answered by writing the section or naming it under `omitted:`, never by ignoring it.
+
 The screens are the living truth: they are hand-edited, so they show what the design actually is. Therefore **update `concept/concept.md` to match the screens** — wherever `DESIGN.md` diverges from `concept.md`, change `concept.md` so it describes what is really in the screens, and note the reason per attribute. Divergence is almost always `concept.md` lagging behind, not the screen being wrong.
 
 **Exception — HUMAN GATE:** a decision in the screen that contradicts the "designer's taste" section or the anti-references in `concept.md` is **not** written in silently. List every such conflict separately and stop; the user decides which side wins. Append each resolution to `.design/decisions.md` (constitution rule 7 — every gate leaves a trace).
 
-Add a "Sources" section to `DESIGN.md` linking `concept/concept.md` and `concept/references.md`.
+Add the `## Sources` section to `DESIGN.md` — after `Do's and Don'ts`, per the shape above — linking `concept/concept.md` and `concept/references.md` and naming the screen files this document was read out of.
 
 **Retire `concept/concept.html`.** From the moment `DESIGN.md` and (in step 4) `design-system/tokens.css` exist, the test stand becomes a second, drifting source of visual truth — the exact duplication the constitution forbids. It is **superseded by `ui/kit.html`**. Either freeze it with a header note at the top of the file — *"Superseded by `ui/kit.html` on <date>. Historical: the language as it was found in phase 5. Do not edit."* — or delete it; git remembers either way. It is never edited again, and no later phase reads it. Record which of the two you did in `DESIGN.md`.
 
@@ -92,7 +102,7 @@ Output, two levels from the start:
 
 **`design-system/tokens.css`**
 - **PRIMITIVE** — raw values with no role: colors and geometry (spacing, radii, sizes, type scale) taken from the approved screens. Value drift (`#2E6E5C` here, `#2F6F5D` there) is consolidated to one value with a comment saying what was merged. No value is invented that is not already on a screen.
-- **SEMANTIC** — color roles only (`--bg-page`, `--bg-surface`, `--text-primary`, `--text-muted`, `--color-action`, `--color-verified`, `--color-danger`). Every role comes from the approved candidate list in `ui/tokens-audit.md`, references a primitive via `var()`, and carries a **source comment** naming the usages it grew from.
+- **SEMANTIC** — color roles only (`--bg-page`, `--bg-surface`, `--text-primary`, `--text-muted`, `--action`, `--verified`, `--danger`). Every role comes from the approved candidate list in `ui/tokens-audit.md`, references a primitive via `var()`, and carries a **source comment** naming the usages it grew from. **The `--color-*` prefix is reserved for primitives and is banned inside components** — a semantic role never carries it, which is what makes the phase 6 assertion (`grep -rn "var(--color-" design-system/components/` → expect 0) a real check and not a naming coincidence.
 
 Four rules:
 - **Color flows only through semantic roles.** A component reading a color primitive directly is a hole the first theme will find.
@@ -147,7 +157,7 @@ Tokens-first has a declared price, and this is where it is paid. The semantic ro
 Walk `design-system/tokens.css` against the assembled product:
 
 - **A role used exactly once demotes to a primitive.** One usage is a value with an aspiration, not a role. Demote it and note in the source comment where it went.
-- **A role serving three different meanings splits.** If `--color-accent` now carries the brand, the active navigation item and the "verified" status, those are three roles that happen to share a value. Split them, point them at the same primitive, and let them diverge later without a search-and-replace.
+- **A role serving three different meanings splits.** If `--accent` now carries the brand, the active navigation item and the "verified" status, those are three roles that happen to share a value. Split them, point them at the same primitive, and let them diverge later without a search-and-replace.
 - **A role nothing reads is deleted.** Not commented out — deleted; git remembers.
 - Every change here updates both the source comment and the matching row in `ui/tokens-audit.md`, so the audit still describes the system that exists.
 
@@ -217,7 +227,7 @@ Verify against `.design/checklists/phase-6-build.md` (or run `/dsf:check 6`); do
 
 ## Outputs
 
-- `DESIGN.md` — product language documented from code, reconciled with `concept.md`, with a Sources section
+- `DESIGN.md` — product language documented from code in the open DESIGN.md format (token front matter + the prescribed sections), reconciled with `concept.md`, with provenance and a Sources section
 - `ui/inventory.md` — component inventory + "One-off" list
 - `ui/tokens-audit.md` — the approved usage audit: variable · usages · role, the three finding classes, the role candidates with their evidence
 - `design-system/tokens.css` — primitive + semantic, with source comments and the `[data-theme="dark"]` block

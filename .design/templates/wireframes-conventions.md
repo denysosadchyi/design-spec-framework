@@ -16,6 +16,18 @@ Written **before any screen exists**. Do not draw while filling this in.
 - No colour, type choices, brand, shadows, icons or imagery.
 - Deferred to later phases: colour, type, shadows, icons, finished UI.
 
+## Styling — one file
+
+- **All wireframe styling lives in `wireframes/wireframes.css`.** A single neutral grey scale
+  and nothing else: no colour, no brand, no type choices.
+- It carries the page and device frame, the navigator panel, the grey loading placeholders and
+  the `.wf-*` classes. `[?]` — list the class groups this project actually defined.
+- **Every screen and every state page links it**, including `wireframes/index.html`.
+- **No `<style>` block and no `style=` attribute on any wireframe page.** A style a screen
+  needs goes into this file first, as a class, and then gets used.
+- This file is workbench scaffolding, not product code — `/dsf:build` leaves the `.wf-*`
+  classes and the navigator panel styling out of the extracted kit on purpose.
+
 ## Markup
 
 - Semantic HTML: `header`, `nav`, `main`, `section`, `article`, `form`, `button`.

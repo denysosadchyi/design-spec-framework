@@ -21,6 +21,9 @@ place — the same `wireframes/` files, never copies.
 - [ ] `DESIGN.md` has a **Sources** section
 - [ ] Any pre-existing `DESIGN.md` about something other than this product was renamed out
       of the way before this phase, not overwritten
+- [ ] `DESIGN.md` conforms to the open DESIGN.md spec — YAML front matter plus the required
+      sections, in spec order
+      <!-- check: npx @google/design.md lint DESIGN.md → expect exit 0 · runnable only when the network and the tool are available; on no network or a tool error the verdict is `human`: confirm by eye that the file opens with YAML front matter and carries the spec's required sections (grep -n '^---\|^## ' DESIGN.md) -->
 
 ## Inventory
 
@@ -51,7 +54,7 @@ place — the same `wireframes/` files, never copies.
 - [ ] No hex value, raw pixel value or font stack appears inside a component class
       <!-- check: grep -rniE "#[0-9a-f]{3}([0-9a-f]{3})?\b|rgba?\(|[0-9]+px" design-system/components/ → expect 0 -->
 - [ ] No component reads a primitive **color** directly — color goes through semantic tokens
-      <!-- check: grep -rn "var(--color-" design-system/components/ → expect 0 (primitive colors are --color-*, semantic roles are not) -->
+      <!-- check: grep -rn "var(--color-" design-system/components/ → expect 0 · the `--color-*` prefix is reserved for primitives; semantic roles never carry it (`--bg-*`, `--text-*`, `--action`, `--verified`, `--danger`, `--focus`) -->
 - [ ] `ui/shell.html` holds the shared chrome markup (header, tab bar) used by every screen
 - [ ] `ui/kit.html` is a showcase of every inventory component in every state, using real
       strings from `voice/microcopy.md`
@@ -74,7 +77,7 @@ place — the same `wireframes/` files, never copies.
 - [ ] Every screen and state page in `wireframes/` is updated **in place** and loads the
       token and component stylesheets
 - [ ] No screen has its own `<style>` block or inline styling
-      <!-- check: grep -rniE "<style|style=\"" wireframes/*.html → expect 0 -->
+      <!-- check: grep -rniE "<style[ >]|[[:space:]]style=" wireframes/*.html → expect 0 · anchored so the phase-4 `<link rel="stylesheet" href="wireframes.css">` tag is not a hit -->
 - [ ] Every block on every screen comes from a kit class
 - [ ] Structure and copy are unchanged from phases 4–5
 - [ ] Rollout was grouped by role, the first group reviewed by the human in a browser,

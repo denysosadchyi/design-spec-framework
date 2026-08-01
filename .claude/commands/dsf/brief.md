@@ -64,7 +64,7 @@ Create the folder structure exactly as the framework defines it — no invented 
 research/           research.md, research.html, screens/
 people/             personas.md, jtbd.md, personas.html
 ia/                 sitemap.md, flows.md, ia.html
-wireframes/         _screens.md, _conventions.md, index.html, *.html
+wireframes/         _screens.md, _conventions.md, wireframes.css, index.html, *.html
 voice/              voice.md, microcopy.md, voice.html
 concept/            references.md, concept.md, directions.html, concept.html
 ui/                 inventory.md, tokens-audit.md, shell.html, kit.html

@@ -14,11 +14,12 @@ message to the designer must, before anything else:
 
 1. Hand them the project home page: the absolute local path to `index.html` (and, once
    hosting is active, its URL) with one sentence on how to open it in a browser.
-2. Say in plain words: this page is your home — it shows where you are, every step and prompt
-   to type, and what "done" means for each phase. You never need a terminal.
+2. Say what the page is: the state view of the pipeline — the phase you are in, derived from
+   artifacts on disk plus `/dsf:check` verdicts plus tags, with every prompt to send and the
+   done-criteria each phase is verified against.
 3. Name the first move: open the page, read "How this works", then type `/dsf:init`.
 
-Designers are not programmers. The page leads; the chat executes.
+The page tracks state; the chat executes. Neither one guesses the other's job.
 
 ---
 

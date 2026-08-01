@@ -107,7 +107,7 @@ Second block: **color roles only**, each one `var()`-ing a primitive and each on
 --bg-surface:   var(--<neutral-0>);   /* from: <screen>.html .card, <screen>.html .panel */
 --text-primary: var(--<ink-900>);     /* from: every screen, .card-title / .body */
 --text-muted:   var(--<ink-500>);     /* from: <screen>.html .meta, <screen>.html .timestamp */
---color-action: var(--<accent-600>);  /* from: .btn-primary on <n> screens */
+--action:       var(--<accent-600>);  /* from: .btn-primary on <n> screens */
 ```
 
 Rules that decide what becomes a role:
@@ -119,6 +119,10 @@ Rules that decide what becomes a role:
   repeated, and the human decides.
 - Names come from the audit and `DESIGN.md`, never from a ready-made set borrowed out of
   someone else's design system (`--color-primary`, `--surface-2`, `--gray-alpha-100`).
+- **The `--color-*` prefix belongs to primitives and is banned in components.** A semantic
+  role is named for the part it plays (`--action`, `--verified`, `--danger`, `--focus`), never
+  `--color-<role>`; that is what makes `grep -rn "var(--color-" design-system/components/ → 0`
+  a real check on phase 6.
 - **State tokens (hover, active, focus, disabled) are not added here.** They belong to
   `/dsf:system`, where every state gets a value in both themes at once.
 

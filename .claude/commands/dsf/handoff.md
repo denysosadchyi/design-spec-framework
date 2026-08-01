@@ -151,6 +151,17 @@ for each question. A route, not a museum.
 Then prove it: from a clean clone, the repo comes up with no verbal explanation. That is the
 readiness criterion for the package, not your confidence in it.
 
+**Optional — if the team lives in Figma.** Some teams read a design system in Figma and nowhere
+else. Where that is true, the finished system can be exported there through the Figma MCP: the
+`design-system/docs/` pages — tokens, components with their states, patterns — become a Figma
+library, so the same system is legible on both sides. This is **optional and it is not a
+criterion**: it is offered once, taken only if the human asks for it, and skipped in silence
+otherwise. **The repo stays the source of truth** either way; a Figma library exported from it
+is a copy, and the moment the two disagree the repo wins and the library is re-exported. Never
+edit the system in Figma and bring the change back by hand — that is the duplicated-truth defect
+the constitution forbids. If it is done, record it in `handoff/README.md` as a derived artifact
+with its export date.
+
 ### 7 — Fresh-subagent test
 
 Launch a subagent that has not seen this session and does not know the product. Give it a
@@ -198,18 +209,13 @@ consciously, and at the end you do all of them in one move.
 
 ## Phase checklist
 
-Verify against `.design/checklists/phase-10-handoff.md` (or run `/dsf:check 10`):
+The canonical done-criteria live in `.design/checklists/phase-10-handoff.md` — run
+`/dsf:check 10`. Nothing here overrides that file; the three below are an **excerpt**, the
+signature items this phase fails on most often:
 
-- [ ] `handoff/onboarding-gaps.md` — a newcomer's list of confusions; product questions, not syntax
-- [ ] `handoff/spec/` — flows, states, edge cases, validation; **references components and `microcopy` keys, duplicates no code**
-- [ ] `handoff/map.md` — screen → component → token → microcopy key; `voice/voice.md` and `voice/microcopy.md` in the package
-- [ ] `handoff/a11y.md` — focus, contrast, `rem` breakpoints, reduced-motion consolidated; code location and verification per item; nothing new introduced
-- [ ] `README.md` is a living index — two or three sentences and a link per section, no retelling
-- [ ] Release: product and showcase deployed, three links in `handoff/README.md`
-- [ ] A clean clone comes up with no verbal explanation
-- [ ] Fresh-subagent test passed; every stumble closed with documentation, not a feature
-- [ ] `design-system/examples/one-shot/` — a new feature assembled in one pass, with states, adaptivity and micro-interactions, plus a retrospective
-- [ ] `CLAUDE.md` has a "Handoff" section; `handoff/index.html` linked from `index.html`
+- `handoff/spec/` **references** components, tokens and `microcopy` keys and duplicates no code — no hex, no pixel value, no literal UI string
+- Fresh-subagent test passed, and every stumble was closed with documentation, not with a new feature
+- `design-system/examples/one-shot/` — a new feature assembled in one pass with states, adaptivity and micro-interactions, plus its retrospective
 
 ## Close the phase
 

@@ -36,7 +36,8 @@ existing system.
 - [ ] The list → detail transition in `split-view` reads as a connection
 - [ ] Motion is animated on `transform` and `opacity` only — nothing animates `width`,
       `height`, `top`, `left` or `margin`
-      <!-- check: grep -rnE "(transition|transition-property|animation)[^;]*\b(width|height|top|left|margin)\b" design-system/ ui/ wireframes/ → expect 0 -->
+      <!-- check: grep -rniE '(transition|animation)[^;{]*[^-a-z]((min|max)-)?(width|height|top|left|margin)(-(top|right|bottom|left|block|inline|start|end))?([^-a-z]|$)' design-system/ ui/ wireframes/ → expect 0 · the property must start its own token, so `border-top-color`, `background-position` and `border-width` are deliberately not hits; `line-height` and `letter-spacing` are deliberately ignored too — they are layout properties this pattern does not police -->
+      <!-- check: awk '/@keyframes/{k=1} k{d+=gsub(/{/,"{"); d-=gsub(/}/,"}"); if($0 ~ /(^|[^-a-z])((min|max)-)?(width|height|top|left|margin)[a-z-]*[ \t]*:/) print FILENAME":"FNR": "$0; if(d<=0) k=0}' $(find design-system ui -name '*.css') → expect 0 · the same ban inside `@keyframes` bodies, which the declaration above cannot see -->
 - [ ] `DESIGN.md` has a **Motion budget** section
 - [ ] A global `prefers-reduced-motion: reduce` rule genuinely removes motion, verified
       with the system setting on

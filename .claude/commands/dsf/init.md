@@ -193,8 +193,8 @@ command creates no tag.
 
 ### 9. Hand over the project home page
 
-This is the point of the whole command. The person you are handing to is a designer, not a
-programmer, and everything they need from here lives on one page. Close with these three things,
+This is the point of the whole command. Everything the person needs from here — where the run
+is, what it has proven, what to send next — lives on one page. Close with these three things,
 in plain words, in this order:
 
 **(a) The link.** Give the direct address of their project page:
@@ -208,8 +208,10 @@ in plain words, in this order:
 **(b) What the page is.** Say it exactly like this, in your own sentence structure but with
 nothing dropped:
 
-> This page is your home. It shows where you are, what to do next, and every prompt you need to
-> type. You never need a terminal — anything that has to be run, I run.
+> This page is the state view of the pipeline. The phase you are in is derived from the files
+> on disk, the `/dsf:check` verdicts and the git tags — never declared — and the page shows the
+> criteria each phase is verified against and the prompt to send next. The page tracks state;
+> the chat executes.
 
 **(c) The first move.** Name it as one action: open the page, read the **How this works**
 section, then type `/dsf:brief`.
@@ -254,7 +256,7 @@ presence plus the results file plus the tag — re-derive and rewrite the block.
 ```
 
 ```
-You ended without giving the designer their page. Repeat the close: the link,
+You ended without handing over the project page. Repeat the close: the link,
 what the page is, and the first move.
 ```
 

@@ -24,7 +24,7 @@ Eleven phases (0–10), seventeen commands (thirteen phase commands + four cross
 | 1 | `brief` | Brief | `/dsf:brief` | `.design/checklists/phase-1-brief.md` | `phase-1-brief` | `CLAUDE.md` (Brief block), `README.md`, folder scaffolding |
 | 2 | `discover` | Discover | `/dsf:research` + `/dsf:users` | `.design/checklists/phase-2-discover.md` | `phase-2-discover` | `research/research.md`, `research/research.html`, `research/screens/`, `people/personas.md`, `people/jtbd.md`, `people/personas.html` |
 | 3 | `structure` | Structure | `/dsf:ia` | `.design/checklists/phase-3-ia.md` | `phase-3-ia` | `ia/sitemap.md`, `ia/flows.md`, `ia/ia.html` |
-| 4 | `wireframes` | Wireframes | `/dsf:wireframes` | `.design/checklists/phase-4-wireframes.md` | `phase-4-wireframes` | `wireframes/_screens.md`, `wireframes/_conventions.md`, `wireframes/index.html`, `wireframes/*.html` (screens + state pages), `wireframes/_critique.md` |
+| 4 | `wireframes` | Wireframes | `/dsf:wireframes` | `.design/checklists/phase-4-wireframes.md` | `phase-4-wireframes` | `wireframes/_screens.md`, `wireframes/_conventions.md`, `wireframes/wireframes.css`, `wireframes/index.html`, `wireframes/*.html` (screens + state pages), `wireframes/_critique.md` |
 | 5 | `language` | Language | `/dsf:voice` + `/dsf:concept` | `.design/checklists/phase-5-language.md` | `phase-5-language` | `voice/voice.md`, `voice/voice.html`, `voice/microcopy.md`, `concept/references.md`, `concept/concept.md`, `concept/directions.html`, `concept/concept.html` |
 | 6 | `build` | Build | `/dsf:build` | `.design/checklists/phase-6-build.md` | `phase-6-build` | `DESIGN.md`, `design-system/tokens.css`, `design-system/components/`, `ui/inventory.md`, `ui/tokens-audit.md`, `ui/shell.html`, `ui/kit.html`, `visuals/README.md` |
 | 7 | `system` | System | `/dsf:system` | `.design/checklists/phase-7-system.md` | `phase-7-system` | `design-system/index.css`, `design-system/docs/index.html`, `design-system/patterns/`, `design-system/examples/`, `design-system/backlog.md` |
@@ -47,6 +47,7 @@ is wrong.
 | Artifact | Canonical path |
 |---|---|
 | Wireframe navigator | `wireframes/index.html` |
+| Wireframe stylesheet | `wireframes/wireframes.css` |
 | Voice, viewable | `voice/voice.html` |
 | Width audit, viewable | `responsive/width-audit.html` |
 | Motion inventory, viewable | `animations/motion-inventory.html` |
@@ -114,15 +115,15 @@ column; if a count here disagrees with the file, the file wins and this table is
 | 1 · Brief | `.design/checklists/phase-1-brief.md` | 13 |
 | 2 · Discover | `.design/checklists/phase-2-discover.md` | 25 |
 | 3 · Structure | `.design/checklists/phase-3-ia.md` | 22 |
-| 4 · Wireframes | `.design/checklists/phase-4-wireframes.md` | 24 |
+| 4 · Wireframes | `.design/checklists/phase-4-wireframes.md` | 26 |
 | 5 · Language | `.design/checklists/phase-5-language.md` | 45 |
-| 6 · Build | `.design/checklists/phase-6-build.md` | 45 |
+| 6 · Build | `.design/checklists/phase-6-build.md` | 46 |
 | 7 · System | `.design/checklists/phase-7-system.md` | 33 |
 | 8 · Responsive | `.design/checklists/phase-8-responsive.md` | 23 |
 | 9 · Motion | `.design/checklists/phase-9-motion.md` | 22 |
 | 10 · Handoff | `.design/checklists/phase-10-handoff.md` | 32 |
 
-296 criteria across the eleven phases.
+299 criteria across the eleven phases.
 
 ---
 

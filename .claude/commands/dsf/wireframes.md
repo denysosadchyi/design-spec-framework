@@ -68,6 +68,18 @@ from `.design/templates/wireframes-conventions.md` and keep its sections.
   `-empty` / `-error` / `-loading`. Same structure, different content.
 - **Deferred:** colour, type, shadows, icons, finished UI — later phases.
 
+**Styling lives in one file: `wireframes/wireframes.css`.** Write it in this step, alongside
+the conventions — the neutral grey scale, the page/device frame, the navigator panel, the grey
+placeholders, the `.wf-*` classes. Nothing else: no colour, no brand, no type choices. **Every
+screen and state page links it**, and no wireframe carries a `<style>` block or a `style=`
+attribute — inline styles are what phase 6 audits for, and a screen that styles itself cannot
+be redressed from the kit later. A rule that governs appearance is fixed here and propagates by
+itself; a rule patched on one screen is drift.
+
+This file is workbench scaffolding, not product code: `/dsf:build`'s extraction explicitly
+leaves the `.wf-*` classes and the navigator panel styling out of the kit
+(`.design/prompts/extract.md`, step 5), so it never has to be untangled later.
+
 Save and stop there. Do not draw screens in this step.
 
 ## Step 3 — The sample screen
@@ -76,6 +88,8 @@ Build one screen — the one the main persona starts the main job from — in it
 It sets the bar for everything else: level of detail, how zones are labelled, copy quality.
 
 - semantic HTML per the conventions;
+- links `wireframes/wireframes.css` and holds no `<style>` block and no `style=` attribute of
+  its own — a style the sample needs goes into that file first;
 - label each zone and each zone's primary action;
 - real domain copy, concrete values, not placeholders;
 - the flow step this screen closes is visible on the page;
@@ -156,7 +170,8 @@ cheap precisely because the contract and the sample already exist; agents clone 
 
 Give every subagent, in its task:
 - which screens and states to build (rows from `ia/sitemap.md` and `wireframes/_screens.md`);
-- what to read: `wireframes/_conventions.md` (the contract) and the sample screen (the reference);
+- what to read: `wireframes/_conventions.md` (the contract), `wireframes/wireframes.css` (the
+  only stylesheet) and the sample screen (the reference);
 - what to produce: base page + state pages, the same navigator panel, links along its own
   flow, real domain copy, grey fidelity — exactly as the conventions say;
 - what to return: findings, not opinions — the list of files created and anything the
@@ -175,7 +190,8 @@ set, and the link `index.html` points at:
   omitted — the table in `_screens.md` decides which;
 - generated from `wireframes/_screens.md` and `ia/sitemap.md`, never hand-listed, so it
   cannot drift from the panel;
-- same grey fidelity as the wireframes — this page is structure, not design.
+- same grey fidelity as the wireframes, from the same `wireframes/wireframes.css` — this page
+  is structure, not design.
 
 Every screen file must be reachable from this page in one click.
 
@@ -185,6 +201,8 @@ Review every `wireframes/*.html` against `_conventions.md`, `ia/sitemap.md` and
 `ia/flows.md`. Produce a table `screen · what is wrong · how to fix` covering:
 
 - **visuals leaked** — colour, type, shadows or icons appeared somewhere;
+- **a screen styles itself** — a `<style>` block or a `style=` attribute instead of a class in
+  `wireframes/wireframes.css`, or a page that does not link that file at all;
 - **placeholders** — lorem ipsum or "Heading 1" instead of real domain copy;
 - **missing states** — not every state marked in `_screens.md` has a page;
 - **dead end** — a state with no exit (empty without a way to widen, error without retry);

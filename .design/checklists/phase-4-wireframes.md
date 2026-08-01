@@ -32,9 +32,15 @@ behavior in phase 8 and motion in phase 9. Nothing here is redrawn later.
 - [ ] Copy is real product copy from this domain; no lorem ipsum, no "Heading 1",
       no "Lorem", no placeholder brackets
       <!-- check: grep -rniE "lorem|ipsum|dolor sit|heading 1|placeholder" wireframes/*.html → expect 0 -->
+- [ ] `wireframes/wireframes.css` exists — the one shared grey stylesheet — and every screen
+      and state page links it with `<link rel="stylesheet" href="wireframes.css">`
+      <!-- check: ls wireframes/wireframes.css && grep -L 'href="wireframes.css"' wireframes/*.html → expect the file present and the second command to list no page -->
 - [ ] Grey only — no color, no custom fonts, no icons, no shadows anywhere in
       `wireframes/*.html`
-      <!-- check: grep -rniE "#[0-9a-f]{3}([0-9a-f]{3})?\b|rgba?\(|box-shadow" wireframes/*.html → expect 0 -->
+      <!-- check: grep -rniE "#[0-9a-f]{3}([0-9a-f]{3})?\b|rgba?\(|box-shadow" wireframes/*.html → expect 0 · screen pages only; the shared `wireframes.css` is deliberately out of this scan and is covered by the item below -->
+- [ ] `wireframes/wireframes.css` holds a neutral grey scale and nothing chromatic — every
+      hex in it has equal R, G and B
+      <!-- check: grep -oiE '#[0-9a-f]{3,8}\b' wireframes/wireframes.css | grep -viP '^#(([0-9a-f])\2\2|([0-9a-f]{2})\3\3)$' → expect 0 · hex only; `hsl()`/`rgb()`/named colors, if any are used, are a `human` read of the file -->
 
 ## Navigation and linking
 

@@ -2,15 +2,15 @@
 
 Spec-Driven Development for product design. Clone the template, open it in Claude Code, and walk a product from a blank folder to a handoff-ready design system with `/dsf:*` commands — the way [spec-kit](https://github.com/github/spec-kit) does it for code, but for design.
 
-No Figma required. The repo is the design file.
+The repo is the design file — and the source of truth. Figma is not required, and not forbidden: if your team lives in Figma, the finished system can be exported there through the Figma MCP at handoff, from a design system that already exists as code.
 
 ## What it looks like
 
-The project home page (`index.html`) leads the designer through the pipeline — phases on the left, step-by-step guide with copy-paste prompts in the middle, success criteria on the right:
+The project home page (`index.html`) is the state view of the run — phases on the left, the step-by-step guide with copy-paste prompts in the middle, the phase's done-criteria on the right:
 
 ![Phase guide with prompts and success criteria](docs/screens/phase-guide.png)
 
-"How this works" onboards a designer who has never touched a terminal:
+"How this works" states the working contract on one screen: the page tracks state, the chat executes:
 
 ![How this works onboarding](docs/screens/how-it-works.png)
 
@@ -28,7 +28,7 @@ design-spec-framework attacks all three with one move: **the entire design proce
 
 - **One source of truth that compounds.** Every phase reads the artifacts of the previous phases and adds a layer. The grey wireframe from phase 4 is the *same HTML file* that ships styled and tokenized in phase 6, responsive in phase 8 and animated in phase 9. Nothing is redrawn; nothing is re-explained.
 - **Design decisions with receipts.** Every persona claim cites research or is marked `[?]`. Every screen names the job it serves. Every color traces to a written attribute, every attribute to data or the designer's recorded taste. "Because it looks nice" is not a valid provenance.
-- **The agent executes, the designer judges.** The framework automates production — research collection, screen assembly, parallel rollout, critique — but stops at every taste and scope decision. Direction choice, defect priorities, "keep it" — always human.
+- **The agent executes, you judge.** The framework automates production — research collection, screen assembly, parallel rollout, critique — but stops at every taste and scope decision. Direction choice, defect priorities, "keep it" — always human, always logged.
 - **Handoff that needs no meeting.** The end state is a repo a new developer (or a fresh AI session) can pick up and extend without a single verbal explanation — verified by an actual fresh-context test.
 
 ## Classic process vs. design-spec-framework
@@ -49,11 +49,17 @@ design-spec-framework attacks all three with one move: **the entire design proce
 | **Progress visibility** | "It's in progress" | `index.html` — the project's home page: every phase, artifact and gate, always current |
 | **Decision trail** | "I think we agreed on that in the call" | `.design/decisions.md` — every gate answer and "keep it", dated, verbatim |
 
-## How a designer works in Claude Code
+## How a run works in Claude Code
 
-You never touch a terminal command. You talk, the agent does. Your project's home page is
-`index.html` — open it in a browser and keep it open: it shows the phase you are in, every
-artifact produced so far as a live link, and the command to type next.
+The pipeline is a **closed state machine**. Phase status is derived, never declared: from
+artifact presence on disk, from the verdict file `/dsf:check` writes after verifying that
+phase's checklist, and from the phase's single git tag — which only `/dsf:check` may create,
+on a full pass, after you confirm. Phase commands never tag. There is no state file to
+hand-edit and no path by which the agent marks its own homework.
+
+`index.html` is the state view of that machine: the phase you are in, every artifact produced
+so far as a live link, the criteria still open, and the prompt to send next. The page tracks
+state; the chat executes.
 
 ```
 /dsf:status          → "Phase 3 done. Next: /dsf:wireframes."
@@ -69,14 +75,16 @@ agent                   → fixes at the source, updates the living docs and the
 /dsf:check           → verifies the phase against its checklist and tags it.
 ```
 
-The rhythm is the same in every phase: **sample → your review → parallel rollout → critique table → your priorities → fixes at the source.** The agent's freedom shrinks as the project matures: early on it drafts on empty pages; by phase 7 nothing may appear on a screen that doesn't exist in the design system first.
+The rhythm is the same in every phase: **sample → your review → parallel rollout → critique table → your priorities → fixes at the source.** Bulk work is subagent fan-out against a signed-off reference artifact and a written conventions file, so forty screens cost roughly what one costs. The agent's freedom shrinks as the project matures: early on it drafts on empty pages; by phase 7 nothing may appear on a screen that doesn't exist in the design system first.
+
+- **Refactors are tested, not eyeballed.** When the screens move onto the kit in phase 6, three control screens are converted first — deliberately unalike, so two screens can't be wrong in the same way and agree with each other — and compared before/after: the render must not change by a pixel. A difference means the kit is wrong, not the screen.
 
 - **Contradicting an earlier decision stops the work.** If a new instruction undoes something already written down — the chosen direction, the approved sitemap, a past "keep it" — the agent does not quietly comply. It stops and asks you to choose: update the spec and propagate the change everywhere, record a deliberate exception, or withdraw the request. Changes after a phase is signed off go through `/dsf:change`, which prints the blast radius first. Every answer lands in `.design/decisions.md`.
 
 Four mechanisms keep the model honest:
 
 - **The constitution** (`.design/memory/constitution.md`) — binding rules injected into every command: data or `[?]`, real copy instead of lorem ipsum, states are separate pages, the fix lives at the source, reflex palettes are rejected, human gates cannot be skipped.
-- **Checklists** (`.design/checklists/`) — objective done-criteria per phase; `/dsf:check` verifies them against the actual files, not against the agent's claims, and only it may tag a phase closed.
+- **Checklists** (`.design/checklists/`) — objective done-criteria per phase, many of them carrying an executable assertion inside the item (`grep -rniE "lorem|ipsum|placeholder" wireframes/*.html → expect 0`; `grep -rn "@media" wireframes/*.html → expect 0`). `/dsf:check` runs them against the actual files, not against the agent's claims, and only it may tag a phase closed.
 - **The decision log** (`.design/decisions.md`) — append-only: date, gate, what you were shown, your verbatim answer. Receipts, not recollection.
 - **Recovery prompts** — every command ships the exact counter-prompts for the model's known failure modes ("this principle is an adjective — rewrite it as a rule with an example, a counter-example and a source").
 
@@ -86,7 +94,7 @@ Four mechanisms keep the model honest:
 - **A design that survives its designer.** Anyone — a developer, a teammate, you in a year, a fresh AI session — opens the repo and finds the *why* next to the *what*.
 - **Real product from day one.** Clickable states, real copy, working navigation — stakeholders review the actual thing in a browser, not a simulation of it.
 - **Change gets cheaper over time, not more expensive.** A rebrand is a token file; a tone shift is one contract edit rolled out by agents; a new screen is a composition of an existing system.
-- **A designer's leverage on engineering-grade infrastructure.** Version control, diffs, tags, CI-ready static output, deploys — for free, because the design *is* a repo.
+- **Taste decisions under the same rigor as code.** Diffs, tags, review, CI-ready static output, deploys — the infrastructure you already run, now holding the parts of the product that usually escape it: why this palette, why this flow, why this word on this button.
 
 ## Quick start
 
@@ -121,18 +129,19 @@ Cross-cutting: `/dsf:status` (where am I, what to type next), `/dsf:critique` (d
 ## How it works
 
 - **[docs/FRAMEWORK.md](docs/FRAMEWORK.md)** — the full framework description.
+- **`DESIGN.md`** — the visual contract, written in phase 6 from the two approved screens. It conforms to the open Google Labs DESIGN.md specification (Apache-2.0), so Stitch, Cursor or any other agent can consume it as-is; it is validated with `npx @google/design.md lint`.
 - **`.design/memory/constitution.md`** — the engine rules every command obeys.
 - **`.design/memory/phases.md`** — the canonical phase table: commands, checklists, tags, artifact paths.
 - **`.design/memory/toolbox.md`** — recommended tools (Playwright MCP, Refero MCP, impeccable, brainstorming skill, image generation) with a fallback for each; nothing is a hard dependency.
 - **`.design/prompts/`** — the fallbacks themselves: `document.md`, `extract.md`, `critique.md`, `audit.md`, `brief-interrogation.md`.
-- **`.design/templates/`** — skeletons for the core artifacts (16 files; each command names the template its step starts from).
+- **`.design/templates/`** — skeletons for the core artifacts (17 files; each command names the template its step starts from).
 - **`.design/checklists/`** — objective done-criteria per phase.
 - **`.design/checklists/results/`** — where `/dsf:check` writes its verdict, one file per phase.
 - **`.design/progress/`** — append-only step ledgers, one file per phase: what ran, when, which files it touched.
 - **`.design/decisions.md`** — append-only log of every gate answer, "keep it" and resolved contradiction.
 - **`index.html`** + **`assets/`** — the project's home page: a dashboard of all phases and artifacts, with its styling, dictionaries and renderer in `assets/` (relative paths, same repo, nothing fetched from outside it — it opens from a static host and from `file://` alike). Commands update the JSON data block inside `index.html`, never its markup and never `assets/`.
 
-The framework automates execution, not judgment: direction choices, defect priorities and "keep it" decisions always stop and wait for the designer.
+The framework automates execution, not judgment: direction choices, defect priorities and "keep it" decisions always stop and wait for a human answer.
 
 ## License
 
