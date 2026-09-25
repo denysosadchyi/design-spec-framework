@@ -54,7 +54,13 @@ The page tracks state; the chat executes. Neither one guesses the other's job.
 
 <!-- /dsf:init fills this in: one line per active tool and one per fallback in force -->
 
-`[?]`
+- Browser & screenshots → fallback: WebFetch-only research; save any supplied screenshots into `research/screens/`.
+- Visual references → fallback: use web search and cite each source in `concept/references.md`.
+- Design quality laws → fallback: use `.design/prompts/critique.md`, `.design/prompts/audit.md`, `.design/prompts/document.md`, and `.design/prompts/extract.md`.
+- Structured brief → fallback: use `.design/prompts/brief-interrogation.md` for the brief step.
+- Imagery → fallback: use Unsplash by content theme and log the source in `visuals/README.md`.
+- Icons → fallback: pick a single-style open set and record it in `DESIGN.md`.
+- Hosting → fallback: keep this repo local and preview with a static server unless GitHub Pages is later enabled.
 
 ---
 
