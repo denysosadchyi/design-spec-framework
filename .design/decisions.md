@@ -47,3 +47,10 @@ only; commercial detail lives on the detail screen."
 (new key `list.card.price`), 6 list screens + their `-empty` states, `ui/kit.html`, `DESIGN.md`.
 
 -->
+
+## 2026-09-25 · gate
+
+**Decided:** "Use the repo-local fallback path for every tool that is not installed or configured in this environment; do not block the pipeline on missing MCP servers or Pages setup."
+**Contradicts:** `nothing`
+**Option:** n/a
+**Propagated:** `.design/memory/toolbox.md`, `CLAUDE.md`, `index.html`
