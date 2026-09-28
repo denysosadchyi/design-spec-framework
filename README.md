@@ -143,6 +143,10 @@ Cross-cutting: `/dsf:status` (where am I, what to type next), `/dsf:critique` (d
 
 The framework automates execution, not judgment: direction choices, defect priorities and "keep it" decisions always stop and wait for a human answer.
 
+## Related tools & spec discovery
+
+- [MySpec](https://myspec.dev) — Interactive spec-driven development platform compiling guided developer discovery interviews into 4-file specification bundles (`constitution.md`, `requirements.md`, `solution.md`, `tasks.md`) with Model Context Protocol (MCP) server integration.
+
 ## License
 
 MIT — see [LICENSE](LICENSE).
